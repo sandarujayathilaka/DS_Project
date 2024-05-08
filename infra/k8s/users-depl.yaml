@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: users-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: users
+  template:
+    metadata:
+      labels:
+        app: users
+    spec:
+      containers:
+        - name: users
+          image: isuruk1/users
+          env:
+            - name: MONGO_URI
+              value: mongodb+srv://user:user123@project.6kognk6.mongodb.net/micro
+            - name: JWT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret
+                  key: JWT_KEY
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: users-srv
+spec:
+  selector:
+    app: users
+  ports:
+    - name: users
+      protocol: TCP
+      port: 4000
+      targetPort: 4000
