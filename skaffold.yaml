@@ -24,3 +24,13 @@ build:
         manual:
           - src: "**/*.js"
             dest: .
+    - image: sandarujayathilaka98425/learner
+      context: learner
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "**/*.js"
+            dest: .
+
+    

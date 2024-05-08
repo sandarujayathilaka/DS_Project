@@ -24,3 +24,11 @@ spec:
                 name: courses-srv
                 port:
                   number: 4000
+          - path: /api/learner/?(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: learner-srv
+                port:
+                  number: 4000
+
