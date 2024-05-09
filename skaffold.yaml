@@ -32,5 +32,13 @@ build:
         manual:
           - src: "**/*.js"
             dest: .
+    - image: sandarujayathilaka98425/order
+      context: order
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "**/*.js"
+            dest: .
 
     

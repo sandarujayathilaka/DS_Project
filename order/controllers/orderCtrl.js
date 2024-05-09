@@ -1,6 +1,6 @@
-const Order = require("../model/Order.js");
 const Stripe = require("stripe");
 const dotenv = require("dotenv");
+const Order = require("../models/Order");
 
 dotenv.config();
 

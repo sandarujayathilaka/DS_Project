@@ -1,19 +1,27 @@
+const { app } = require("./app");
+const { connectDB } = require("./config/db");
+const dotenv = require("dotenv");
+dotenv.config();
 
+const start = async () => {
+  console.log("Starting up...");
+  
 
+  if (!process.env.JWT_KEY) {
+    throw new Error("JWT_KEY must be defined");
+  }
 
-const app = require("./app/app");
+  if (!process.env.MONGO_URI) {
+    throw new Error("MONGO_URI must be defined");
+  }
 
+  connectDB();
 
+  const port = 4000;
 
-app.get("/api/v1/order", (req, res) => {
-  res.send("Service A test resopnse");
-});
+  app.listen(port, () => {
+    console.log(`🚀 Order Server started on port ${port}`);
+  });
+};
 
-
-// Set the port
-const PORT = process.env.PORT || 3000;
-
-
-
-// Start the server with app.listen()
-app.listen(PORT, () => console.log(`Server running on port number ${PORT}`));
+start();
