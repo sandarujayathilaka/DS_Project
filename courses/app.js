@@ -2,11 +2,12 @@ const express = require("express");
 require("dotenv").config();
 require("colors");
 require("express-async-errors");
+const cors = require("cors");
 const cookieSession = require("cookie-session");
 const { errorHandler } = require("./middleware/error-handler");
 const { currentUser } = require("./middleware/current-user");
 
-const userRoutes = require("./routes/course.routes");
+const courseRoutes = require("./routes/course.routes");
 
 const app = express();
 
@@ -15,6 +16,13 @@ app.set("trust proxy", true);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+  })
+);
+
 app.use(
   cookieSession({
     signed: false,
@@ -28,7 +36,7 @@ app.get("/", (req, res) => {
   res.send("Hello World");
 });
 
-app.use("/api/courses", userRoutes);
+app.use("/api/courses", courseRoutes);
 
 app.use(errorHandler);
 
