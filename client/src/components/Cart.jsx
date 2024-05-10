@@ -3,6 +3,7 @@ import axios from "axios";
 
 export default function Cart() {
   const [cartItems, setCartItems] = useState([]);
+  const [checkoutUrl, setCheckoutUrl] = useState("");
 
   useEffect(() => {
     fetchCartItems();
@@ -13,6 +14,7 @@ export default function Cart() {
       .get("https://udemy.dev/api/cart/getcartitem")
       .then((response) => {
         setCartItems(response.data.course);
+        console.log(response.data.course);
       })
       .catch((error) => {
         console.error("Error fetching cart items:", error);
@@ -28,6 +30,21 @@ export default function Cart() {
       })
       .catch((error) => {
         console.error("Error removing item:", error);
+      });
+  };
+
+  const handleCheckout = () => {
+    axios
+      .post("https://udemy.dev/api/order", { courses: cartItems })
+      .then((response) => {
+        const { url } = response.data;
+        if (url) {
+          setCheckoutUrl(url);
+          window.location.href = url; // Redirect to checkout URL
+        }
+      })
+      .catch((error) => {
+        console.error("Error during checkout:", error);
       });
   };
 
@@ -80,6 +97,7 @@ export default function Cart() {
           <a
             href="#"
             className="flex font-semibold text-indigo-600 text-sm mt-10"
+            onClick={handleCheckout} // Call handleCheckout when checkout button is clicked
           >
             <svg
               className="fill-current mr-2 text-indigo-600 w-4"
@@ -100,7 +118,10 @@ export default function Cart() {
               <span>Total cost</span>
               <span>${totalCost}</span>
             </div>
-            <button className="bg-indigo-500 font-semibold hover:bg-indigo-600 py-3 text-sm text-white uppercase w-full">
+            <button
+              className="bg-indigo-500 font-semibold hover:bg-indigo-600 py-3 text-sm text-white uppercase w-full"
+              onClick={handleCheckout}
+            >
               Checkout
             </button>
           </div>

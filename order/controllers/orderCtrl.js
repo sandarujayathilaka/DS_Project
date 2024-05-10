@@ -45,8 +45,8 @@ const createOrder = async (req, res) => {
       orderId: JSON.stringify(order._id),
     },
     mode: "payment",
-    success_url: "http://localhost:3000/success",
-    cancel_url: "http://localhost:3000/cancel",
+    success_url: "http://localhost:5173/student",
+    cancel_url: "http://localhost:5173/cart",
   });
 
   res.send({ url: session.url });
