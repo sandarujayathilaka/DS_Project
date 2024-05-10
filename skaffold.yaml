@@ -40,5 +40,15 @@ build:
         manual:
           - src: "**/*.js"
             dest: .
+    - image: sandarujayathilaka98425/cart
+      context: cart
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "**/*.js"
+            dest: .
+
+           
 
     

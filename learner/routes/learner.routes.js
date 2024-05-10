@@ -6,6 +6,7 @@ const {
   unenrollFromCourse,
   getAllEnrolledCourses,
   getPendingEnrolledCourses,
+  getAllUserCourse,
 } = require("../controllers/LearnerCtrl");
 
 
@@ -14,8 +15,9 @@ const learnerRoutes = express.Router();
 learnerRoutes.post("/boughtcourse", boughtCourse);
 learnerRoutes.post("/enroll", enrollToCourse);
 learnerRoutes.post("/unenroll", unenrollFromCourse);
-learnerRoutes.get("/getenroll",getAllEnrolledCourses);
-learnerRoutes.get("/getpending", getPendingEnrolledCourses);
+learnerRoutes.post("/getenroll",getAllEnrolledCourses);
+learnerRoutes.post("/getpending", getPendingEnrolledCourses);
+learnerRoutes.post("/getusercourses", getAllUserCourse);
 
 
 module.exports = learnerRoutes;

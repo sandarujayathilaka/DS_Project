@@ -9,7 +9,7 @@ const stripe = new Stripe(process.env.STRIPE_KEY);
 
 const createOrder = async (req, res) => {
   // Get the order items, shipping address, total price
-  const { courses, totalPrice,userId } = req.body;
+  const { courses} = req.body;
 
   // Check if order is not empty
   if (courses && courses.length <= 0) {
@@ -18,9 +18,9 @@ const createOrder = async (req, res) => {
 
   // Place order - save in DB
   const order = await Order.create({
-    userId,
+    userId:"663dbf52047945ec5914b733",
     courses,
-    totalPrice,
+    totalPrice:"0",
   });
 
 

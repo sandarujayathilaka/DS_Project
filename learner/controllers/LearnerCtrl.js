@@ -89,6 +89,24 @@ const unenrollFromCourse = async (req, res) => {
   }
 };
 
+const getAllUserCourse = async (req, res) => {
+  const { userId } = req.body; // Assuming userId is passed as a parameter in the URL
+
+  try {
+    // Find the user
+    const learner = await Learner.findOne({ userId });
+
+    if (!learner) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    // If the learner is found, return the enrolled courses
+    return res.status(200).json(learner.enrolledCourses);
+  } catch (error) {
+    // Handle any errors that occur during the process
+    console.error("Error fetching user courses:", error);
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
+};
 
 
 const getAllEnrolledCourses = async (req, res) => {
@@ -141,5 +159,6 @@ boughtCourse,
 enrollToCourse,
 unenrollFromCourse,
 getAllEnrolledCourses,
-getPendingEnrolledCourses
+getPendingEnrolledCourses,
+getAllUserCourse
 };

@@ -5,7 +5,7 @@ require("express-async-errors");
 const cookieSession = require("cookie-session");
 const { errorHandler } = require("./middleware/error-handler");
 const { currentUser } = require("./middleware/current-user");
-const learnerRoutes = require("./routes/learner.routes");
+const learnerRoutes = require("./routes/cart.routes");
 const cors = require("cors"); 
 
 
@@ -30,11 +30,11 @@ app.use(
   })
 );
 
-app.get("/api/learner", (req, res) => {
+app.get("/api/cart", (req, res) => {
   res.send("Hello World");
 });
 
-app.use("/api/learner", learnerRoutes);
+app.use("/api/cart", learnerRoutes);
 app.use(errorHandler);
 
 module.exports = { app };
