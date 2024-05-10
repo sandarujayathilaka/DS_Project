@@ -4,6 +4,8 @@ import AddCourse from "./pages/course/AddCourse";
 import Course from "./pages/course/Course";
 import Cart from "./components/Cart";
 import Student from "./components/StudentPortal";
+import Home from "./pages/Home";
+import Login from "./pages/Login";
 
 
 function App() {
@@ -14,6 +16,8 @@ function App() {
           <Route path="/course" element={<Course />} />
             <Route path="/cart" element={<Cart />} />
           <Route path="/student" element={<Student />} />
+          <Route path="/home" element={<Home/>} />
+          <Route path="/login" element={<Login/>} />
         </Routes>
     </BrowserRouter>
   );
