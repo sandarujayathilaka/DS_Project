@@ -135,19 +135,23 @@ const updateChapter = async (req, res) => {
 };
 
 const deleteChapter = async (req, res) => {
-  const course = await Course.findById(req.params.id);
+  const { id, chapterId } = req.params;
+
+  const course = await Course.findById(id);
 
   if (!course) {
     return res.status(404).send("Course not found");
   }
 
-  const chapter = course.chapters.id(req.params.chapterId);
+  const chapter = course.chapters.id(chapterId);
 
   if (!chapter) {
     return res.status(404).send("Chapter not found");
   }
 
-  chapter.remove();
+  course.chapters = course.chapters.filter(
+    (chapter) => chapter._id.toString() !== chapterId
+  );
 
   await course.save();
 
