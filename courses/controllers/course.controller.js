@@ -1,4 +1,5 @@
 const Course = require("../models/course.model");
+const cloudinary = require("../config/cloudinary");
 
 const createCourse = async (req, res) => {
   const { title } = req.body;
@@ -10,7 +11,7 @@ const createCourse = async (req, res) => {
   const course = new Course({
     title,
     // instructorId: req.currentUser.id,
-    instructorId: req.currentUser.id,
+    instructorId: "663d08b147ce7db96c185103",
   });
 
   await course.save();
@@ -29,7 +30,17 @@ const getAllCourses = async (req, res) => {
 
   const courses = await Course.find(query).skip(skip).limit(parseInt(limit));
 
-  res.send(courses);
+  const totalCount = await Course.countDocuments(query);
+  const totalPages = Math.ceil(totalCount / limit);
+
+  const pagination = {
+    totalCount,
+    totalPages,
+    currentPage: page,
+    pageSize: limit,
+  };
+
+  res.send({ courses, pagination });
 };
 
 const getCourseById = async (req, res) => {
@@ -73,10 +84,93 @@ const deleteCourse = async (req, res) => {
   res.status(204).send(course);
 };
 
+const createChapter = async (req, res) => {
+  const course = await Course.findById(req.params.id);
+
+  if (!course) {
+    return res.status(404).send("Course not found");
+  }
+
+  course.chapters.push(req.body);
+
+  await course.save();
+
+  res.status(201).send(course);
+};
+
+const getChapterById = async (req, res) => {
+  const course = await Course.findById(req.params.id);
+
+  if (!course) {
+    return res.status(404).send("Course not found");
+  }
+
+  const chapter = course.chapters.id(req.params.chapterId);
+
+  if (!chapter) {
+    return res.status(404).send("Chapter not found");
+  }
+
+  res.send(chapter);
+};
+
+const updateChapter = async (req, res) => {
+  const course = await Course.findById(req.params.id);
+
+  if (!course) {
+    return res.status(404).send("Course not found");
+  }
+
+  const chapter = course.chapters.id(req.params.chapterId);
+
+  if (!chapter) {
+    return res.status(404).send("Chapter not found");
+  }
+
+  chapter.set(req.body);
+
+  await course.save();
+
+  res.send(course);
+};
+
+const deleteChapter = async (req, res) => {
+  const course = await Course.findById(req.params.id);
+
+  if (!course) {
+    return res.status(404).send("Course not found");
+  }
+
+  const chapter = course.chapters.id(req.params.chapterId);
+
+  if (!chapter) {
+    return res.status(404).send("Chapter not found");
+  }
+
+  chapter.remove();
+
+  await course.save();
+
+  res.status(204).send(course);
+};
+
+const deleteAsset = async (req, res) => {
+  const { public_id } = req.body;
+
+  await cloudinary.uploader.destroy(public_id);
+
+  res.send("Asset deleted");
+};
+
 module.exports = {
   createCourse,
   getAllCourses,
   getCourseById,
   updateCourse,
   deleteCourse,
+  createChapter,
+  getChapterById,
+  updateChapter,
+  deleteChapter,
+  deleteAsset,
 };
