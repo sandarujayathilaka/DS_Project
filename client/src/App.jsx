@@ -7,6 +7,7 @@ import Login from "./pages/Login";
 import ReviewCard from "./components/reviews/ReviewCard";
 import TestCourseCard from "./components/reviews/TestCourseCard";
 import CourseReviews from "./pages/review/CourseReviews";
+import Register from "./pages/Register";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path="/course" element={<Course />} />
           <Route path="/home" element={<Home/>} />
           <Route path="/login" element={<Login/>} />
+          <Route path="/regi" element={<Register/>} />
           <Route path="/reviewcard" element={<ReviewCard/>} />
           <Route path="/testCourseCard" element={<TestCourseCard/>} />
           <Route path="/reviewspage/:courseId" element={<CourseReviews />} />
