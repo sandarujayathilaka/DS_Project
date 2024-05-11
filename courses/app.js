@@ -6,7 +6,8 @@ const cookieSession = require("cookie-session");
 const { errorHandler } = require("./middleware/error-handler");
 const { currentUser } = require("./middleware/current-user");
 
-const userRoutes = require("./routes/course.routes");
+const courseRoutes = require("./routes/course.routes");
+const cors = require("cors");
 
 const app = express();
 
@@ -22,13 +23,18 @@ app.use(
   })
 );
 
+console.log("called eee")
+
+app.use(cors());
+
+
 app.use(currentUser);
 
 app.get("/", (req, res) => {
   res.send("Hello World");
 });
 
-app.use("/api/courses", userRoutes);
+app.use("/api/courses", courseRoutes);
 
 app.use(errorHandler);
 
