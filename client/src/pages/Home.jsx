@@ -1,19 +1,19 @@
-import React, { useState, useEffect } from "react";
-import NavBar from "../components/Navbar";
-import Image1 from "../assets/Image1.png";
-import Image2 from "../assets/Image2.png";
-import Image3 from "../assets/Image3.png";
-import userIcon from "../assets/user.png";
-import courseIcon from "../assets/course.png";
-import tutorIcon from "../assets/tutor.png";
-import packageIcon from "../assets/packages.png";
-import it from "../assets/f1.jpg";
-import ds from "../assets/f2.jpg";
-import se from "../assets/f3.jpg";
-import cs from "../assets/f4.jpeg";
-import footer from "../components/Footer";
-import Footer from "../components/Footer";
-import axios from "axios";
+import React, { useState, useEffect } from 'react';
+import NavBar from '../components/Navbar';
+import Image1 from '../assets/Image1.png';
+import Image2 from '../assets/Image2.png';
+import Image3 from '../assets/Image3.png';
+import userIcon from '../assets/user.png'; 
+import courseIcon from '../assets/course.png'; 
+import tutorIcon from '../assets/tutor.png';
+import packageIcon from '../assets/packages.png';
+import it from '../assets/f1.jpg';
+import ds from '../assets/f2.jpg';
+import se from '../assets/f3.jpg';
+import cs from '../assets/f4.jpeg';
+import footer from '../components/Footer'
+import Footer from '../components/Footer';
+import axios from 'axios';
 
 export default function Home() {
   // Define an array of images
@@ -21,19 +21,19 @@ export default function Home() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [courseData, setCourseData] = useState(null);
 
-  useEffect(() => {
-    const fetchCourseData = async () => {
-      try {
-        const response = await axios.get("http://udemy.dev/api/courses");
-        console.log(response.data);
-        setCourseData(response.data);
-      } catch (error) {
+   useEffect(() => {
+     const fetchCourseData = async () => {
+       try {
+         const response = await axios.get("http://udemy.dev/api/courses");
+         console.log(response.data)
+         setCourseData(response.data);
+       } catch (error) {
         console.log(error.message);
-      }
-    };
+       }
+     };
 
-    fetchCourseData();
-  }, []);
+     fetchCourseData();
+   }, []);
 
   // Function to switch to the next image
   const nextImage = () => {
