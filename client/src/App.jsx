@@ -6,6 +6,7 @@ import Cart from "./components/Cart";
 import Student from "./components/StudentPortal";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
+import PaymentHistory from "./components/PaymentHistory";
 
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
           <Route path="/student" element={<Student />} />
           <Route path="/home" element={<Home/>} />
           <Route path="/login" element={<Login/>} />
+          <Route path="/table" element={<PaymentHistory/>} />
         </Routes>
     </BrowserRouter>
   );

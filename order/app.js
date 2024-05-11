@@ -75,6 +75,8 @@ app.post(
         { new: true }
       );
 
+      console.log(order)
+
       await axios.post("http://learner-srv:4000/api/learner/boughtCourse", {
         userId: order.userId,
         courses: order.courses,

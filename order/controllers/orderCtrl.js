@@ -52,49 +52,28 @@ const createOrder = async (req, res) => {
   res.send({ url: session.url });
 };
 
-const getAllOrders = async (req, res) => {
-  const orders = await Order.find().populate("user");
-  res.json({
-    success: true,
-    message: "All orders fetched successfully",
-    orders,
-  });
-};
+const getSpecificUserAllOrders = async (req, res) => {
+  const userId = "663dbf52047945ec5914b733";
 
-const getSingleOrder = async (req, res) => {
-  const order = await Order.findById(req.params.id);
-  if (order) {
-    res.json({
-      success: true,
-      order,
+  try {
+    const orders = await Order.find({
+      userId,
     });
-  } else {
-    throw new Error("Order not found");
+
+    res.status(200).json(orders);
+  } catch (error) {
+    console.error("Error fetching orders:", error);
+    res.status(500).json({ error: "Internal server error" });
   }
 };
 
-const updateOrderStatus = async (req, res) => {
-  const id = req.params.id;
 
-  const updateOrder = await Order.findByIdAndUpdate(
-    id,
-    {
-      status: req.body.status,
-    },
-    {
-      new: true,
-    }
-  );
 
-  res.status(200).json({
-    success: true,
-    updateOrder,
-  });
-};
+
+
+
 
 module.exports = {
   createOrder,
-  getAllOrders,
-  getSingleOrder,
-  updateOrderStatus,
+  getSpecificUserAllOrders,
 };

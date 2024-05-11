@@ -1,7 +1,7 @@
 const Learner = require("../models/Learner");
 
 const boughtCourse = async (req, res) => {
-  const { userId, courses } = req.body;
+  const { userId, courses,chapters } = req.body;
 
   try {
     let learner = await Learner.findOne({ userId });
@@ -11,6 +11,7 @@ const boughtCourse = async (req, res) => {
       learner = await Learner.create({
         userId,
         enrolledCourses: courses,
+        chapters,
       });
     } else {
       // If user exists, add new courses to enrolledCourses array
@@ -153,12 +154,97 @@ const getPendingEnrolledCourses = async (req, res) => {
   }
 };
 
+const calProgress = async (req, res) => {
+  const { courseId } = req.body;
+  userId = "663dbf52047945ec5914b733";
+
+  try {
+    // Fetch the user
+    const learner = await Learner.findOne({ userId });
+
+    if (!learner) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    // Find the enrolled course
+    const enrolledCourse = learner.enrolledCourses.find(
+      (course) => course.courseId === courseId
+    );
+
+    if (!enrolledCourse) {
+      return res.status(404).json({ error: "Course not found for this user" });
+    }
+
+    // Calculate progress
+    const totalChapters = enrolledCourse.chapters.length;
+    const completedChapters = enrolledCourse.chapters.filter(
+      (chapter) => chapter.status === "completed"
+    ).length;
+
+    // Calculate progress and round to the nearest integer
+    const progress = Math.round((completedChapters / totalChapters) * 100);
+
+    res.status(200).json({ progress });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+const changeChapterStatus = async (req, res) => {
+  const { courseId, chapterId, status } = req.body;
+  const userId = "663dbf52047945ec5914b733";
+
+  try {
+    // Find the learner
+    const learner = await Learner.findOne({ userId });
+    if (!learner) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    // Find the enrolled course
+    const enrolledCourse = learner.enrolledCourses.find(
+      (course) => course.courseId === courseId
+    );
+    if (!enrolledCourse) {
+      return res.status(404).json({ error: "Course not found for this user" });
+    }
+
+    // Find the chapter within the enrolled course
+    const chapterToUpdate = enrolledCourse.chapters.find(
+      (chapter) => chapter.chapterId === chapterId
+    );
+    if (!chapterToUpdate) {
+      return res
+        .status(404)
+        .json({ error: "Chapter not found for this course" });
+    }
+
+    // Update the chapter status
+    chapterToUpdate.status = status;
+
+    // Mark the learner document as modified
+    learner.markModified("enrolledCourses");
+
+    // Save the changes
+    await learner.save();
+
+    res.status(200).json({ message: "Chapter status updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+
+
+
 
 module.exports = {
-boughtCourse,
-enrollToCourse,
-unenrollFromCourse,
-getAllEnrolledCourses,
-getPendingEnrolledCourses,
-getAllUserCourse
+  boughtCourse,
+  enrollToCourse,
+  unenrollFromCourse,
+  getAllEnrolledCourses,
+  getPendingEnrolledCourses,
+  getAllUserCourse,
+  calProgress,
+  changeChapterStatus,
 };
