@@ -48,7 +48,21 @@ build:
         manual:
           - src: "**/*.js"
             dest: .
-
-           
+    - image: denodenojan/adminprofile
+      context: adminprofile
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "**/*.js"
+            dest: .
+    - image: denodenojan/adminstatistic
+      context: adminstatistic
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "**/*.js"
+            dest: .           
 
     

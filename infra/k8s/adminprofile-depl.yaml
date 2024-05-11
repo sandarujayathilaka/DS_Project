@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: users-depl
+  name: adminprofile-depl
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: users
+      app: adminprofile
   template:
     metadata:
       labels:
-        app: users
+        app: adminprofile
     spec:
       containers:
-        - name: users
-          image: isuruk1/users
+        - name: adminprofile
+          image: denodenojan/adminprofile
           env:
             - name: MONGO_URI
               value: mongodb+srv://admin:admin123@blog.4nn6q4y.mongodb.net/
@@ -27,12 +27,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: users-srv
+  name: adminprofile-srv
 spec:
   selector:
-    app: users
+    app: adminprofile
   ports:
-    - name: users
+    - name: adminprofile
       protocol: TCP
       port: 4000
       targetPort: 4000
