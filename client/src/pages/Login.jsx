@@ -1,11 +1,7 @@
 import React, { useState } from 'react';
 
 export default function Login() {
-    const [optionsVisible, setOptionsVisible] = useState(false);
 
-    const showDropdownOptions = () => {
-        setOptionsVisible(!optionsVisible);
-    };
 
     return (
         <div>
@@ -50,46 +46,6 @@ export default function Login() {
                                         >
                                             Password
                                         </label>
-                                    </div>
-                                    <div className="flex flex-row pt-4 bg-white">
-                                        <div>
-                                            <button
-                                                onClick={showDropdownOptions}
-                                                className="flex flex-row justify-between w-48 px-2 py-2 text-gray-700 bg-white border-2 border-white rounded-md shadow"
-                                            >
-                                                <span className="select-none  text-gray-600 text-sm">Select the Role</span>
-                                                <svg
-                                                    className={optionsVisible ? "hidden w-6 h-6 stroke-current" : "w-6 h-6 stroke-current"}
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    viewBox="0 0 20 20"
-                                                >
-                                                    <path
-                                                        fillRule="evenodd"
-                                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                                        clipRule="evenodd"
-                                                    />
-                                                </svg>
-                                                <svg
-                                                    className={!optionsVisible ? "hidden w-6 h-6 stroke-current" : "w-6 h-6 stroke-current"}
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    viewBox="0 0 20 20"
-                                                >
-                                                    <path
-                                                        fillRule="evenodd"
-                                                        d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z"
-                                                        clipRule="evenodd"
-                                                    />
-                                                </svg>
-                                            </button>
-                                            <div
-                                                id="options"
-                                                className={optionsVisible ? "w-48 py-2 mt-2 bg-white rounded-lg shadow-xl" : "hidden"}
-                                            >
-                                                <a href="#" className="block px-4 py-2 text-gray-800 text-sm hover:bg-teal-500 hover:text-white">Learner</a>
-                                                <a href="#" className="block px-4 py-2 text-gray-800 text-sm hover:bg-teal-500 hover:text-white">Tutor</a>
-                                                <a href="#" className="block px-4 py-2 text-gray-800 text-sm hover:bg-teal-500 hover:text-white">Admin</a>
-                                            </div>
-                                        </div>
                                     </div>
                                     <div className="relative">
                                         <button className="bg-cyan-500 text-white rounded-md px-2 py-1">Submit</button>

@@ -15,7 +15,7 @@ const app = express();
 // make sure express is aware that it is behind a proxy of ingress-nginix and it should still trust traffic as being secure even though it is coming from that proxy
 app.set("trust proxy", true);
 
-app.use(cors)
+app.use(cors());
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -28,10 +28,6 @@ app.use(
 
 app.use(currentUser);
 
-
-app.get("/api/reviews", (req, res) => {
-  res.send("Hello World");
-});
 
 app.use("/api/reviews", reviewRoutes);
 
