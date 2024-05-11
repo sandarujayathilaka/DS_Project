@@ -4,6 +4,7 @@ import AddCourse from "./pages/course/AddCourse";
 import Course from "./pages/course/Course";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
+import ReviewCard from "./components/reviews/ReviewCard";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
           <Route path="/course" element={<Course />} />
           <Route path="/home" element={<Home/>} />
           <Route path="/login" element={<Login/>} />
+          <Route path="/card" element={<ReviewCard/>} />
           
         </Routes>
       {/* </InstructorLayout> */}
