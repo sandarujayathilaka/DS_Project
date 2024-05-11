@@ -24,3 +24,10 @@ spec:
                 name: courses-srv
                 port:
                   number: 4000
+          - path: /api/reviews/?(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: reviews-srv
+                port:
+                  number: 4000

@@ -8,7 +8,7 @@ import Login from "./pages/Login";
 function App() {
   return (
     <BrowserRouter>
-      <InstructorLayout>
+      {/* <InstructorLayout> */}
         <Routes>
           <Route path="/" element={<AddCourse />} />
           <Route path="/course" element={<Course />} />
@@ -16,7 +16,7 @@ function App() {
           <Route path="/login" element={<Login/>} />
           
         </Routes>
-      </InstructorLayout>
+      {/* </InstructorLayout> */}
     </BrowserRouter>
   );
 }

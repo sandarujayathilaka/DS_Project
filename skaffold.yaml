@@ -24,3 +24,11 @@ build:
         manual:
           - src: "**/*.js"
             dest: .
+    - image: akilaelladeniya/reviews
+      context: reviews
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "**/*.js"
+            dest: .
