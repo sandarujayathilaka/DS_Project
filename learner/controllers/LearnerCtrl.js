@@ -1,4 +1,7 @@
 const Learner = require("../models/Learner");
+var sid = "ACbc5d6f3288e8aa9e59ac37337ed39192";
+var auth_token = "0315f906a61a0b090586769bce4ad511";
+const client= require("twilio")(sid, auth_token);
 
 const boughtCourse = async (req, res) => {
   const { userId, courses } = req.body;
@@ -153,6 +156,20 @@ const getPendingEnrolledCourses = async (req, res) => {
   }
 };
 
+const sms = async (req, res) => {
+  client.messages
+    .create({
+      from: "+14129245993",
+      to: "+94771347786",
+     body: "Hello from Twilio!",
+    }) .then(res.status(200).json({ message: "SMS sent successfully" }))
+  .catch((error) => {
+    console.error("Error sending SMS:", error);
+    res.status(500).json({ error});
+  });
+
+  }
+
 
 module.exports = {
 boughtCourse,
@@ -160,5 +177,6 @@ enrollToCourse,
 unenrollFromCourse,
 getAllEnrolledCourses,
 getPendingEnrolledCourses,
-getAllUserCourse
+getAllUserCourse,
+sms
 };
