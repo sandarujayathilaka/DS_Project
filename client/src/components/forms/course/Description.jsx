@@ -7,6 +7,7 @@ import { Pencil } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import axios from "axios";
 import toast from "react-hot-toast";
+import TextLoader from "@/components/loaders/TextLoader";
 
 const DescriptionSchema = Yup.object({
   description: Yup.string()
@@ -27,7 +28,7 @@ const Description = ({ initialValue, courseId, refresh }) => {
     enableReinitialize: true,
     validationSchema: DescriptionSchema,
     onSubmit: (values) => {
-      console.log(values);
+      // console.log(values);
       setLoading(true);
       axios
         .patch("https://udemy.dev/api/courses/" + courseId, values)
@@ -47,10 +48,13 @@ const Description = ({ initialValue, courseId, refresh }) => {
   return (
     <div className="w-full bg-slate-100 rounded-lg p-5">
       <div className="flex justify-between">
-        <span className="font-medium font-sans text-black/80">
+        <span className="font-inter font-semibold text-base text-black/80">
           Course Description
         </span>
-        <span className="cursor-pointer text-sm" onClick={toggleEdit}>
+        <span
+          className="cursor-pointer text-sm"
+          onClick={loading ? null : toggleEdit}
+        >
           {isEditing ? (
             <span className="text-gray-700">Cancel</span>
           ) : (
@@ -67,7 +71,6 @@ const Description = ({ initialValue, courseId, refresh }) => {
           <Textarea
             id="description"
             name="description"
-            disabled={formik.isSubmitting}
             placeholder="e.g. 'This course is about...'"
             onChange={formik.handleChange}
             value={formik.values.description}
@@ -75,8 +78,12 @@ const Description = ({ initialValue, courseId, refresh }) => {
           {formik.touched.description && formik.errors.description && (
             <FormError error={formik.errors.description} />
           )}
-          <Button type="submit" onClick={formik.handleSubmit}>
-            Save
+          <Button
+            type="submit"
+            onClick={formik.handleSubmit}
+            disabled={loading}
+          >
+            {loading ? <TextLoader /> : "Save"}
           </Button>
         </form>
       ) : (

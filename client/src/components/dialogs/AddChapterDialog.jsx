@@ -33,7 +33,7 @@ const AddChapterDialog = ({ trigger, courseId, refresh }) => {
     },
     validationSchema: TitleSchema,
     onSubmit: (values) => {
-      console.log(values);
+      // console.log(values);
       setLoading(true);
       axios
         .post(`https://udemy.dev/api/courses/${courseId}/chapters/`, values)
@@ -60,7 +60,7 @@ const AddChapterDialog = ({ trigger, courseId, refresh }) => {
   return (
     <Dialog>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
-      <DialogContent className="sm:max-w-[560px] bg-white/90">
+      <DialogContent className="sm:max-w-[560px]">
         <DialogHeader className="text-left">
           <DialogTitle>Name your chapter</DialogTitle>
           <DialogDescription>
@@ -74,7 +74,7 @@ const AddChapterDialog = ({ trigger, courseId, refresh }) => {
             name="title"
             onChange={formik.handleChange}
             value={formik.values.title}
-            className="border-white/10 mb-2"
+            className="border-white/10 bg-black/10 mb-2"
           />
           {formik.touched.title && formik.errors.title && (
             <FormError error={formik.errors.title} />

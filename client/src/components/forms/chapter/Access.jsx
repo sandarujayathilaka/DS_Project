@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/select";
 import axios from "axios";
 import toast from "react-hot-toast";
+import TextLoader from "@/components/loaders/TextLoader";
 
 const AccessSchema = Yup.object({
   access: Yup.string().required("Access level is required"),
@@ -37,7 +38,7 @@ const Access = ({ initialValue, chapterId, courseId, refresh }) => {
     enableReinitialize: true,
     validationSchema: AccessSchema,
     onSubmit: (values) => {
-      console.log(values);
+      // console.log(values);
       setLoading(true);
       axios
         .patch(
@@ -57,14 +58,17 @@ const Access = ({ initialValue, chapterId, courseId, refresh }) => {
         });
     },
   });
-  console.log(formik.values);
+
   return (
     <div className="w-full bg-slate-100 rounded-lg p-5">
       <div className="flex justify-between">
-        <span className="font-medium font-sans text-black/80">
+        <span className="font-inter font-semibold text-base text-black/80">
           Course access
         </span>
-        <span className="cursor-pointer text-sm" onClick={toggleEdit}>
+        <span
+          className="cursor-pointer text-sm"
+          onClick={loading ? null : toggleEdit}
+        >
           {isEditing ? (
             <span className="text-gray-700">Cancel</span>
           ) : (
@@ -101,8 +105,12 @@ const Access = ({ initialValue, chapterId, courseId, refresh }) => {
           {formik.touched.access && formik.errors.access && (
             <FormError error={formik.errors.access} />
           )}
-          <Button type="submit" onClick={formik.handleSubmit}>
-            Save
+          <Button
+            type="submit"
+            onClick={formik.handleSubmit}
+            disabled={loading}
+          >
+            {loading ? <TextLoader /> : "Save"}
           </Button>
         </form>
       ) : (

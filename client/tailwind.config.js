@@ -17,7 +17,13 @@ module.exports = {
       },
     },
     extend: {
+      fontFamily: {
+        inter: ["Inter", "sans-serif"],
+        ubunutu: ["Ubuntu", "sans-serif"],
+        kanit: ["Kanit", "sans-serif"],
+      },
       colors: {
+        main: "#0E8585",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

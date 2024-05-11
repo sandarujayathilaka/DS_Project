@@ -7,6 +7,7 @@ import { useState } from "react";
 import { Pencil } from "lucide-react";
 import axios from "axios";
 import toast from "react-hot-toast";
+import TextLoader from "@/components/loaders/TextLoader";
 
 const TitleSchema = Yup.object({
   title: Yup.string()
@@ -28,7 +29,7 @@ const Title = ({ initialValue, courseId, refresh }) => {
     enableReinitialize: true,
     validationSchema: TitleSchema,
     onSubmit: (values) => {
-      console.log(values);
+      // console.log(values);
       setLoading(true);
       axios
         .patch("https://udemy.dev/api/courses/" + courseId, values)
@@ -49,10 +50,13 @@ const Title = ({ initialValue, courseId, refresh }) => {
   return (
     <div className="w-full bg-slate-100 rounded-lg p-5">
       <div className="flex justify-between">
-        <span className="font-medium font-sans text-black/80">
+        <span className="font-inter font-semibold text-base text-black/80">
           Course Title
         </span>
-        <span className="cursor-pointer text-sm" onClick={toggleEdit}>
+        <span
+          className="cursor-pointer text-sm"
+          onClick={loading ? null : toggleEdit}
+        >
           {isEditing ? (
             <span className="text-gray-700">Cancel</span>
           ) : (
@@ -76,8 +80,12 @@ const Title = ({ initialValue, courseId, refresh }) => {
           {formik.touched.title && formik.errors.title && (
             <FormError error={formik.errors.title} />
           )}
-          <Button type="submit" onClick={formik.handleSubmit}>
-            Save
+          <Button
+            type="submit"
+            onClick={formik.handleSubmit}
+            disabled={loading}
+          >
+            {loading ? <TextLoader /> : "Save"}
           </Button>
         </form>
       ) : (

@@ -158,7 +158,7 @@ const Courses = () => {
     axios
       .get("https://udemy.dev/api/courses")
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         setData(response.data.courses);
         setPagination(response.data.pagination);
         setLoading(false);

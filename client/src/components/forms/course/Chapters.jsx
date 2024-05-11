@@ -6,13 +6,6 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 
-// fake data generator
-const getItems = (count) =>
-  Array.from({ length: count }, (v, k) => k).map((k) => ({
-    id: `item-${k}`,
-    content: `item ${k}`,
-  }));
-
 // a little function to help us with reordering the result
 const reorder = (list, startIndex, endIndex) => {
   const result = Array.from(list);
@@ -42,12 +35,7 @@ const getListStyle = (isDraggingOver) => ({
 });
 
 const Chapters = ({ initialValue, courseId, refresh }) => {
-  const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(false);
-
-  const toggleEdit = () => setIsEditing((current) => !current);
-
-  console.log(initialValue);
 
   const [items, setItems] = useState([]);
 
@@ -67,8 +55,6 @@ const Chapters = ({ initialValue, courseId, refresh }) => {
 
     setItems(newItems);
 
-    console.log(newItems);
-
     setLoading(true);
     axios
       .patch("https://udemy.dev/api/courses/" + courseId, {
@@ -76,7 +62,6 @@ const Chapters = ({ initialValue, courseId, refresh }) => {
       })
       .then((response) => {
         toast.success("Course chapters updated successfully");
-        setIsEditing(false);
         setLoading(false);
         refresh();
       })
@@ -90,10 +75,10 @@ const Chapters = ({ initialValue, courseId, refresh }) => {
   return (
     <div className="w-full bg-slate-100 rounded-lg p-5">
       <div className="flex justify-between">
-        <span className="font-medium font-sans text-black/80">
+        <span className="font-inter font-semibold text-base text-black/80">
           Course Chapters
         </span>
-        <span className="cursor-pointer text-sm" onClick={toggleEdit}>
+        <span className="cursor-pointer text-sm">
           <AddChapterDialog
             trigger={
               <div className="flex items-center">

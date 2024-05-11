@@ -85,10 +85,13 @@ const Video = ({ initialValue, chapterId, courseId, refresh }) => {
   return (
     <div className="w-full bg-slate-100 rounded-lg p-5">
       <div className="flex justify-between">
-        <span className="font-medium font-sans text-black/80">
+        <span className="font-inter font-semibold text-base text-black/80">
           Chapter Video
         </span>
-        <span className="cursor-pointer text-sm" onClick={toggleEdit}>
+        <span
+          className="cursor-pointer text-sm"
+          onClick={loading ? null : toggleEdit}
+        >
           {isEditing ? (
             <span className="text-gray-700">Cancel</span>
           ) : (
