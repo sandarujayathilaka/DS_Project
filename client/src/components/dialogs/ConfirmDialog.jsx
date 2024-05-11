@@ -10,7 +10,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 
-const ConfirmDialog = ({ trigger, onSuccess }) => {
+const ConfirmDialog = ({ trigger, onSuccess, title }) => {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>{trigger}</AlertDialogTrigger>
@@ -18,8 +18,8 @@ const ConfirmDialog = ({ trigger, onSuccess }) => {
         <AlertDialogHeader>
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete your
-            chapter and remove your data from our servers.
+            This action cannot be undone. This will permanently delete your{" "}
+            {title} and remove your data from our servers.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

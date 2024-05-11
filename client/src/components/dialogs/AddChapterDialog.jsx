@@ -82,7 +82,7 @@ const AddChapterDialog = ({ trigger, courseId, refresh }) => {
         </form>
         <DialogFooter>
           <Button type="submit" onClick={formik.handleSubmit}>
-            Save changes
+            Add
           </Button>
         </DialogFooter>
       </DialogContent>

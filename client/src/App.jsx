@@ -12,7 +12,7 @@ function App() {
       <InstructorLayout>
         <Routes>
           <Route path="/" element={<Courses />} />
-          <Route path="/instructor/course" element={<Courses />} />
+          <Route path="/instructor/courses" element={<Courses />} />
           <Route path="/instructor/course/:id" element={<UpdateCourse />} />
           <Route
             path="/instructor/course/:courseId/chapter/:chapterId"

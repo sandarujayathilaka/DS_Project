@@ -124,6 +124,7 @@ const UpdateChapter = () => {
                 />
               }
               onSuccess={deleteChapter}
+              title="chapter"
             />
           </div>
         </div>

@@ -6,7 +6,12 @@ import Price from "@/components/forms/course/Price";
 import Title from "@/components/forms/course/Title";
 import { Button } from "@/components/ui/button";
 import axios from "axios";
-import { CircleDollarSign, LayoutDashboard, ListChecks } from "lucide-react";
+import {
+  ArrowLeft,
+  CircleDollarSign,
+  LayoutDashboard,
+  ListChecks,
+} from "lucide-react";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useParams } from "react-router-dom";
@@ -72,22 +77,33 @@ const UpdateCourse = () => {
 
   return (
     <div className="p-4">
-      <div className="flex items-center justify-between">
-        <div className="mb-8 space-y-2">
-          <h1 className="font-ubunutu text-4xl font-bold">Course Setup</h1>
-          <div>Complete all fields ({completed}/6)</div>
+      <div className="space-y-5 mb-8">
+        <div
+          onClick={() => history.back()}
+          className="flex items-center cursor-pointer gap-3 font-medium"
+        >
+          <ArrowLeft size={16} />
+          Back to courses
         </div>
+        <div className="flex items-center justify-between">
+          <div className="space-y-2">
+            <h1 className="font-ubunutu text-4xl font-bold">Course Setup</h1>
+            <div>Complete all fields ({completed}/6)</div>
+          </div>
 
-        {data?.status === "published" ? (
-          <Button onClick={() => updateStatus("unpublished")}>Unpublish</Button>
-        ) : (
-          <Button
-            disabled={!canPublishCourse()}
-            onClick={() => updateStatus("published")}
-          >
-            Publish
-          </Button>
-        )}
+          {data?.status === "published" ? (
+            <Button onClick={() => updateStatus("unpublished")}>
+              Unpublish
+            </Button>
+          ) : (
+            <Button
+              disabled={!canPublishCourse()}
+              onClick={() => updateStatus("published")}
+            >
+              Publish
+            </Button>
+          )}
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

@@ -85,7 +85,7 @@ const AddCourseDialog = ({ trigger }) => {
         </form>
         <DialogFooter>
           <Button type="submit" onClick={formik.handleSubmit}>
-            Save changes
+            Add
           </Button>
         </DialogFooter>
       </DialogContent>
