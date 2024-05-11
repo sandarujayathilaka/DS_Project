@@ -43,7 +43,7 @@ const AddCourseDialog = ({ trigger }) => {
         .then((response) => {
           // console.log(response.data);
           setLoading(false);
-          navigate("/instructor/course/" + response.data.id);
+          navigate("/instructor/courses/" + response.data.id);
           handleCloseDialog();
         })
         .catch((error) => {

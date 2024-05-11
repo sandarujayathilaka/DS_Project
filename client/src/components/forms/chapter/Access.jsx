@@ -63,7 +63,7 @@ const Access = ({ initialValue, chapterId, courseId, refresh }) => {
     <div className="w-full bg-slate-100 rounded-lg p-5">
       <div className="flex justify-between">
         <span className="font-inter font-semibold text-base text-black/80">
-          Course access
+          Chapter Access
         </span>
         <span
           className="cursor-pointer text-sm"
