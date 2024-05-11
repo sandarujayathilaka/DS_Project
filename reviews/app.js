@@ -29,6 +29,9 @@ app.use(
 app.use(currentUser);
 
 
+app.get("/api/reviews", (req, res) => {
+  res.send("Hello World");
+});
 
 app.use("/api/reviews", reviewRoutes);
 
