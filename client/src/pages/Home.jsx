@@ -25,8 +25,8 @@ export default function Home() {
      const fetchCourseData = async () => {
        try {
          const response = await axios.get("http://udemy.dev/api/courses");
-         console.log(response.data)
-         setCourseData(response.data);
+         console.log(response.data.courses)
+         setCourseData(response.data.courses);
        } catch (error) {
         console.log(error.message);
        }
@@ -154,7 +154,7 @@ export default function Home() {
           <div className="grid grid-cols-1 gap-x-4 gap-y-8 md:grid-cols-2 lg:grid-cols-4">
             {courseData?.map((course) => (
               <article
-                key={course.id}
+                key={course?.id}
                 className="rounded-lg shadow-md overflow-hidden bg-white"
               >
                 <a
@@ -177,15 +177,15 @@ export default function Home() {
                     aria-label="Te nulla oportere reprimique his dolorum"
                   >
                     <span className="text-xs tracking-wider uppercase hover:underline text-cyan-600">
-                      {course.category}
+                      {course?.category}
                     </span>
                   </a>
                   <h3 className="flex-1 py-2 text-lg font-semibold leading-snug">
-                    {course.title}
+                    {course?.title}
                   </h3>
                   <div className="flex flex-wrap justify-between items-center pt-3 space-x-2 text-gray-600">
                     <span>
-                      {new Date(course.createdAt).toLocaleDateString("en-US", {
+                      {new Date(course?.createdAt).toLocaleDateString("en-US", {
                         year: "numeric",
                         month: "long",
                         day: "numeric",
