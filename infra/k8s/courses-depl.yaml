@@ -18,6 +18,12 @@ spec:
           env:
             - name: MONGO_URI
               value: mongodb+srv://user:user123@project.6kognk6.mongodb.net/micro
+            - name: CLOUD_NAME
+              value: djtoyeee2
+            - name: CLOUD_KEY
+              value: "576275933435118"
+            - name: CLOUD_KEY_SECRET
+              value: QbX7S_wSRKKck5ZfINJMgKI1ydk
             - name: JWT_KEY
               valueFrom:
                 secretKeyRef:
