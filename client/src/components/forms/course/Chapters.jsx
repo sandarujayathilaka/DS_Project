@@ -125,7 +125,7 @@ const Chapters = ({ initialValue, courseId, refresh }) => {
                           <Link
                             to={`/instructor/courses/${courseId}/chapter/${item._id}`}
                           >
-                            <Pencil className="h-4 w-4 text-green-700" />
+                            <Pencil className="h-4 w-4 text-main" />
                           </Link>
                         </span>
                       </div>

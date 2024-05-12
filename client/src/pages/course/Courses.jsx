@@ -215,6 +215,7 @@ const Courses = () => {
   return (
     <InstructorLayout>
       <div className="w-full p-4">
+        <h1 className="font-ubunutu text-4xl font-bold mb-8">My Courses</h1>
         <div className="flex justify-end">
           <AddCourseDialog
             trigger={
