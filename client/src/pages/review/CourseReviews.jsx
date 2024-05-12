@@ -1,7 +1,8 @@
+// CourseReviews.jsx
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import TestCourseCard from '../../components/reviews/TestCourseCard';
 import axios from 'axios';
+import ReviewCard from '../../components/reviews/ReviewCard'; // Import the ReviewCard component
 
 const CourseReviews = () => {
   const { courseId } = useParams(); // Get courseId from route parameters
@@ -11,10 +12,8 @@ const CourseReviews = () => {
   useEffect(() => {
     const fetchReviews = async () => {
       try {
-        const response = await axios.get(`/course/${courseId}`);
-        console.log(response); // Log the reviews data
+        const response = await axios.get(`http://udemy.dev/api/reviews`);
         setReviews(response.data.reviews); // Assuming the reviews are stored in response.data.reviews
-        console.log(response.data.reviews);
         setLoading(false);
       } catch (error) {
         console.error('Error fetching reviews:', error);
@@ -23,7 +22,6 @@ const CourseReviews = () => {
     };
 
     fetchReviews();
-    console.log(reviews);
   }, [courseId]); // Add courseId to the dependency array
 
   return (
@@ -32,7 +30,7 @@ const CourseReviews = () => {
         <p>Loading...</p>
       ) : reviews && reviews.length > 0 ? ( // Check if reviews is truthy and has length property
         reviews.map(review => (
-          <TestCourseCard key={review._id} review={review} />
+          <ReviewCard key={review._id} review={review} />
         ))
       ) : (
         <p>No reviews found</p>
