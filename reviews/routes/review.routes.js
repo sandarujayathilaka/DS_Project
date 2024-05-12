@@ -12,7 +12,7 @@ const {
 // router.post("/", requireAuth(["student"]), createCourse);
 router.post("/" , addReview);
 router.get("/:id", getOneReview);
-router.get("/course/:courseId", viewReviews);
+router.get("/course/:title", viewReviews);
 router.delete("/:id", removeReview);
 router.get("/", getAllReviews);
 

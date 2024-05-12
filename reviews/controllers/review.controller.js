@@ -15,10 +15,10 @@ const addReview = asyncHandler(async (req, res) => {
   }
 
   // If no existing review, create a new one
-  const { courseTitle, userName, rating, comment, date } = req.body;
+  const { title, userName, rating, comment, date } = req.body;
   const review = await Review.create({
     courseId,
-    courseTitle,
+    title,
     userId,
     userName,
     rating,
@@ -31,18 +31,26 @@ const addReview = asyncHandler(async (req, res) => {
 });
 
 
-//view all reviews of one course
+//view all reviews of one course based on the course title
 const viewReviews = asyncHandler(async (req, res) => {
   try {
-    const { courseId } = req.params;
-    console.log(courseId);
-    const reviews = await Review.find({ courseId });
+    const { title } = req.params;
+    console.log("Received title:", title);
+    const reviews = await Review.find({ title: title });
+    console.log("Found reviews:", reviews);
+    if (reviews.length === 0) {
+      return res.status(404).json({ message: "No reviews found for the specified title" });
+    }
     res.json(reviews);
   } catch (error) {
-    console.error("Error getting reviews by course ID:", error);
-    res.status(500).json({ error: "Could not get reviews by course ID" });
+    console.error("Error getting reviews by title:", error);
+    res.status(500).json({ error: "Could not get reviews by title" });
   }
 });
+
+
+
+
 
 
 //get all

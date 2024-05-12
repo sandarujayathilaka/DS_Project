@@ -21,7 +21,7 @@ function App() {
           <Route path="/regi" element={<Register/>} />
           <Route path="/reviewcard" element={<ReviewCard/>} />
           <Route path="/testCourseCard" element={<TestCourseCard/>} />
-          <Route path="/reviewspage/:courseId" element={<CourseReviews />} />
+          <Route path="/reviewspage/:title" element={<CourseReviews />} />
           
         </Routes>
       {/* </InstructorLayout> */}

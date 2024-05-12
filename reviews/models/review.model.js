@@ -7,7 +7,7 @@ const reviewSchema = mongoose.Schema(
         required: true
     },
 
-    courseTitle: {
+    title: {
         type: String,
         required: true
     },

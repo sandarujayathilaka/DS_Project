@@ -1,8 +1,19 @@
 import React from 'react';
+import axios from 'axios';
 import remove from '../../assets/delete.png';
 
-const ReviewCard = ({ review }) => {
-  const { userName, rating, comment, createdAt } = review;
+const ReviewCard = ({ review, onRemove }) => {
+  const { id, userName, rating, comment, createdAt } = review;
+
+  const handleRemove = async () => {
+    try {
+      await axios.delete(`http://udemy.dev/api/reviews/${id}`);
+      // If deletion is successful, call the onRemove function to update the UI
+      onRemove(id);
+    } catch (error) {
+      console.error('Error removing review:', error);
+    }
+  };
 
   // Calculate the number of full stars
   const fullStars = Math.floor(rating);
@@ -63,7 +74,10 @@ const ReviewCard = ({ review }) => {
           <div className="text-sm font-semibold">{userName} • <span className="font-normal">{createdAt}</span></div>
         </div>
         <div>
-          <button className="p-2 bg-teal-400 hover:bg-red-400 rounded-full h-8 w-8 flex items-center justify-center mt-4 shadow-lg cursor-pointer">
+          <button
+            onClick={handleRemove}
+            className="p-2 bg-teal-400 hover:bg-red-400 rounded-full h-8 w-8 flex items-center justify-center mt-4 shadow-lg cursor-pointer"
+          >
             <img className="w-4 h-4" src={remove} alt="" />
           </button>
         </div>
