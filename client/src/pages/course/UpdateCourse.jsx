@@ -4,6 +4,7 @@ import Description from "@/components/forms/course/Description";
 import Image from "@/components/forms/course/Image";
 import Price from "@/components/forms/course/Price";
 import Title from "@/components/forms/course/Title";
+import PageLoader from "@/components/loaders/PageLoader";
 import { Button } from "@/components/ui/button";
 import InstructorLayout from "@/layouts/InstructorLayout";
 import axios from "axios";
@@ -78,97 +79,103 @@ const UpdateCourse = () => {
 
   return (
     <InstructorLayout>
-      <div className="p-4">
-        <div className="space-y-5 mb-8">
-          <div
-            onClick={() => history.back()}
-            className="flex items-center cursor-pointer gap-3 font-medium"
-          >
-            <ArrowLeft size={16} />
-            Back to courses
-          </div>
-          <div className="flex items-center justify-between">
-            <div className="space-y-2">
-              <h1 className="font-ubunutu text-4xl font-bold">Course Setup</h1>
-              <div>Complete all fields ({completed}/6)</div>
+      {loading ? (
+        <PageLoader />
+      ) : (
+        <div className="p-4">
+          <div className="space-y-5 mb-8">
+            <div
+              onClick={() => history.back()}
+              className="flex items-center cursor-pointer gap-3 font-medium"
+            >
+              <ArrowLeft size={16} />
+              Back to courses
             </div>
+            <div className="flex items-center justify-between">
+              <div className="space-y-2">
+                <h1 className="font-ubunutu text-4xl font-bold">
+                  Course Setup
+                </h1>
+                <div>Complete all fields ({completed}/6)</div>
+              </div>
 
-            {data?.status === "published" ? (
-              <Button onClick={() => updateStatus("unpublished")}>
-                Unpublish
-              </Button>
-            ) : (
-              <Button
-                disabled={!canPublishCourse()}
-                onClick={() => updateStatus("published")}
-              >
-                Publish
-              </Button>
-            )}
+              {data?.status === "published" ? (
+                <Button onClick={() => updateStatus("unpublished")}>
+                  Unpublish
+                </Button>
+              ) : (
+                <Button
+                  disabled={!canPublishCourse()}
+                  onClick={() => updateStatus("published")}
+                >
+                  Publish
+                </Button>
+              )}
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-4">
+              <div className="flex items-center gap-4">
+                <div className="bg-blue-50 text-main rounded-full p-2">
+                  <LayoutDashboard size={32} />
+                </div>
+                <h1 className="text-2xl text-black/70 font-semibold font-kanit">
+                  Customize your course
+                </h1>
+              </div>
+              <Title
+                initialValue={data?.title}
+                courseId={id}
+                refresh={fetchCourseData}
+              />
+              <Description
+                initialValue={data?.description}
+                courseId={id}
+                refresh={fetchCourseData}
+              />
+              <Category
+                initialValue={data?.category}
+                courseId={id}
+                refresh={fetchCourseData}
+              />
+              <Image
+                initialValue={data?.image?.url}
+                courseId={id}
+                refresh={fetchCourseData}
+              />
+            </div>
+            <div className="space-y-4">
+              <div className="flex items-center gap-4">
+                <div className="bg-blue-50 text-main rounded-full p-2">
+                  <CircleDollarSign size={32} />
+                </div>
+                <h1 className="text-2xl text-black/70 font-semibold font-kanit">
+                  Sell your course
+                </h1>
+              </div>
+              <Price
+                initialValue={data?.price}
+                courseId={id}
+                refresh={fetchCourseData}
+              />
+              <div className="flex items-center gap-4">
+                <div className="bg-blue-50 text-main rounded-full p-2">
+                  <ListChecks size={32} />
+                </div>
+                <h1 className="text-2xl text-black/70 font-semibold font-kanit">
+                  Course chapters
+                </h1>
+              </div>
+              <Chapters
+                initialValue={data?.chapters}
+                courseId={id}
+                refresh={fetchCourseData}
+              />
+            </div>
           </div>
         </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="space-y-4">
-            <div className="flex items-center gap-4">
-              <div className="bg-blue-50 text-main rounded-full p-2">
-                <LayoutDashboard size={32} />
-              </div>
-              <h1 className="text-2xl text-black/70 font-semibold font-kanit">
-                Customize your course
-              </h1>
-            </div>
-            <Title
-              initialValue={data?.title}
-              courseId={id}
-              refresh={fetchCourseData}
-            />
-            <Description
-              initialValue={data?.description}
-              courseId={id}
-              refresh={fetchCourseData}
-            />
-            <Category
-              initialValue={data?.category}
-              courseId={id}
-              refresh={fetchCourseData}
-            />
-            <Image
-              initialValue={data?.image?.url}
-              courseId={id}
-              refresh={fetchCourseData}
-            />
-          </div>
-          <div className="space-y-4">
-            <div className="flex items-center gap-4">
-              <div className="bg-blue-50 text-main rounded-full p-2">
-                <CircleDollarSign size={32} />
-              </div>
-              <h1 className="text-2xl text-black/70 font-semibold font-kanit">
-                Sell your course
-              </h1>
-            </div>
-            <Price
-              initialValue={data?.price}
-              courseId={id}
-              refresh={fetchCourseData}
-            />
-            <div className="flex items-center gap-4">
-              <div className="bg-blue-50 text-main rounded-full p-2">
-                <ListChecks size={32} />
-              </div>
-              <h1 className="text-2xl text-black/70 font-semibold font-kanit">
-                Course chapters
-              </h1>
-            </div>
-            <Chapters
-              initialValue={data?.chapters}
-              courseId={id}
-              refresh={fetchCourseData}
-            />
-          </div>
-        </div>
-      </div>
+      )}
     </InstructorLayout>
   );
 };
