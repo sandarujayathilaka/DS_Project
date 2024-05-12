@@ -7,6 +7,8 @@ const {
   getAllEnrolledCourses,
   getPendingEnrolledCourses,
   getAllUserCourse,
+  calProgress,
+  changeChapterStatus,
   sms,
 } = require("../controllers/LearnerCtrl");
 
@@ -19,6 +21,8 @@ learnerRoutes.post("/unenroll", unenrollFromCourse);
 learnerRoutes.post("/getenroll",getAllEnrolledCourses);
 learnerRoutes.post("/getpending", getPendingEnrolledCourses);
 learnerRoutes.post("/getusercourses", getAllUserCourse);
+learnerRoutes.post("/progress", calProgress);
+learnerRoutes.put("/setstatus", changeChapterStatus);
 learnerRoutes.post("/sms", sms);
 
 

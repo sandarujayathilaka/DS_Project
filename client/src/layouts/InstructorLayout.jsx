@@ -1,5 +1,5 @@
-import Navbar from "@/components/dashboard/Navbar";
-import Sidebar from "@/components/dashboard/Sidebar";
+import Navbar from "@/components/dashboard/instructor/Navbar";
+import Sidebar from "@/components/dashboard/instructor/Sidebar";
 import React from "react";
 
 const InstructorLayout = ({ children }) => {

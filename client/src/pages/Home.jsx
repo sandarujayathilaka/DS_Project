@@ -1,19 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import NavBar from '../components/Navbar';
-import Image1 from '../assets/Image1.png';
-import Image2 from '../assets/Image2.png';
-import Image3 from '../assets/Image3.png';
-import userIcon from '../assets/user.png'; 
-import courseIcon from '../assets/course.png'; 
-import tutorIcon from '../assets/tutor.png';
-import packageIcon from '../assets/packages.png';
-import it from '../assets/f1.jpg';
-import ds from '../assets/f2.jpg';
-import se from '../assets/f3.jpg';
-import cs from '../assets/f4.jpeg';
-import footer from '../components/Footer'
-import Footer from '../components/Footer';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import NavBar from "../components/Navbar";
+import Image1 from "../assets/Image1.png";
+import Image2 from "../assets/Image2.png";
+import Image3 from "../assets/Image3.png";
+import userIcon from "../assets/user.png";
+import courseIcon from "../assets/course.png";
+import tutorIcon from "../assets/tutor.png";
+import packageIcon from "../assets/packages.png";
+import it from "../assets/f1.jpg";
+import ds from "../assets/f2.jpg";
+import se from "../assets/f3.jpg";
+import cs from "../assets/f4.jpeg";
+import footer from "../components/Footer";
+import Footer from "../components/Footer";
+import axios from "axios";
 
 export default function Home() {
   // Define an array of images
@@ -21,19 +21,19 @@ export default function Home() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [courseData, setCourseData] = useState(null);
 
-   useEffect(() => {
-     const fetchCourseData = async () => {
-       try {
-         const response = await axios.get("http://udemy.dev/api/courses");
-         console.log(response.data)
-         setCourseData(response.data);
-       } catch (error) {
+  useEffect(() => {
+    const fetchCourseData = async () => {
+      try {
+        const response = await axios.get("http://udemy.dev/api/courses");
+        console.log(response.data.courses);
+        setCourseData(response.data.courses);
+      } catch (error) {
         console.log(error.message);
-       }
-     };
+      }
+    };
 
-     fetchCourseData();
-   }, []);
+    fetchCourseData();
+  }, []);
 
   // Function to switch to the next image
   const nextImage = () => {
@@ -51,7 +51,7 @@ export default function Home() {
       <div>
         <NavBar />
       </div>
-      <section className="bg-yellow-50 text-gray-800">
+      <section className="bg-slate-50 text-gray-800">
         <div className="container flex flex-col justify-center p-6 mx-auto sm:py-12 lg:py-24 lg:flex-row lg:justify-between lg:p-12 xl:p-16">
           <div className="flex flex-col justify-center p-6 text-center rounded-sm lg:max-w-md xl:max-w-lg lg:text-left">
             <h1 className="text-5xl font-bold leading-none sm:text-6xl">
@@ -95,7 +95,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="bg-yellow-50 text-gray-800">
+      <section className="bg-slate-50 text-gray-800">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
           <div className="relative mb-12 px-3 lg:mb-0 text-center">
             <div className="mb-8 flex justify-center mt-8">
@@ -143,7 +143,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="py-6 sm:py-12 bg-yellow-50 text-gray-800">
+      <section className="py-6 sm:py-12 bg-slate-50 text-gray-800">
         <div className="container p-6 mx-auto space-y-8">
           <div className="space-y-2 text-center">
             <h2 className="text-3xl font-bold">Feilds We Covered</h2>
@@ -154,7 +154,7 @@ export default function Home() {
           <div className="grid grid-cols-1 gap-x-4 gap-y-8 md:grid-cols-2 lg:grid-cols-4">
             {courseData?.map((course) => (
               <article
-                key={course.id}
+                key={course?.id}
                 className="rounded-lg shadow-md overflow-hidden bg-white"
               >
                 <a
@@ -177,15 +177,15 @@ export default function Home() {
                     aria-label="Te nulla oportere reprimique his dolorum"
                   >
                     <span className="text-xs tracking-wider uppercase hover:underline text-cyan-600">
-                      {course.category}
+                      {course?.category}
                     </span>
                   </a>
                   <h3 className="flex-1 py-2 text-lg font-semibold leading-snug">
-                    {course.title}
+                    {course?.title}
                   </h3>
                   <div className="flex flex-wrap justify-between items-center pt-3 space-x-2 text-gray-600">
                     <span>
-                      {new Date(course.createdAt).toLocaleDateString("en-US", {
+                      {new Date(course?.createdAt).toLocaleDateString("en-US", {
                         year: "numeric",
                         month: "long",
                         day: "numeric",
@@ -202,7 +202,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="py-6 sm:py-12 bg-yellow-50 text-gray-800">
+      <section className="py-6 sm:py-12 bg-slate-50 text-gray-800">
         <div className="px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20">
           <div className="mx-auto mb-10 lg:max-w-xl sm:text-center">
             <p className="inline-block px-3 py-px mb-4 text-3xl font-bold tracking-wider text-teal-900 uppercase rounded-full bg-teal-400">
