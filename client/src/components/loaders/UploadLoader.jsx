@@ -8,7 +8,7 @@ const UploadLoader = () => {
         visible={true}
         height="100"
         width="100%"
-        color="#10B981"
+        color="#0E8585"
         ariaLabel="rotating-square-loading"
         wrapperStyle={{}}
         wrapperClass=""

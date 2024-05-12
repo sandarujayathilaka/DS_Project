@@ -95,7 +95,7 @@ const Video = ({ initialValue, chapterId, courseId, refresh }) => {
           {isEditing ? (
             <span className="text-gray-700">Cancel</span>
           ) : (
-            <div className="flex items-center text-green-700">
+            <div className="flex items-center text-main">
               <Pencil className="h-4 w-4 mr-2" />
               Edit
             </div>
