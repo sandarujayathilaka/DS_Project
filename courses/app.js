@@ -6,6 +6,7 @@ const cors = require("cors");
 const cookieSession = require("cookie-session");
 const { errorHandler } = require("./middleware/error-handler");
 const { currentUser } = require("./middleware/current-user");
+const cors = require("cors"); 
 
 const courseRoutes = require("./routes/course.routes");
 
@@ -26,6 +27,8 @@ app.use(
 );
 
 app.use(currentUser);
+
+app.use(cors());
 
 app.get("/", (req, res) => {
   res.send("Hello World");

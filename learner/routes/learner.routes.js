@@ -9,6 +9,7 @@ const {
   getAllUserCourse,
   calProgress,
   changeChapterStatus,
+  sms,
 } = require("../controllers/LearnerCtrl");
 
 
@@ -22,6 +23,7 @@ learnerRoutes.post("/getpending", getPendingEnrolledCourses);
 learnerRoutes.post("/getusercourses", getAllUserCourse);
 learnerRoutes.post("/progress", calProgress);
 learnerRoutes.put("/setstatus", changeChapterStatus);
+learnerRoutes.post("/sms", sms);
 
 
 module.exports = learnerRoutes;
