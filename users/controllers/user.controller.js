@@ -11,7 +11,7 @@ const signUp = async (req, res) => {
     throw new Error("Email in use");
   }
 
-  const user = new User({ name, email, password });
+  const user = new User({ name, email, password, role });
 
   await user.save();
 
