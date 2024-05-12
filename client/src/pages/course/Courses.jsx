@@ -7,7 +7,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
+import { ArrowUpDown, ChevronDown, MoreHorizontal, Plus } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -64,7 +64,9 @@ const Courses = () => {
       accessorKey: "title",
       header: "Title",
       cell: ({ row }) => (
-        <div className="capitalize">{row.getValue("title")}</div>
+        <Link to={`/videos/${row.original.id}`}>
+          <div className="capitalize">{row.getValue("title")}</div>
+        </Link>
       ),
     },
     {
@@ -102,7 +104,7 @@ const Courses = () => {
           currency: "USD",
         }).format(amount);
 
-        return <div className="px-2.5">{formatted}</div>;
+        return <div className="px-2.5">{amount ? formatted : ""}</div>;
       },
     },
     {
@@ -214,7 +216,14 @@ const Courses = () => {
     <InstructorLayout>
       <div className="w-full p-4">
         <div className="flex justify-end">
-          <AddCourseDialog trigger={<Button>New</Button>} />
+          <AddCourseDialog
+            trigger={
+              <Button>
+                <Plus className="h-4 w-4 mr-2" />
+                New
+              </Button>
+            }
+          />
         </div>
         <div className="flex items-center py-4">
           <Input

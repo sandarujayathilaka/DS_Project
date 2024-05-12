@@ -8,6 +8,7 @@ import UpdateCourse from "./pages/course/UpdateCourse";
 import UpdateChapter from "./pages/course/UpdateChapter";
 import { Toaster } from "react-hot-toast";
 import Insights from "./pages/course/Insights";
+import VideoDashboard from "./pages/course/VideoDashboard";
 
 
 
@@ -31,6 +32,8 @@ function App() {
           element={<UpdateChapter />}
         />
         <Route path="/instructor/insights" element={<Insights />} />
+
+        <Route path="/videos/:courseId" element={<VideoDashboard />} />
       </Routes>
     </BrowserRouter>
   );
