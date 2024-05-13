@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
-import { toast, ToastContainer } from 'react-toastify'; 
+import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const PostReview = () => {
@@ -12,8 +11,6 @@ const PostReview = () => {
     comment: ''
   });
 
-  const { userName, title, date, rating, comment } = formData;
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -24,13 +21,48 @@ const PostReview = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios.post("http://localhost:8080/reviews/add", formData)
-      .then(() => {
-        toast.success("Review submitted successfully", { position: "top-right" });
-      })
-      .catch((error) => {
-        toast.error(`Failed to submit review: ${error}`, { position: "top-right" });
-      });
+
+    // Rating validation
+    if (formData.rating === '' || parseFloat(formData.rating) <= 0 || parseFloat(formData.rating) > 5) {
+      toast.error('Please enter a rating between 0 and 5');
+      return;
+    }
+
+    // Date validation
+    const currentDate = new Date();
+    const selectedDate = new Date(formData.date);
+    if (selectedDate > currentDate) {
+      toast.error('Please select a date before today');
+      return;
+    }
+
+    // Submit the form data to the API endpoint
+    fetch('http://udemy.dev/api/reviews/add', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(formData)
+    })
+    .then(response => {
+      if (response.ok) {
+        toast.success('Review submitted successfully');
+        // Optionally, reset the form fields
+        setFormData({
+          userName: '',
+          title: '',
+          date: '',
+          rating: '',
+          comment: ''
+        });
+      } else {
+        toast.error('Failed to submit review');
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      toast.error('An error occurred while submitting the review');
+    });
   };
 
   return (
@@ -44,7 +76,7 @@ const PostReview = () => {
                 type="text"
                 name="userName"
                 placeholder="User Name*"
-                value={userName}
+                value={formData.userName}
                 onChange={handleChange}
                 className="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline"
                 required
@@ -53,7 +85,7 @@ const PostReview = () => {
                 type="text"
                 name="title"
                 placeholder="Course Title*"
-                value={title}
+                value={formData.title}
                 onChange={handleChange}
                 className="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline"
                 required
@@ -62,7 +94,7 @@ const PostReview = () => {
                 type="date"
                 name="date"
                 placeholder="Date*"
-                value={date}
+                value={formData.date}
                 onChange={handleChange}
                 className="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline"
                 required
@@ -71,15 +103,18 @@ const PostReview = () => {
                 type="number"
                 name="rating"
                 placeholder="Rating from 5*"
-                value={rating}
+                value={formData.rating}
                 onChange={handleChange}
                 className="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline"
+                min="0"
+                max="5"
+                step="0.1"
                 required
               />
               <textarea
                 name="comment"
                 placeholder="Comment*"
-                value={comment}
+                value={formData.comment}
                 onChange={handleChange}
                 className="w-full h-32 bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline"
                 required
@@ -88,7 +123,7 @@ const PostReview = () => {
             <div className="mt-10">
               <button
                 type="submit"
-                className="uppercase text-sm font-bold tracking-wide bg-blue-900 text-gray-100 p-3 rounded-lg w-full focus:outline-none focus:shadow-outline"
+                className="uppercase text-sm font-bold tracking-wide bg-teal-700 text-gray-100 p-3 rounded-lg w-full focus:outline-none focus:shadow-outline"
               >
                 Send Review
               </button>

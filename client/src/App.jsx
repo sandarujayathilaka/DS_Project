@@ -28,6 +28,7 @@ function App() {
         <Route path="/testCourseCard" element={<TestCourseCard />} />
         <Route path="/reviewspage/:title" element={<CourseReviews />} />
         <Route path="/addreview" element={<PostReview />} />
+        
       </Routes>
 
     </BrowserRouter>
