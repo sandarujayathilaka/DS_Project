@@ -11,7 +11,6 @@ export default function Header() {
     { to: "/about", label: "About" },
     { to: "/courses", label: "Courses" },
     { to: "/tutors", label: "Tutors" },
-    { to: "/my-learning", label: "My Learning" },
     { to: "/teach-with-us", label: "Teach with us" },
   ];
 
@@ -48,10 +47,20 @@ export default function Header() {
             </NavLink>
           </li>
         ))}
+        {user && (
+          <li>
+            <NavLink
+              to="/student"
+              className="p-4 mx-1 pb-3 font-inter font-semibold text-[#444444] border-b-2 border-main border-opacity-0 hover:border-opacity-100 hover:text-main duration-200"
+            >
+              My Learning
+            </NavLink>
+          </li>
+        )}
       </ul>
 
       <div className="w-3/12 flex justify-end items-center">
-        <Link to="/">
+        <Link to="/cart">
           <ShoppingCart className="mr-6" style={{ transform: "scaleX(-1)" }} />
         </Link>
 
