@@ -12,9 +12,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import axios from "axios";
 import toast from "react-hot-toast";
 import TextLoader from "@/components/loaders/TextLoader";
+import api from "@/api/build-client";
 
 const CategorySchema = Yup.object({
   category: Yup.string().required("Category is required"),
@@ -48,8 +48,8 @@ const Category = ({ initialValue, courseId, refresh }) => {
     onSubmit: (values) => {
       // console.log(values);
       setLoading(true);
-      axios
-        .patch("https://udemy.dev/api/courses/" + courseId, values)
+      api
+        .patch("/courses/" + courseId, values)
         .then((response) => {
           toast.success("Course category updated successfully");
           setIsEditing(false);

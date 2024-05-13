@@ -30,11 +30,11 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import AddCourseDialog from "@/components/dialogs/AddCourseDialog";
-import axios from "axios";
 import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import TableLoader from "@/components/loaders/TableLoader";
 import InstructorLayout from "@/layouts/InstructorLayout";
+import api from "@/api/build-client";
 
 const Courses = () => {
   const columns = [
@@ -165,8 +165,8 @@ const Courses = () => {
 
   const fetchData = () => {
     setLoading(true);
-    axios
-      .get("https://udemy.dev/api/courses")
+    api
+      .get("/courses")
       .then((response) => {
         // console.log(response.data);
         setData(response.data.courses);
@@ -181,8 +181,8 @@ const Courses = () => {
   };
 
   const deleteCourse = (courseId) => {
-    axios
-      .delete(`https://udemy.dev/api/courses/${courseId}`)
+    api
+      .delete(`/courses/${courseId}`)
       .then(() => {
         toast.success("Course deleted successfully");
         fetchData();

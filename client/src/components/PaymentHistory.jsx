@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import {
   Table,
   TableBody,
@@ -8,6 +7,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import api from "@/api/build-client";
 
 export default function PaymentHistory() {
   const [orders, setOrders] = useState([]);
@@ -15,9 +15,7 @@ export default function PaymentHistory() {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await axios.get(
-          "https://udemy.dev/api/order/userorders"
-        );
+        const response = await api.get("/order/userorders");
         setOrders(response.data);
       } catch (error) {
         console.error("Error fetching orders:", error);
