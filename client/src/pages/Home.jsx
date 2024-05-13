@@ -13,7 +13,7 @@ import se from "../assets/f3.jpg";
 import cs from "../assets/f4.jpeg";
 import footer from "../components/Footer";
 import Footer from "../components/Footer";
-import axios from "axios";
+import api from "@/api/build-client";
 
 export default function Home() {
   // Define an array of images
@@ -24,7 +24,7 @@ export default function Home() {
   useEffect(() => {
     const fetchCourseData = async () => {
       try {
-        const response = await axios.get("http://udemy.dev/api/courses");
+        const response = await api.get("/courses");
         console.log(response.data.courses);
         setCourseData(response.data.courses);
       } catch (error) {

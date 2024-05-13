@@ -5,9 +5,9 @@ import { Input } from "@/components/ui/input";
 import FormError from "../FormError";
 import { useState } from "react";
 import { Pencil } from "lucide-react";
-import axios from "axios";
 import toast from "react-hot-toast";
 import TextLoader from "@/components/loaders/TextLoader";
+import api from "@/api/build-client";
 
 const TitleSchema = Yup.object({
   title: Yup.string()
@@ -31,11 +31,8 @@ const Title = ({ initialValue, courseId, chapterId, refresh }) => {
     onSubmit: (values) => {
       // console.log(values);
       setLoading(true);
-      axios
-        .patch(
-          `https://udemy.dev/api/courses/${courseId}/chapters/${chapterId}`,
-          values
-        )
+      api
+        .patch(`/courses/${courseId}/chapters/${chapterId}`, values)
         .then((response) => {
           toast.success("Chapter title updated successfully");
           setIsEditing(false);

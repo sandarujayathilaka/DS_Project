@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import axios from "axios";
 import toast from "react-hot-toast";
 import TextLoader from "@/components/loaders/TextLoader";
+import api from "@/api/build-client";
 
 const DescriptionSchema = Yup.object({
   description: Yup.string()
@@ -30,8 +31,8 @@ const Description = ({ initialValue, courseId, refresh }) => {
     onSubmit: (values) => {
       // console.log(values);
       setLoading(true);
-      axios
-        .patch("https://udemy.dev/api/courses/" + courseId, values)
+      api
+        .patch("/courses/" + courseId, values)
         .then((response) => {
           toast.success("Course description updated successfully");
           setIsEditing(false);
