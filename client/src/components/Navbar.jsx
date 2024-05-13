@@ -4,6 +4,7 @@ import { Button } from "./ui/button";
 import useUserStore from "@/stores/auth";
 import Logo from "./Logo";
 import { ShoppingCart } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export default function Header() {
   const navLinks = [
@@ -24,6 +25,8 @@ export default function Header() {
     setUser(null);
     navigate("/");
   };
+
+  const uppercaseFirstLetter = user?.name[0].toUpperCase();
 
   return (
     <header className="header sticky top-0  shadow-md flex items-center justify-between px-8 py-4">
@@ -56,13 +59,21 @@ export default function Header() {
         </Link>
 
         {user !== null ? (
-          <Button
-            variant="green"
-            className="font-semibold ml-4"
-            onClick={handleLogout}
-          >
-            Log out
-          </Button>
+          <>
+            <Avatar>
+              <AvatarImage src="https://github.com/shadcn.pn" alt="@shadcn" />
+              <AvatarFallback className="bg-slate-300">
+                {uppercaseFirstLetter}
+              </AvatarFallback>
+            </Avatar>
+            <Button
+              variant="green"
+              className="font-semibold ml-4"
+              onClick={handleLogout}
+            >
+              Log out
+            </Button>
+          </>
         ) : (
           <>
             <Link to="/login">

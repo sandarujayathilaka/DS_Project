@@ -9,6 +9,7 @@ import UpdateChapter from "./pages/course/UpdateChapter";
 import { Toaster } from "react-hot-toast";
 import Insights from "./pages/course/Insights";
 import VideoDashboard from "./pages/course/VideoDashboard";
+import InstructorProfile from "./pages/course/InstructorProfile";
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
           element={<UpdateChapter />}
         />
         <Route path="/instructor/insights" element={<Insights />} />
+        <Route path="/instructor/profile" element={<InstructorProfile />} />
 
         <Route path="/videos/:courseId" element={<VideoDashboard />} />
       </Routes>
