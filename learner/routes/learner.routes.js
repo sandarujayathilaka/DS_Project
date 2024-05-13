@@ -11,6 +11,7 @@ const {
   changeChapterStatus,
   updateNote,
   getNote,
+  getAllEnrolledUsers,
 } = require("../controllers/LearnerCtrl");
 
 
@@ -26,7 +27,7 @@ learnerRoutes.post("/progress", calProgress);
 learnerRoutes.put("/setstatus", changeChapterStatus);
 learnerRoutes.put("/note", updateNote);
 learnerRoutes.get("/note", getNote);
-
+learnerRoutes.get("/student", getAllEnrolledUsers);
 
 module.exports = learnerRoutes;
 

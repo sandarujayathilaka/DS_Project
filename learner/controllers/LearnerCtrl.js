@@ -301,7 +301,11 @@ const getNote = async (req, res) => {
 
 
 
+const getAllEnrolledUsers = async (req, res) => {
 
+  const users = await Learner.find();
+  res.send(users);
+};
 
 
 
@@ -317,5 +321,6 @@ module.exports = {
   calProgress,
   changeChapterStatus,
   updateNote,
-  getNote
+  getNote,
+  getAllEnrolledUsers
 };

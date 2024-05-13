@@ -64,5 +64,9 @@ const currentUserDetails = async (req, res) => {
 
   res.status(200).send(userDetails);
 };
+const getAllUsers = async (req, res) => {
 
-module.exports = { signUp, signIn, currentUserDetails };
+  const users = await User.find();
+  res.send(users);
+};
+module.exports = { signUp, signIn, currentUserDetails,getAllUsers };
