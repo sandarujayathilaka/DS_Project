@@ -9,6 +9,7 @@ import UpdateChapter from "./pages/course/UpdateChapter";
 import { Toaster } from "react-hot-toast";
 import Insights from "./pages/course/Insights";
 import VideoDashboard from "./pages/course/VideoDashboard";
+import Note from "./components/Note";
 
 
 
@@ -22,7 +23,7 @@ function App() {
         <Route path="/home" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/" element={<Courses />} />
-        
+        <Route path="/note" element={<Note/>} />
 
         {/* Instructor routes */}
         <Route path="/instructor/courses" element={<Courses />} />

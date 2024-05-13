@@ -3,6 +3,8 @@ import React, { useState, useEffect } from "react";
 import Navbar from "./Navbar";
 import { Progress } from "@/components/ui/progress";
 import PaymentHistory from "./PaymentHistory"; // Import the PaymentHistory component
+import Note from "./Note";
+import Footer from "./Footer";
 
 const fetchCourses = async (setCourses) => {
   try {
@@ -28,7 +30,7 @@ const fetchCourses = async (setCourses) => {
 };
 
 export default function Student(props) {
-  const [selectedTab, setSelectedTab] = useState("ENROLLED");
+  const [selectedTab, setSelectedTab] = useState("Enrolled Courses");
   const [courses, setCourses] = useState([]);
 
   useEffect(() => {
@@ -67,13 +69,15 @@ export default function Student(props) {
 
   // Conditionally render courses or PaymentHistory based on selected tab
   const content =
-    selectedTab === "HISTORY" ? (
+    selectedTab === "Course Notes" ? (
+      <Note />
+    ) : selectedTab === "Payment History" ? (
       <PaymentHistory />
     ) : (
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {courses
           .filter((course) =>
-            selectedTab === "ENROLLED"
+            selectedTab === "Enrolled Courses"
               ? course.enrollStatus === "enrolled"
               : course.enrollStatus === "pending"
           )
@@ -130,37 +134,54 @@ export default function Student(props) {
       <section className="min-h-screen bg-gray-100">
         <div className="container mx-auto px-4 py-8">
           <div className="flex justify-between items-center mb-6">
-            <h1 className="text-3xl font-bold text-gray-900">My Dashboard</h1>
+            <h1 className="text-3xl font-bold text-gray-900">{selectedTab}</h1>
             <div className="flex space-x-4">
               <button
                 className={`text-sm font-medium ${
-                  selectedTab === "ENROLLED" ? "text-blue-600" : "text-gray-500"
+                  selectedTab === "Enrolled Courses"
+                    ? "text-blue-600"
+                    : "text-gray-500"
                 }`}
-                onClick={() => handleTabClick("ENROLLED")}
+                onClick={() => handleTabClick("Enrolled Courses")}
               >
                 Enrolled
               </button>
               <button
                 className={`text-sm font-medium ${
-                  selectedTab === "PAID" ? "text-blue-600" : "text-gray-500"
+                  selectedTab === "Pending Enrollment"
+                    ? "text-blue-600"
+                    : "text-gray-500"
                 }`}
-                onClick={() => handleTabClick("PAID")}
+                onClick={() => handleTabClick("Pending Enrollment")}
               >
                 To Start
               </button>
               <button
                 className={`text-sm font-medium ${
-                  selectedTab === "HISTORY" ? "text-blue-600" : "text-gray-500"
+                  selectedTab === "Payment History"
+                    ? "text-blue-600"
+                    : "text-gray-500"
                 }`}
-                onClick={() => handleTabClick("HISTORY")}
+                onClick={() => handleTabClick("Payment History")}
               >
                 Payment History
+              </button>
+              <button
+                className={`text-sm font-medium ${
+                  selectedTab === "Course Notes"
+                    ? "text-blue-600"
+                    : "text-gray-500"
+                }`}
+                onClick={() => handleTabClick("Course Notes")}
+              >
+                Notes
               </button>
             </div>
           </div>
           {content}
         </div>
       </section>
+      <Footer />
     </>
   );
 }
