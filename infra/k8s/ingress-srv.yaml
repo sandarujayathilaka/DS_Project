@@ -24,6 +24,7 @@ spec:
                 name: courses-srv
                 port:
                   number: 4000
+<<<<<<< HEAD
           - path: /api/reviews/?(.*)
             pathType: Prefix
             backend:
@@ -31,3 +32,31 @@ spec:
                 name: reviews-srv
                 port:
                   number: 4000
+=======
+          - path: /api/learner/?(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: learner-srv
+                port:
+                  number: 4000
+          - path: /api/order/?(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: order-srv
+                port:
+                  number: 4000
+          - path: /api/cart/?(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: cart-srv
+                port:
+                  number: 4000
+       
+
+              
+
+
+>>>>>>> deploy
