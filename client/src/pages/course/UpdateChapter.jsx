@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import Access from "@/components/forms/chapter/Access";
 import Video from "@/components/forms/chapter/Video";
 import { useParams } from "react-router-dom";
-import axios from "axios";
 import toast from "react-hot-toast";
 import {
   ArrowLeft,
@@ -17,6 +16,7 @@ import { Button } from "@/components/ui/button";
 import ConfirmDialog from "@/components/dialogs/ConfirmDialog";
 import InstructorLayout from "@/layouts/InstructorLayout";
 import PageLoader from "@/components/loaders/PageLoader";
+import api from "@/api/build-client";
 
 const UpdateChapter = () => {
   const { courseId, chapterId } = useParams();
@@ -29,8 +29,8 @@ const UpdateChapter = () => {
   }, []);
 
   const fetchChapterData = () => {
-    axios
-      .get(`https://udemy.dev/api/courses/${courseId}/chapters/${chapterId}`)
+    api
+      .get(`/courses/${courseId}/chapters/${chapterId}`)
       .then((response) => {
         // console.log(response.data);
         setData(response.data);
@@ -45,13 +45,10 @@ const UpdateChapter = () => {
   };
 
   const updateStatus = (status) => {
-    axios
-      .patch(
-        `https://udemy.dev/api/courses/${courseId}/chapters/${chapterId}`,
-        {
-          status,
-        }
-      )
+    api
+      .patch(`/courses/${courseId}/chapters/${chapterId}`, {
+        status,
+      })
       .then((response) => {
         fetchChapterData();
         toast.success(`Chapter ${status} successfully`);
@@ -63,8 +60,8 @@ const UpdateChapter = () => {
   };
 
   const deleteChapter = () => {
-    axios
-      .delete(`https://udemy.dev/api/courses/${courseId}/chapters/${chapterId}`)
+    api
+      .delete(`/courses/${courseId}/chapters/${chapterId}`)
       .then((response) => {
         toast.success("Chapter deleted successfully");
         naviagteBack();

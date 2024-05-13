@@ -1,3 +1,4 @@
+import api from "@/api/build-client";
 import Category from "@/components/forms/course/Category";
 import Chapters from "@/components/forms/course/Chapters";
 import Description from "@/components/forms/course/Description";
@@ -7,7 +8,6 @@ import Title from "@/components/forms/course/Title";
 import PageLoader from "@/components/loaders/PageLoader";
 import { Button } from "@/components/ui/button";
 import InstructorLayout from "@/layouts/InstructorLayout";
-import axios from "axios";
 import {
   ArrowLeft,
   CircleDollarSign,
@@ -29,8 +29,8 @@ const UpdateCourse = () => {
   }, []);
 
   const fetchCourseData = () => {
-    axios
-      .get("https://udemy.dev/api/courses/" + id)
+    api
+      .get("/courses/" + id)
       .then((response) => {
         // console.log(response.data);
         setData(response.data);
@@ -45,8 +45,8 @@ const UpdateCourse = () => {
   };
 
   const updateStatus = (status) => {
-    axios
-      .patch(`https://udemy.dev/api/courses/${id}`, {
+    api
+      .patch(`/courses/${id}`, {
         status,
       })
       .then((response) => {

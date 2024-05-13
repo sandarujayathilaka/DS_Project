@@ -17,6 +17,7 @@ import axios from "axios";
 import TextLoader from "@/components/loaders/TextLoader";
 import useUserStore from "@/stores/auth";
 import { useNavigate } from "react-router-dom";
+import api from "@/api/build-client";
 
 const LoginSchema = Yup.object({
   email: Yup.string()
@@ -31,6 +32,7 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
 
   const setUser = useUserStore((state) => state.setUser);
+  const setToken = useUserStore((state) => state.setToken);
 
   const navigate = useNavigate();
 
@@ -42,18 +44,20 @@ const Login = () => {
     validationSchema: LoginSchema,
     onSubmit: (values) => {
       setLoading(true);
-      axios
-        .post("https://udemy.dev/api/users/signin", values)
+      api
+        .post("/users/signin", values)
         .then((response) => {
-          // console.log(response.data);
-          setUser(response.data);
-          if (response.data.role === "admin") {
+          console.log(response.data);
+          setUser(response.data?.user);
+          setToken(response.data?.token);
+          if (response.data?.user?.role === "admin") {
             navigate("/admin/dashboard");
-          } else if (response.data.role === "instructor") {
+          } else if (response.data?.user?.role === "instructor") {
             navigate("/instructor/courses");
           } else {
             navigate("/");
           }
+
           setLoading(false);
         })
         .catch((error) => {

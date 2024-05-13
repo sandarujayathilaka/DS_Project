@@ -10,8 +10,7 @@ const createCourse = async (req, res) => {
 
   const course = new Course({
     title,
-    // instructorId: req.currentUser.id,
-    instructorId: "663d08b147ce7db96c185103",
+    instructorId: req.currentUser.id,
   });
 
   await course.save();

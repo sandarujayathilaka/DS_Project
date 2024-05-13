@@ -14,12 +14,13 @@ const {
   deleteChapter,
   deleteAsset,
 } = require("../controllers/course.controller");
+const { currentUser } = require("../middleware/current-user");
 
 // asset
 router.delete("/asset", deleteAsset);
 
 // course
-router.post("/", createCourse);
+router.post("/", currentUser, createCourse);
 router.patch("/:id", updateCourse);
 router.get("/", getAllCourses);
 router.get("/:id", getCourseById);

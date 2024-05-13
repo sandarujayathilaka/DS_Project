@@ -1,9 +1,7 @@
 import Logo from "@/components/Logo";
 import useUserStore from "@/stores/auth";
-import axios from "axios";
 import { Power } from "lucide-react";
 import React from "react";
-import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
@@ -13,17 +11,8 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    axios
-      .post("https://udemy.dev/api/users/signout")
-      .then((response) => {
-        // console.log(response.data);
-        setUser(null);
-        navigate("/");
-      })
-      .catch((error) => {
-        console.error(error);
-        toast.error(error.response?.data?.error?.message || error.message);
-      });
+    setUser(null);
+    navigate("/");
   };
 
   return (

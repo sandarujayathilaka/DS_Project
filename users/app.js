@@ -5,6 +5,7 @@ require("express-async-errors");
 const cors = require("cors");
 const cookieSession = require("cookie-session");
 const { errorHandler } = require("./middleware/error-handler");
+const { currentUser } = require("./middleware/current-user");
 
 const userRoutes = require("./routes/user.routes");
 
@@ -22,6 +23,8 @@ app.use(
     secure: false,
   })
 );
+
+app.use(currentUser);
 
 app.get("/api/users", (req, res) => {
   res.send("Hello World");
