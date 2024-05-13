@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: reviews-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: reviews
+  template:
+    metadata:
+      labels:
+        app: reviews
+    spec:
+      containers:
+        - name: reviews
+          image: akilaelladeniya/reviews
+          env:
+            - name: MONGO_URI
+              value: mongodb+srv://akilaelladeniya:akilaelladeniya@cluster0.thdjxer.mongodb.net/
+            - name: JWT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret
+                  key: JWT_KEY
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: reviews-srv
+spec:
+  selector:
+    app: reviews
+  ports:
+    - name: reviews
+      protocol: TCP
+      port: 4000
+      targetPort: 4000

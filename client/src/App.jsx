@@ -2,6 +2,11 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Cart from "./components/Cart";
 import Student from "./components/StudentPortal";
 import Home from "./pages/Home";
+import Login from "./pages/Login";
+import ReviewCard from "./components/reviews/ReviewCard";
+import TestCourseCard from "./components/reviews/TestCourseCard";
+import CourseReviews from "./pages/review/CourseReviews";
+import Register from "./pages/Register";
 import Auth from "./pages/Auth";
 import Courses from "./pages/course/Courses";
 import UpdateCourse from "./pages/course/UpdateCourse";
@@ -13,6 +18,17 @@ import VideoDashboard from "./pages/course/VideoDashboard";
 function App() {
   return (
     <BrowserRouter>
+      {/* <InstructorLayout> */}
+        <Routes>
+          <Route path="/" element={<AddCourse />} />
+          <Route path="/home" element={<Home/>} />
+          <Route path="/regi" element={<Register/>} />
+          <Route path="/reviewcard" element={<ReviewCard/>} />
+          <Route path="/testCourseCard" element={<TestCourseCard/>} />
+          <Route path="/reviewspage/:title" element={<CourseReviews />} />
+          
+        </Routes>
+      {/* </InstructorLayout> */}
       <Toaster position="bottom-right" />
       <Routes>
         <Route path="/" element={<Home />} />
