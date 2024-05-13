@@ -85,7 +85,7 @@ const VideoDashboard = () => {
         )}
 
         <div className="flex justify-between items-center flex-col sm:flex-row">
-          <span className="text-3xl font-kanit">{selectedChapter.title}</span>
+          <span className="text-3xl font-kanit">{selectedChapter?.title}</span>
           {isLocked ? (
             <Button className="bg-main">
               Enroll for
