@@ -166,7 +166,7 @@ const Courses = () => {
   const fetchData = () => {
     setLoading(true);
     api
-      .get("/courses")
+      .get("/courses/my-courses")
       .then((response) => {
         // console.log(response.data);
         setData(response.data.courses);
