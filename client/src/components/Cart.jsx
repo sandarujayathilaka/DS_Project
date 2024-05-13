@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import api from "@/api/build-client";
 
 export default function Cart() {
   const [cartItems, setCartItems] = useState([]);
@@ -10,8 +11,8 @@ export default function Cart() {
   }, []);
 
   const fetchCartItems = () => {
-    axios
-      .get("https://udemy.dev/api/cart/getcartitem")
+    api
+      .get("/cart/getcartitem")
       .then((response) => {
         setCartItems(response.data.course);
         console.log(response.data.course);
@@ -22,8 +23,8 @@ export default function Cart() {
   };
 
   const handleRemoveItem = (itemId) => {
-    axios
-      .delete(`https://udemy.dev/api/cart/deleteitem/${itemId}`)
+    api
+      .delete(`/cart/deleteitem/${itemId}`)
       .then((response) => {
         console.log("Item removed successfully");
         fetchCartItems(); // Fetch updated cart items after removal
@@ -34,8 +35,8 @@ export default function Cart() {
   };
 
   const handleCheckout = () => {
-    axios
-      .post("https://udemy.dev/api/order", { courses: cartItems })
+    api
+      .post("/order", { courses: cartItems })
       .then((response) => {
         const { url } = response.data;
         if (url) {

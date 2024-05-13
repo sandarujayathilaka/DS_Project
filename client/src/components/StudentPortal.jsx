@@ -5,20 +5,19 @@ import { Progress } from "@/components/ui/progress";
 import PaymentHistory from "./PaymentHistory"; // Import the PaymentHistory component
 import Note from "./Note";
 import Footer from "./Footer";
+import api from "@/api/build-client";
 
 const fetchCourses = async (setCourses) => {
   try {
-    const response = await axios.post(
-      "https://udemy.dev/api/learner/getusercourses",
-      { userId: "663dbf52047945ec5914b733" }
-    );
+    const response = await api.post("/learner/getusercourses", {
+      userId: "663dbf52047945ec5914b733",
+    });
 
     const coursesWithProgress = await Promise.all(
       response.data.map(async (course) => {
-        const progressResponse = await axios.post(
-          "https://udemy.dev/api/learner/progress",
-          { courseId: course.courseId }
-        );
+        const progressResponse = await api.post("/learner/progress", {
+          courseId: course.courseId,
+        });
         return { ...course, progress: progressResponse.data.progress };
       })
     );
@@ -43,10 +42,10 @@ export default function Student(props) {
 
   const handleEnrollClick = async (courseId) => {
     try {
-      const response = await axios.post(
-        "https://udemy.dev/api/learner/enroll",
-        { courseId, userId: "663dbf52047945ec5914b733" }
-      );
+      const response = await api.post("/learner/enroll", {
+        courseId,
+        userId: "663dbf52047945ec5914b733",
+      });
       console.log("Enrollment successful:", response.data);
       fetchCourses(setCourses);
     } catch (error) {
@@ -56,10 +55,10 @@ export default function Student(props) {
 
   const handleUnenrollClick = async (courseId) => {
     try {
-      const response = await axios.post(
-        "https://udemy.dev/api/learner/unenroll",
-        { courseId, userId: "663dbf52047945ec5914b733" }
-      );
+      const response = await api.post("/learner/unenroll", {
+        courseId,
+        userId: "663dbf52047945ec5914b733",
+      });
       console.log("Unenrollment successful:", response.data);
       fetchCourses(setCourses);
     } catch (error) {

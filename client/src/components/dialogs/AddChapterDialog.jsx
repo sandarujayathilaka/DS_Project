@@ -14,8 +14,8 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import FormError from "../forms/FormError";
 import { useState } from "react";
-import axios from "axios";
 import toast from "react-hot-toast";
+import api from "@/api/build-client";
 
 const TitleSchema = Yup.object({
   title: Yup.string()
@@ -35,8 +35,8 @@ const AddChapterDialog = ({ trigger, courseId, refresh }) => {
     onSubmit: (values) => {
       // console.log(values);
       setLoading(true);
-      axios
-        .post(`https://udemy.dev/api/courses/${courseId}/chapters/`, values)
+      api
+        .post(`/courses/${courseId}/chapters/`, values)
         .then((response) => {
           console.log(response.data);
           setLoading(false);

@@ -1,3 +1,4 @@
+const { get } = require("mongoose");
 const Learner = require("../models/Learner");
 
 const boughtCourse = async (req, res) => {
@@ -91,7 +92,7 @@ const unenrollFromCourse = async (req, res) => {
 };
 
 const getAllUserCourse = async (req, res) => {
-  const { userId } = req.body; // Assuming userId is passed as a parameter in the URL
+  const userId = "663dbf52047945ec5914b733"; // Assuming userId is passed as a parameter in the URL
 
   try {
     // Find the user
@@ -234,6 +235,74 @@ const changeChapterStatus = async (req, res) => {
   }
 };
 
+const updateNote = async (req, res) => {
+  const { courseId, note } = req.body;
+  const userId = "663dbf52047945ec5914b733";
+
+  try {
+    // Find the learner
+    const learner = await Learner.findOne({ userId });
+    if (!learner) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    // Find the enrolled course
+    const enrolledCourse = learner.enrolledCourses.find(
+      (course) => course.courseId === courseId
+    );
+    if (!enrolledCourse) {
+      return res.status(404).json({ error: "Course not found for this user" });
+    }
+
+    // Update the note
+    enrolledCourse.note = note;
+
+    // Mark the learner document as modified
+    learner.markModified("enrolledCourses");
+    
+    // Save the changes
+    await learner.save();
+
+    res.status(200).json({ message: "Note updated successfully" });
+  }
+  catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
+const getNote = async (req, res) => {
+  const { courseId } = req.body;
+  const userId = "663dbf52047945ec5914b733";
+  
+  try {
+    // Find the learner
+    const learner = await Learner.findOne({ userId });
+    if (!learner) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    // Find the enrolled course
+
+    const enrolledCourse = learner.enrolledCourses.find(
+      (course) => course.courseId === courseId
+    );
+
+    if (!enrolledCourse) {
+      return res.status(404).json({ error: "Course not found for this user" });
+    }
+
+    // Return the note
+    res.status(200).json({ note: enrolledCourse.note });
+  }
+  catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
+
+
+
+
 
 
 
@@ -247,4 +316,6 @@ module.exports = {
   getAllUserCourse,
   calProgress,
   changeChapterStatus,
+  updateNote,
+  getNote
 };

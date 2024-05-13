@@ -1,8 +1,9 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import SearchIcon from "../assets/search.png";
-import ShoppingCartIcon from "../assets/cart.png";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { Button } from "./ui/button";
+import useUserStore from "@/stores/auth";
+import Logo from "./Logo";
+import { ShoppingCart } from "lucide-react";
 
 export default function Header() {
   const navLinks = [
@@ -14,45 +15,68 @@ export default function Header() {
     { to: "/teach-with-us", label: "Teach with us" },
   ];
 
+  const user = useUserStore((state) => state.user);
+  const setUser = useUserStore((state) => state.setUser);
+
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    setUser(null);
+    navigate("/");
+  };
+
   return (
-    <header className="header sticky top-0  shadow-md flex items-center justify-between px-8 py-2">
+    <header className="header sticky top-0  shadow-md flex items-center justify-between px-8 py-4">
       <h1 className="w-3/12">
-        <Link to="/">Logo</Link>
+        <Link to="/">
+          <Logo />
+        </Link>
       </h1>
 
       <ul className="flex items-center">
         {navLinks.map((link, index) => (
-          <li
-            key={index}
-            className="p-4 border-b-2 border-main border-opacity-0 hover:border-opacity-100 hover:text-main duration-200 active"
-          >
-            <Link to={link.to}>{link.label}</Link>
+          <li key={index}>
+            <NavLink
+              to={link.to}
+              className={({ isActive }) =>
+                isActive
+                  ? "p-4 mx-1 pb-3 font-inter font-semibold text-main border-b-2 border-main"
+                  : "p-4 mx-1 pb-3 font-inter font-semibold text-[#444444] border-b-2 border-main border-opacity-0 hover:border-opacity-100 hover:text-main duration-200"
+              }
+            >
+              {link.label}
+            </NavLink>
           </li>
         ))}
       </ul>
 
-      <div className="w-3/12 flex justify-end">
+      <div className="w-3/12 flex justify-end items-center">
         <Link to="/">
-          <img
-            src={SearchIcon}
-            alt="Search"
-            className="h-8 p-1 hover:text-dark-green duration-200"
-          />
-        </Link>
-        <Link to="/">
-          <img
-            src={ShoppingCartIcon}
-            alt="Shopping Cart"
-            className="h-8 p-1 hover:text-dark-green duration-200"
-          />
+          <ShoppingCart className="mr-6" style={{ transform: "scaleX(-1)" }} />
         </Link>
 
-        <Button className="bg-main font-semibold ml-4 hover:bg-dark-green duration-200">
-          Log out
-        </Button>
-        <Button className="bg-main font-semibold ml-4 hover:bg-dark-green duration-200">
-          <Link to="/login">Log in</Link>
-        </Button>
+        {user !== null ? (
+          <Button
+            variant="green"
+            className="font-semibold ml-4"
+            onClick={handleLogout}
+          >
+            Log out
+          </Button>
+        ) : (
+          <>
+            <Link to="/login">
+              <Button variant="green" className="font-semibold ml-4">
+                Log in
+              </Button>
+            </Link>
+            <Link to="/signup">
+              <Button variant="green" className="font-semibold ml-4">
+                Sign up
+              </Button>
+            </Link>
+          </>
+        )}
       </div>
     </header>
   );

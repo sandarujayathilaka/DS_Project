@@ -1,5 +1,5 @@
+import api from "@/api/build-client";
 import AddChapterDialog from "@/components/dialogs/AddChapterDialog";
-import axios from "axios";
 import { Grip, Pencil, PlusCircle, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
@@ -56,8 +56,8 @@ const Chapters = ({ initialValue, courseId, refresh }) => {
     setItems(newItems);
 
     setLoading(true);
-    axios
-      .patch("https://udemy.dev/api/courses/" + courseId, {
+    api
+      .patch("/api/courses/" + courseId, {
         chapters: newItems,
       })
       .then((response) => {

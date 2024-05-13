@@ -5,9 +5,9 @@ import { Input } from "@/components/ui/input";
 import FormError from "../FormError";
 import { useState } from "react";
 import { Pencil } from "lucide-react";
-import axios from "axios";
 import toast from "react-hot-toast";
 import TextLoader from "@/components/loaders/TextLoader";
+import api from "@/api/build-client";
 
 const PriceSchema = Yup.object({
   price: Yup.number()
@@ -30,8 +30,8 @@ const Price = ({ initialValue, courseId, refresh }) => {
     onSubmit: (values) => {
       // console.log(values);
       setLoading(true);
-      axios
-        .patch("https://udemy.dev/api/courses/" + courseId, values)
+      api
+        .patch("/courses/" + courseId, values)
         .then((response) => {
           toast.success("Course price updated successfully");
           setIsEditing(false);
