@@ -1,23 +1,29 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: users-depl
+  name: admincourse-depl
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: users
+      app: admincourse
   template:
     metadata:
       labels:
-        app: users
+        app: admincourse
     spec:
       containers:
-        - name: users
-          image: isuruk1/users
+        - name: admincourse
+          image: denodenojan/admincourse
           env:
             - name: MONGO_URI
               value: mongodb+srv://user:user123@project.6kognk6.mongodb.net/micro
+            - name: CLOUD_NAME
+              value: djtoyeee2
+            - name: CLOUD_KEY
+              value: "576275933435118"
+            - name: CLOUD_KEY_SECRET
+              value: QbX7S_wSRKKck5ZfINJMgKI1ydk
             - name: JWT_KEY
               valueFrom:
                 secretKeyRef:
@@ -27,12 +33,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: users-srv
+  name: admincourse-srv
 spec:
   selector:
-    app: users
+    app: admincourse
   ports:
-    - name: users
+    - name: admincourse
       protocol: TCP
       port: 4000
       targetPort: 4000

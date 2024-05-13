@@ -1,9 +1,11 @@
 const express = require("express");
 const router = express.Router();
+
 const { requireAuth } = require("../middleware/require-auth");
 
-const { updateName } = require("../controllers/coursecontroller");
+const { updateStatus } = require("../controllers/coursecontroller");
 
-router.get("/",  updateName);
+router.put("/:id",  updateStatus);
+
 
 module.exports = router;

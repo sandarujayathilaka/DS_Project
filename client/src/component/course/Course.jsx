@@ -35,37 +35,6 @@ import { Link } from "react-router-dom";
 import AddCourse from "./AddCourse";
 import axios from 'axios';
 import ViewCourse from "./ViewCourse";
-// const data = [
-//   {
-//     id: "m5gr84i9",
-//     name: "course1",
-//     email: "ken99@yahoo.com",
-//   },
-//   {
-//     id: "3u1reuv4",
-    
-//     name: "course2",
-//     email: "Abe45@gmail.com",
-//   },
-//   {
-//     id: "derv1ws0",
-  
-//     name: "course3",
-//     email: "Monserrat44@gmail.com",
-//   },
-//   {
-//     id: "5kma53ae",
-   
-//     name: "course4",
-//     email: "Silas22@gmail.com",
-//   },
-//   {
-//     id: "bhqecj4p",
-   
-//     name: "course5",
-//     email: "carmella@hotmail.com",
-//   },
-// ];
 
 const columns = [
   {
@@ -91,37 +60,22 @@ const columns = [
     enableHiding: false,
   },
   {
-    accessorKey: "c_code",
+    accessorKey: "title",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Course Code
+          Title
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
-    cell: ({ row }) => <div className="lowercase ml-4">{row.getValue("c_code")}</div>,
+    cell: ({ row }) => <div className="lowercase ml-4">{row.getValue("title")}</div>,
   },
   {
-    accessorKey: "c_name",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Course Name
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => <div className="lowercase ml-4">{row.getValue("c_name")}</div>,
-  },
-  {
-    accessorKey: "c_category",
+    accessorKey: "category",
     header: ({ column }) => {
       return (
         <Button
@@ -133,10 +87,10 @@ const columns = [
         </Button>
       );
     },
-    cell: ({ row }) => <div className="lowercase ml-4">{row.getValue("c_category")}</div>,
+    cell: ({ row }) => <div className="lowercase ml-4">{row.getValue("category")}</div>,
   },
   {
-    accessorKey: "instructor",
+    accessorKey: "instructorId",
     header: ({ column }) => {
       return (
         <Button
@@ -148,7 +102,22 @@ const columns = [
         </Button>
       );
     },
-    cell: ({ row }) => <div className="lowercase ml-4">{row.getValue("instructor")}</div>,
+    cell: ({ row }) => <div className="lowercase ml-4">{row.getValue("instructorId")}</div>,
+  },
+  {
+    accessorKey: "price",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Price
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => <div className="lowercase ml-4">${row.getValue("price")}</div>,
   },
   {
     accessorKey: "status",
@@ -171,33 +140,11 @@ const columns = [
     enableHiding: false,
     cell: ({ row }) => {
       const options = row.original;
-
+console.log("options",options.id)
       return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <Link to={`/view/${options._id}`}>
-                    <DropdownMenuItem>View</DropdownMenuItem>
-                </Link>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(payment.id)}
-            >
-              Approve
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>Reject</DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>Remove</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <Link to={`/view/${options.id}`}>
+       <Button>View</Button> 
+    </Link>
       );
     },
   },
@@ -211,20 +158,36 @@ export default function Course() {
   const [rowSelection, setRowSelection] = useState({});
 
   useEffect(() => {
-    const getCourse = async () => {
+    const fetchData = async () => {
       try {
-        
-        const res = await axios.get('http://localhost:8080/cou/course');
-      console.log(res.data)
-        setData(res.data);
-      } catch (err) {
-       
-        //toast.error('Error occurred while fetching employees.');
+        // Fetch all courses
+        const courseResponse = await axios.get('http://udemy.dev/api/courses');
+        const courses = courseResponse.data.courses;
+
+        // Fetch all instructors
+        const instructorResponse = await axios.get('http://udemy.dev/api/adminstatistic/instructors');
+        const instructors = instructorResponse.data.instructors;
+
+        // Map through courses to add instructor details
+        const coursesWithInstructors = courses.map((course) => {
+          const matchingInstructor = instructors.find((instructor) => instructor.id === course.instructorId);
+          return {
+            ...course,
+            instructor: matchingInstructor || { name: 'Unknown' } // Set a default if no matching instructor found
+          };
+        });
+console.log(coursesWithInstructors)
+        // Set the state with courses including instructor details
+        setData(coursesWithInstructors);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        // Handle error as needed (e.g., show toast message)
       }
     };
-  
-    getCourse();
+
+    fetchData();
   }, []);
+
   const table = useReactTable({
     data,
     columns,
@@ -249,10 +212,10 @@ export default function Course() {
       {/* Filter Input and Columns Dropdown */}
       <div className="flex flex-col lg:flex-row items-center py-4">
         <Input
-          placeholder="Filter emails..."
-          value={table.getColumn('email')?.getFilterValue() ?? ''}
+          placeholder="Filter title..."
+          value={table.getColumn('title')?.getFilterValue() ?? ''}
           onChange={(event) =>
-            table.getColumn('email')?.setFilterValue(event.target.value)
+            table.getColumn('title')?.setFilterValue(event.target.value)
           }
           className="max-w-sm lg:mr-4 mb-2 lg:mb-0"
         />
@@ -278,11 +241,7 @@ export default function Course() {
               ))}
           </DropdownMenuContent>
         </DropdownMenu>
-        <Link to="/addcourse" className="mt-2 ml-2   bg-blue-500 rounded-lg">
-        <Button className="  bg-blue-500 hover:bg-blue-600 hover:text-white">AddCourse</Button>
       
-    
-</Link>
       </div>
 
       {/* Responsive Table */}

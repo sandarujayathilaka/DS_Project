@@ -153,6 +153,11 @@ const getPendingEnrolledCourses = async (req, res) => {
   }
 };
 
+const getAllEnrolledUsers = async (req, res) => {
+
+  const users = await Learner.find();
+  res.send(users);
+};
 
 module.exports = {
 boughtCourse,
@@ -160,5 +165,6 @@ enrollToCourse,
 unenrollFromCourse,
 getAllEnrolledCourses,
 getPendingEnrolledCourses,
-getAllUserCourse
+getAllUserCourse,
+getAllEnrolledUsers
 };

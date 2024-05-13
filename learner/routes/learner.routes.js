@@ -7,6 +7,7 @@ const {
   getAllEnrolledCourses,
   getPendingEnrolledCourses,
   getAllUserCourse,
+  getAllEnrolledUsers,
 } = require("../controllers/LearnerCtrl");
 
 
@@ -18,6 +19,7 @@ learnerRoutes.post("/unenroll", unenrollFromCourse);
 learnerRoutes.post("/getenroll",getAllEnrolledCourses);
 learnerRoutes.post("/getpending", getPendingEnrolledCourses);
 learnerRoutes.post("/getusercourses", getAllUserCourse);
+learnerRoutes.get("/student", getAllEnrolledUsers);
 
 
 module.exports = learnerRoutes;

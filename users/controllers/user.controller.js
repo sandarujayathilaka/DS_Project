@@ -70,4 +70,10 @@ const signOut = (req, res) => {
   res.send({});
 };
 
-module.exports = { signUp, signIn, signOut };
+
+const getAllUsers = async (req, res) => {
+
+  const users = await User.find();
+  res.send(users);
+};
+module.exports = { signUp, signIn, signOut,getAllUsers };

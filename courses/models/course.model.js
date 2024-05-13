@@ -9,19 +9,33 @@ const courseSchema = mongoose.Schema(
     description: {
       type: String,
     },
-    image: {
+    category: {
       type: String,
+    },
+    image: {},
+    price: {
+      type: Number,
     },
     chapters: [
       {
         title: String,
         description: String,
-        video: String,
+        access: {
+          type: String,
+          default: "paid",
+          enum: ["free", "paid"],
+        },
+        comment: String,
+        status: {
+          type: String,
+          default: "draft",
+          enum: ["draft", "ready","approve","pending"],
+        },
+        video: {},
       },
     ],
     instructorId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
       required: true,
     },
     status: {

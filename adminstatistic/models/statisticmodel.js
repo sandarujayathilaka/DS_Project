@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const statisticSchema = mongoose.Schema(
   {
-    name: {
+    user: {
       type: String,
       required: true,
     }
