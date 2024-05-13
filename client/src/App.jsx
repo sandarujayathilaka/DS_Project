@@ -10,6 +10,7 @@ import { Toaster } from "react-hot-toast";
 import Insights from "./pages/course/Insights";
 import VideoDashboard from "./pages/course/VideoDashboard";
 import Note from "./components/Note";
+import InstructorProfile from "./pages/course/InstructorProfile";
 
 function App() {
   return (
@@ -20,8 +21,7 @@ function App() {
         <Route path="/cart" element={<Cart />} />
         <Route path="/student" element={<Student />} />
         <Route path="/home" element={<Home />} />
-        <Route path="/" element={<Courses />} />
-        <Route path="/note" element={<Note/>} />
+        <Route path="/note" element={<Note />} />
         <Route path="/login" element={<Auth />} />
         <Route path="/signup" element={<Auth />} />
 
@@ -34,6 +34,7 @@ function App() {
           element={<UpdateChapter />}
         />
         <Route path="/instructor/insights" element={<Insights />} />
+        <Route path="/instructor/profile" element={<InstructorProfile />} />
 
         <Route path="/videos/:courseId" element={<VideoDashboard />} />
       </Routes>
