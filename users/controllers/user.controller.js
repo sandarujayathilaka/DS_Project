@@ -65,4 +65,16 @@ const currentUserDetails = async (req, res) => {
   res.status(200).send(userDetails);
 };
 
-module.exports = { signUp, signIn, currentUserDetails };
+const getUserDetails = async (req, res) => {
+  const userDetails = await User.findOne({ _id: req.params.id }).select(
+    "-password"
+  );
+
+  if (!userDetails) {
+    throw new Error("User not found");
+  }
+
+  res.status(200).send(userDetails);
+};
+
+module.exports = { signUp, signIn, currentUserDetails, getUserDetails };

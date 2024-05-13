@@ -1,5 +1,6 @@
 const Course = require("../models/course.model");
 const cloudinary = require("../config/cloudinary");
+const axios = require("axios");
 
 const createCourse = async (req, res) => {
   const { title } = req.body;
@@ -19,10 +20,80 @@ const createCourse = async (req, res) => {
 };
 
 const getAllCourses = async (req, res) => {
-  const { page = 1, limit = 10, search = "" } = req.query;
+  const { page = 1, limit = 10, search = "", status = "" } = req.query;
   const skip = (page - 1) * limit;
 
   let query = {};
+  if (search) {
+    query = { title: { $regex: search, $options: "i" } };
+  }
+
+  if (status) {
+    query = { ...query, status };
+  }
+
+  const courses = await Course.find(query).skip(skip).limit(parseInt(limit));
+
+  // Fetch instructor details for each course
+  const coursesWithInstructors = await Promise.all(
+    courses.map(async (course) => {
+      // Assuming instructorId is the ID of the instructor
+      const instructorId = course.instructorId;
+      try {
+        const instructorDetails = await axios.get(
+          `http://users-srv:4000/api/users/user-details/${instructorId}`
+        );
+        // Assuming the instructor details are available in the response data
+        const { name, email } = instructorDetails.data;
+        // Adding instructor details to the course object
+        return {
+          ...course._doc,
+          instructor: {
+            name,
+            email,
+          },
+        };
+      } catch (error) {
+        console.error(
+          `Error fetching instructor details for course ${course._id}:`,
+          error
+        );
+        // If there's an error fetching instructor details, return the course without instructor details
+        return course;
+      }
+    })
+  );
+
+  const totalCount = await Course.countDocuments(query);
+  const totalPages = Math.ceil(totalCount / limit);
+
+  const pagination = {
+    totalCount,
+    totalPages,
+    currentPage: page,
+    pageSize: limit,
+  };
+
+  res.send({ courses: coursesWithInstructors, pagination });
+};
+
+const getCourseById = async (req, res) => {
+  const course = await Course.findById(req.params.id);
+
+  if (!course) {
+    return res.status(404).send("Course not found");
+  }
+
+  res.send(course);
+};
+
+const getCurrentUserCourses = async (req, res) => {
+  const { page = 1, limit = 10, search = "" } = req.query;
+  const skip = (page - 1) * limit;
+
+  let query = {
+    instructorId: req.currentUser.id, // Filter courses by instructorId
+  };
   if (search) {
     query = { title: { $regex: search, $options: "i" } };
   }
@@ -42,21 +113,15 @@ const getAllCourses = async (req, res) => {
   res.send({ courses, pagination });
 };
 
-const getCourseById = async (req, res) => {
+const updateCourse = async (req, res) => {
   const course = await Course.findById(req.params.id);
 
   if (!course) {
     return res.status(404).send("Course not found");
   }
 
-  res.send(course);
-};
-
-const updateCourse = async (req, res) => {
-  const existingCourse = await Course.findById(req.params.id);
-
-  if (!existingCourse) {
-    return res.status(404).send("Course not found");
+  if (course.instructorId.toString() !== req.currentUser.id) {
+    return res.status(401).send("You are not authorized to update this course");
   }
 
   const updatedCourse = await Course.findByIdAndUpdate(
@@ -78,6 +143,10 @@ const deleteCourse = async (req, res) => {
     return res.status(404).send("Course not found");
   }
 
+  if (course.instructorId.toString() !== req.currentUser.id) {
+    return res.status(401).send("You are not authorized to delete this course");
+  }
+
   await Course.findByIdAndDelete(req.params.id);
 
   res.status(204).send(course);
@@ -88,6 +157,10 @@ const createChapter = async (req, res) => {
 
   if (!course) {
     return res.status(404).send("Course not found");
+  }
+
+  if (course.instructorId.toString() !== req.currentUser.id) {
+    return res.status(401).send("You are not authorized to update this course");
   }
 
   course.chapters.push(req.body);
@@ -120,6 +193,10 @@ const updateChapter = async (req, res) => {
     return res.status(404).send("Course not found");
   }
 
+  if (course.instructorId.toString() !== req.currentUser.id) {
+    return res.status(401).send("You are not authorized to update this course");
+  }
+
   const chapter = course.chapters.id(req.params.chapterId);
 
   if (!chapter) {
@@ -140,6 +217,10 @@ const deleteChapter = async (req, res) => {
 
   if (!course) {
     return res.status(404).send("Course not found");
+  }
+
+  if (course.instructorId.toString() !== req.currentUser.id) {
+    return res.status(401).send("You are not authorized to update this course");
   }
 
   const chapter = course.chapters.id(chapterId);
@@ -168,6 +249,7 @@ const deleteAsset = async (req, res) => {
 module.exports = {
   createCourse,
   getAllCourses,
+  getCurrentUserCourses,
   getCourseById,
   updateCourse,
   deleteCourse,

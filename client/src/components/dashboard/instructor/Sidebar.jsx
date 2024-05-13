@@ -1,4 +1,4 @@
-import { BarChart, List } from "lucide-react";
+import { BarChart, List, User } from "lucide-react";
 import React from "react";
 import { Link, NavLink } from "react-router-dom";
 
@@ -12,6 +12,11 @@ const sidebarItems = [
     name: "Insights",
     icon: BarChart,
     link: "/instructor/insights",
+  },
+  {
+    name: "Profile",
+    icon: User,
+    link: "/instructor/profile",
   },
 ];
 
