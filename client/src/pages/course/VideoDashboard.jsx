@@ -1,3 +1,4 @@
+import api from "@/api/build-client";
 import PageLoader from "@/components/loaders/PageLoader";
 import { Banner } from "@/components/ui/banner";
 import { Button } from "@/components/ui/button";
@@ -22,8 +23,8 @@ const VideoDashboard = () => {
   }, []);
 
   const fetchChapterData = () => {
-    axios
-      .get(`https://udemy.dev/api/courses/${courseId}`)
+    api
+      .get(`/courses/${courseId}`)
       .then((response) => {
         console.log(response.data);
         const publishedChapters = response.data.chapters.filter(

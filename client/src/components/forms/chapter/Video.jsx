@@ -6,6 +6,7 @@ import axios from "axios";
 import ReactPlayer from "react-player";
 import toast from "react-hot-toast";
 import UploadLoader from "@/components/loaders/UploadLoader";
+import api from "@/api/build-client";
 
 const UploadSection = ({ onUpload }) => {
   const onDrop = useCallback(
@@ -52,15 +53,15 @@ const Video = ({ initialValue, chapterId, courseId, refresh }) => {
     data.append("file", files[0]);
     data.append("upload_preset", "videos_preset");
 
-    let api = `https://api.cloudinary.com/v1_1/djtoyeee2/video/upload`;
+    let cloudinaryApi = `https://api.cloudinary.com/v1_1/djtoyeee2/video/upload`;
 
     try {
       // Upload video
-      const res = await axios.post(api, data);
+      const res = await axios.post(cloudinaryApi, data);
       // console.log(res.data);
       // console.log(res.data?.secure_url);
 
-      await axios
+      await api
         .patch(
           `https://udemy.dev/api/courses/${courseId}/chapters/${chapterId}`,
           { video: res.data }

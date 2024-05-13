@@ -5,6 +5,7 @@ import { useDropzone } from "react-dropzone";
 import axios from "axios";
 import toast from "react-hot-toast";
 import UploadLoader from "@/components/loaders/UploadLoader";
+import api from "@/api/build-client";
 
 const UploadSection = ({ onUpload }) => {
   const onDrop = useCallback(
@@ -51,16 +52,16 @@ const Image = ({ initialValue, courseId, refresh }) => {
     data.append("file", files[0]);
     data.append("upload_preset", "images_preset");
 
-    let api = `https://api.cloudinary.com/v1_1/djtoyeee2/image/upload`;
+    let cloudinaryApi = `https://api.cloudinary.com/v1_1/djtoyeee2/image/upload`;
 
     try {
       // Upload image
-      const res = await axios.post(api, data);
+      const res = await axios.post(cloudinaryApi, data);
       // console.log(res.data);
       // console.log(res.data?.secure_url);
 
-      await axios
-        .patch("https://udemy.dev/api/courses/" + courseId, { image: res.data })
+      await api
+        .patch("/courses/" + courseId, { image: res.data })
         .then((response) => {
           toast.success("Course image updated successfully");
           setIsEditing(false);

@@ -93,33 +93,6 @@ export default function Login() {
                           />
                         </svg>
                       </button>
-                      <div
-                        id="options"
-                        className={
-                          optionsVisible
-                            ? "w-48 py-2 mt-2 bg-white rounded-lg shadow-xl"
-                            : "hidden"
-                        }
-                      >
-                        <a
-                          href="#"
-                          className="block px-4 py-2 text-gray-800 text-sm hover:bg-teal-500 hover:text-white"
-                        >
-                          Learner
-                        </a>
-                        <a
-                          href="#"
-                          className="block px-4 py-2 text-gray-800 text-sm hover:bg-teal-500 hover:text-white"
-                        >
-                          Tutor
-                        </a>
-                        <a
-                          href="#"
-                          className="block px-4 py-2 text-gray-800 text-sm hover:bg-teal-500 hover:text-white"
-                        >
-                          Admin
-                        </a>
-                      </div>
                     </div>
                   </div>
                   <div className="relative">
