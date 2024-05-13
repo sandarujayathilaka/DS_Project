@@ -14,6 +14,7 @@ import cs from "../assets/f4.jpeg";
 import footer from "../components/Footer";
 import Footer from "../components/Footer";
 import api from "@/api/build-client";
+import toast from "react-hot-toast";
 
 export default function Home() {
   // Define an array of images
@@ -64,6 +65,7 @@ export default function Home() {
           },
         ],
       });
+      toast.success("Course added to cart")
     } catch (error) {
       console.error( error);
     }
