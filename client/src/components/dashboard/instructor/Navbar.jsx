@@ -8,11 +8,13 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 const Navbar = () => {
   const user = useUserStore((state) => state.user);
   const setUser = useUserStore((state) => state.setUser);
+  const setToken = useUserStore((state) => state.setToken);
 
   const navigate = useNavigate();
 
   const handleLogout = () => {
     setUser(null);
+    setToken(null);
     navigate("/");
   };
 
@@ -24,7 +26,7 @@ const Navbar = () => {
       <div className="flex items-center gap-5">
         <span className="font-inter">Instructor</span>
         <Avatar>
-          <AvatarImage src="https://github.com/shadcn.pn" alt="@shadcn" />
+          <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
           <AvatarFallback className="bg-slate-300">
             {uppercaseFirstLetter}
           </AvatarFallback>
