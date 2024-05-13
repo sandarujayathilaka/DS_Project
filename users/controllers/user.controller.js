@@ -11,7 +11,7 @@ const signUp = async (req, res) => {
     throw new Error("Email in use");
   }
 
-  const user = new User({ name, email, password });
+  const user = new User({ name, email, password, role });
 
   await user.save();
 
@@ -25,12 +25,7 @@ const signUp = async (req, res) => {
     process.env.JWT_KEY
   );
 
-  // Store it on session object
-  req.session = {
-    jwt: userJwt,
-  };
-
-  res.status(201).send(user);
+  res.status(201).send({ user, token: userJwt });
 };
 
 const signIn = async (req, res) => {
@@ -57,17 +52,17 @@ const signIn = async (req, res) => {
     process.env.JWT_KEY
   );
 
-  req.session = {
-    jwt: userJwt,
-  };
-
-  res.status(200).send(user);
+  res.status(200).send({ user, token: userJwt });
 };
 
-const signOut = (req, res) => {
-  req.session = null;
+const currentUserDetails = async (req, res) => {
+  const userDetails = await User.findOne({ _id: req.currentUser?.id });
 
-  res.send({});
+  if (!userDetails) {
+    throw new Error("User not found");
+  }
+
+  res.status(200).send(userDetails);
 };
 
-module.exports = { signUp, signIn, signOut };
+module.exports = { signUp, signIn, currentUserDetails };

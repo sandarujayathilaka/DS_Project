@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: learner-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: learner
+  template:
+    metadata:
+      labels:
+        app: learner
+    spec:
+      containers:
+        - name: learner
+          image: sandarujayathilaka98425/learner
+          env:
+            - name: MONGO_URI
+              value: mongodb+srv://sandaru:sandaru123@eshopping-api.rumhgfn.mongodb.net/?retryWrites=true&w=majority
+            - name: STRIPE_KEY
+              value: sk_test_51OUk8pENzXeV8WlBPqQzC8C4YXbLururJoWmSplA8yE8fKi4R2bJkr4fWjLIIgYsimkiC6MsaVdVmmk0V6ZaGzsq00ly6c9MxP
+            - name: JWT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret
+                  key: JWT_KEY
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: learner-srv
+spec:
+  selector:
+    app: learner
+  ports:
+    - name: learner
+      protocol: TCP
+      port: 4000
+      targetPort: 4000
