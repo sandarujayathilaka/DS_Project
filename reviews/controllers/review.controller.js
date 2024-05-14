@@ -6,15 +6,15 @@ const asyncHandler = require("express-async-handler");
 const addReview = asyncHandler(async (req, res) => {
   const { title, userName, rating, comment, date } = req.body;
 
-  // Check if a review already exists for the given user and course
+  // find if a review already exists for the same user with same  course
   const existingReview = await Review.findOne({ title, userName });
 
-  // If a review already exists, prevent the user from posting a new review
+  // If a review already exists, prevent the user from posting a new review for same course
   if (existingReview) {
     return res.status(400).json({ message: "You have already submitted a review for this course" });
   }
 
-  // If no existing review, create a new one
+  // If there is no any existing review for that course, create a new one
   const review = await Review.create({
     title,
     userName,
@@ -23,7 +23,6 @@ const addReview = asyncHandler(async (req, res) => {
     date
   });
 
-  // Check if the review was successfully created and send the appropriate response
   review ? res.status(201).json(review) : res.status(400).json({ message: "Review not posted" });
 });
 

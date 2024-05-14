@@ -24,21 +24,14 @@ build:
         manual:
           - src: "**/*.js"
             dest: .
-<<<<<<< HEAD
-    - image: akilaelladeniya/reviews
-      context: reviews
-=======
     - image: sandarujayathilaka98425/learner
       context: learner
->>>>>>> deploy
       docker:
         dockerfile: Dockerfile
       sync:
         manual:
           - src: "**/*.js"
             dest: .
-<<<<<<< HEAD
-=======
     - image: sandarujayathilaka98425/order
       context: order
       docker:
@@ -55,8 +48,15 @@ build:
         manual:
           - src: "**/*.js"
             dest: .
+    - image: akilaelladeniya/reviews
+      context: reviews
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "**/*.js"
+            dest: .
 
            
 
     
->>>>>>> deploy

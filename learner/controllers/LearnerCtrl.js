@@ -1,3 +1,4 @@
+const { get } = require("mongoose");
 const Learner = require("../models/Learner");
 var sid = "ACbc5d6f3288e8aa9e59ac37337ed39192";
 var auth_token = "0315f906a61a0b090586769bce4ad511";
@@ -94,7 +95,7 @@ const unenrollFromCourse = async (req, res) => {
 };
 
 const getAllUserCourse = async (req, res) => {
-  const { userId } = req.body; // Assuming userId is passed as a parameter in the URL
+  const userId = "663dbf52047945ec5914b733"; // Assuming userId is passed as a parameter in the URL
 
   try {
     // Find the user
@@ -238,19 +239,76 @@ const changeChapterStatus = async (req, res) => {
   }
 };
 
-const sms = async (req, res) => {
-  client.messages
-    .create({
-      from: "+14129245993",
-      to: "+94771347786",
-     body: "Hello from Twilio!",
-    }) .then(res.status(200).json({ message: "SMS sent successfully" }))
-  .catch((error) => {
-    console.error("Error sending SMS:", error);
-    res.status(500).json({ error});
-  });
+const updateNote = async (req, res) => {
+  const { courseId, note } = req.body;
+  const userId = "663dbf52047945ec5914b733";
 
+  try {
+    // Find the learner
+    const learner = await Learner.findOne({ userId });
+    if (!learner) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    // Find the enrolled course
+    const enrolledCourse = learner.enrolledCourses.find(
+      (course) => course.courseId === courseId
+    );
+    if (!enrolledCourse) {
+      return res.status(404).json({ error: "Course not found for this user" });
+    }
+
+    // Update the note
+    enrolledCourse.note = note;
+
+    // Mark the learner document as modified
+    learner.markModified("enrolledCourses");
+    
+    // Save the changes
+    await learner.save();
+
+    res.status(200).json({ message: "Note updated successfully" });
   }
+  catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
+const getNote = async (req, res) => {
+  const { courseId } = req.body;
+  const userId = "663dbf52047945ec5914b733";
+  
+  try {
+    // Find the learner
+    const learner = await Learner.findOne({ userId });
+    if (!learner) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    // Find the enrolled course
+
+    const enrolledCourse = learner.enrolledCourses.find(
+      (course) => course.courseId === courseId
+    );
+
+    if (!enrolledCourse) {
+      return res.status(404).json({ error: "Course not found for this user" });
+    }
+
+    // Return the note
+    res.status(200).json({ note: enrolledCourse.note });
+  }
+  catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
+
+
+
+
+
+
 
 
 module.exports = {
@@ -262,8 +320,6 @@ module.exports = {
   getAllUserCourse,
   calProgress,
   changeChapterStatus,
-  sms
-}
-
-
-
+  updateNote,
+  getNote
+};

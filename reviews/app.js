@@ -12,7 +12,6 @@ const reviewRoutes = require("./routes/review.routes");
 
 const app = express();
 
-// make sure express is aware that it is behind a proxy of ingress-nginix and it should still trust traffic as being secure even though it is coming from that proxy
 app.set("trust proxy", true);
 
 app.use(cors());

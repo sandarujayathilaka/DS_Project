@@ -20,13 +20,9 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use(currentUser);
 
-<<<<<<< HEAD
-app.get("/api/courses", (req, res) => {
-=======
 app.use(cors());
 
 app.get("/", (req, res) => {
->>>>>>> deploy
   res.send("Hello World");
 });
 

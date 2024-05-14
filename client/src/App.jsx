@@ -21,6 +21,8 @@ import UpdateChapter from "./pages/course/UpdateChapter";
 import { Toaster } from "react-hot-toast";
 import Insights from "./pages/course/Insights";
 import VideoDashboard from "./pages/course/VideoDashboard";
+import Note from "./components/Note";
+
 
 function App() {
   return (
@@ -28,16 +30,31 @@ function App() {
       <ToastContainer />
       
       <Routes>
-        <Route path="/" element={<AddCourse />} />
-        <Route path="/course" element={<Course />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/cart" element={<Cart />} />
+        <Route path="/student" element={<Student />} />
         <Route path="/home" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/regi" element={<Register />} />
+        <Route path="/" element={<Courses />} />
+        <Route path="/note" element={<Note/>} />
+        <Route path="/login" element={<Auth />} />
+        <Route path="/signup" element={<Auth />} />
         <Route path="/reviewcard" element={<ReviewCard />} />
         <Route path="/testCourseCard" element={<TestCourseCard />} />
         <Route path="/reviewspage/:title" element={<CourseReviews />} />
         <Route path="/addreview" element={<PostReview />} />
-        
+
+
+        {/* Instructor routes */}
+        <Route path="/instructor/dashboard" element={<Courses />} />
+        <Route path="/instructor/courses" element={<Courses />} />
+        <Route path="/instructor/courses/:id" element={<UpdateCourse />} />
+        <Route
+          path="/instructor/courses/:courseId/chapter/:chapterId"
+          element={<UpdateChapter />}
+        />
+        <Route path="/instructor/insights" element={<Insights />} />
+
+        <Route path="/videos/:courseId" element={<VideoDashboard />} />
       </Routes>
 
     </BrowserRouter>
