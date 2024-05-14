@@ -1,23 +1,18 @@
 import React, { useState,useEffect } from 'react';
-import showPasswordIcon from '../assets/show.png'; // Import your show password icon
-import hidePasswordIcon from '../assets/hide.png'; // Import your hide password icon
-import { useToast } from "@/components/ui/use-toast"
+import showPasswordIcon from '../assets/show.png'; 
+import hidePasswordIcon from '../assets/hide.png';
+
 import axios from 'axios';
 import Header from './Header';
 import useUserStore from "@/stores/auth";
-
+import toast from "react-hot-toast";
 const Profile = () => {
-  const user = useUserStore((state) => state.user); // To get user info of logged in user
+  const user = useUserStore((state) => state.user); 
 
-  const setUser = useUserStore((state) => state.setUser); // To modify user info in the context (You won't need it)
-  const initialUserState = {
-    id: '663f2acac96e3c6725f5307d',
-    name: 'shakee',
-    email: 'shakee@.com',
-    role: 'Admin',
-  };
-  console.log(user)
-  const { toast } = useToast()
+  const setUser = useUserStore((state) => state.setUser); 
+
+
+ 
   const [editName, setEditName] = useState(false);
   const [newName, setNewName] = useState(user.name);
   const [editEmail, setEditEmail] = useState(false);
@@ -53,45 +48,45 @@ const Profile = () => {
     setNewName(user.name);
   };
 
-  const validateName = (name) => {
-    return name.length >= 4;
+  const validateName = (newName) => {
+    return newName.length >= 4;
   };
 
   const handleNameClick = async () => {
-    if (!validateName(user.name)) {
-      toast({
-        variant: "destructive",
-        description: "Name must be at least 4 characters long.",
-      })
+    if (!validateName(newName)) {
+      toast.error("Name must be at least 4 characters long.");
+      
 
       return;
     }
     try {
       const response = await axios.put(
-        "http://udemy.dev/api/adminprofile/name",
+        "https://udemy.dev/api/adminprofile/name",
         { name: newName,id:user.id  }
       );
       console.log("Update successful:", response.data);
-      // Assuming unenrollment was successful, you can update the UI accordingly
+     
       setUser({ ...user, name: newName });
-      toast({
-        description: "Name updated successfully.",
-      });
+      
+        toast.success("Name updated successfully.");
+      
+    
+    
+     
+    
       setEditName(false);
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000);
     } catch (error) {
-      console.error("Error Update the profile:", error);
+
       if (error.response && error.response.data && error.response.data.error) {
-        // Display error message from backend in a toast or alert
-        toast({
-          description: error.response.data.error,
-          status: "error",
-        });
+   
+        toast.error(error.response.data.error);
+      
       } else {
-        // Handle generic error message
-        toast({
-          description: "Failed to update name. Please try again.",
-          status: "error",
-        });
+        toast.error("Failed to update name. Please try again.");
+        
       }
     }
   };
@@ -108,49 +103,42 @@ const Profile = () => {
   };
   const handleEmailClick = async () => {
     
+    if (!validateEmail(newEmail)) {
+      toast.error("Invalid email format.");
+     
 
-    // Validate email
-    // if (!validateEmail(user.email)) {
-    //   toast({
-    //     variant: "destructive",
-    //     description: "Invalid email format.",
-    //   })
-
-    //   return;
-    // }
+      return;
+    }
     try {
       const response = await axios.put(
         "https://udemy.dev/api/adminprofile/email",
-        { email: user.email,id:user.id  }
+        { email: newEmail,id:user.id  }
       );
-      console.log("Update successful:", response.data);
-      // Assuming unenrollment was successful, you can update the UI accordingly
+    
+    
       setUser({ ...user, email: newEmail });
-      toast({
-        description: "Email updated successfully.",
-      });
+      toast.success("Email updated successfully.");
+     
       setEditEmail(false);
+    
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000);
     } catch (error) {
-      console.error("Error Update the Email:", error);
+     
       if (error.response && error.response.data && error.response.data.error) {
-        // Display error message from backend in a toast or alert
-        toast({
-          variant: "destructive",
-          description: error.response.data.error,
-          status: "error",
-        });
+       
+        toast.error(error.response.data.error);
+        
       } else {
-        // Handle generic error message
-        toast({
-          variant: "destructive",
-          description: "Failed to update email. Please try again.",
-          status: "error",
-        });
+      
+        toast.error("Failed to update email. Please try again.");
+        
       }
     }
   };
   const validatePassword = (password) => {
-    // Password must be at least 8 characters and contain at least one uppercase, one lowercase, and one special character
+
     const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,}$/;
     return passwordPattern.test(password);
   };
@@ -158,27 +146,15 @@ const Profile = () => {
   const handlePasswordChange = async(e) => {
     e.preventDefault();
 
-    // Validate name
-  
-
-    // Validate new password
-    // if (!validatePassword(newPassword)) {
-    //   toast({
-    //     variant: "destructive",
-    //     description: "Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one digit, and one special character.",
-    //   })
-
+    if (!validatePassword(newPassword)) {
+      toast.error("Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one digit, and one special character.");
      
-    //   return;
-    // }
+     
+      return;
+    }
 
-    // Confirm new password matches
     if (newPassword !== confirmNewPassword) {
-      toast({
-        variant: "destructive",
-        description: "New passwords do not match.",
-      })
-     
+      toast.error("New passwords do not match.");  
       return;
     }
 
@@ -189,33 +165,28 @@ const Profile = () => {
         "https://udemy.dev/api/adminprofile/pass",
         { confirmPwd:currentPassword , pwd:newPassword, matchPwd:confirmNewPassword,id:user.id  }
       );
-      console.log("Update successful:", response.data);
-      // Assuming unenrollment was successful, you can update the UI accordingly
+      
       setUser({ ...user, password: currentPassword });
-      toast({
-        description: "Password updated successfully.",
-      });
+      toast.success("Password updated successfully.");
+      
       setCurrentPassword('');
     setNewPassword('');
     setConfirmNewPassword('');
+  
+    setTimeout(() => {
+      window.location.reload();
+    }, 2000);
     } catch (error) {
-      console.error("Error Update the Password:", error);
-     
+      
      
       if (error.response && error.response.data && error.response.data.error) {
-        // Display error message from backend in a toast or alert
-        toast({
-          variant: "destructive",
-          description: error.response.data.error,
-          status: "error",
-        });
+        
+        toast.error(error.response.data.error);
+       
       } else {
-        // Handle generic error message
-        toast({
-          variant: "destructive",
-          description: "Failed to update password. Please try again.",
-          status: "error",
-        });
+     
+        toast.error("Failed to update password. Please try again.");
+        
       }
     }
 
@@ -223,9 +194,9 @@ const Profile = () => {
 
   return (
     <Header>
-    <div className='flex justify-center items-center h-screen bg-white'>
+    <div className='flex justify-center items-center h-full mt-20 mb-20 bg-white'>
       <div className="w-96 bg-blue-100 p-4 rounded-lg">
-        <div className="mb-4 text-center font-bold">{user.role}</div>
+        <div className="mb-4 text-center font-bold uppercase">{user.role}</div>
 
         <div className="mb-4 h-[40px] flex justify-between items-center bg-white rounded-lg">
           <strong className='ml-2'>Name:</strong>

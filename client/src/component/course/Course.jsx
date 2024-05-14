@@ -9,17 +9,14 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
-
+import { ArrowUpDown } from "lucide-react";
+import toast from "react-hot-toast";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
@@ -105,7 +102,7 @@ const columns = [
     },
     cell: ({ row }) => (
       <div className="ml-4">
-        {row.original.instructor.name || 'Unknown'} {/* Display instructor name or fallback to 'Unknown' */}
+        {row.original.instructor.name || 'Unknown'} 
       </div>
     ),
   },
@@ -124,7 +121,7 @@ const columns = [
     },
     cell: ({ row }) => (
       <div className="ml-4">
-        {row.original.instructor.email || 'Unknown'} {/* Display instructor name or fallback to 'Unknown' */}
+        {row.original.instructor.email || 'Unknown'} 
       </div>
     ),
   },
@@ -156,7 +153,31 @@ const columns = [
         </Button>
       );
     },
-    cell: ({ row }) => <div className="lowercase ml-4">{row.getValue("status")}</div>,
+    cell: ({ row }) => {
+      const status = row.getValue("status");
+      let statusColorClass = "";
+  
+      switch (status) {
+        case "published":
+          statusColorClass = "bg-blue-200 text-blue-700"; 
+          break;
+        case "rejected":
+          statusColorClass = "bg-red-200 text-red-700"; 
+          break;
+        case "approved":
+          statusColorClass = "bg-green-200 text-green-700";
+          break;
+        default:
+          statusColorClass = ""; 
+          break;
+      }
+  
+      return (
+        <div className={`h-6 lowercase ml-4 rounded-lg text-center justify-center ${statusColorClass}`}>
+          {status}
+        </div>
+      );
+    },
   },
   {
     id: "actions",
@@ -187,17 +208,14 @@ export default function Course() {
         const instructorResponse = await axios.get('https://udemy.dev/api/admincourse');
         const instructors = instructorResponse.data.coursesWithInstructors;
   
-        // Filter out courses with status "unpublished"
+       
         const filteredInstructors = instructors.filter(course => course.status !== "unpublished");
   
-        console.log(filteredInstructors);
-  
-        // Set the state with filtered courses
         setData(filteredInstructors);
         setIsLoading(false);
       } catch (error) {
-        console.error('Error fetching data:', error);
-        // Handle error as needed (e.g., show toast message)
+        toast.error(error);
+      
       }
     };
   
@@ -233,7 +251,7 @@ export default function Course() {
           </div>
         ) : (
     <div className="ml-2 mr-2">
-      {/* Filter Input and Columns Dropdown */}
+     
       <div className="flex flex-col lg:flex-row items-center py-4">
         <Input
           placeholder="Filter title..."
@@ -268,7 +286,7 @@ export default function Course() {
       
       </div>
 
-      {/* Responsive Table */}
+   
       <div className="rounded-md border overflow-x-auto">
         <Table>
           <TableHeader>
@@ -315,7 +333,7 @@ export default function Course() {
         </Table>
       </div>
 
-      {/* Responsive Footer with Row Count and Navigation */}
+
       <div className="flex flex-col lg:flex-row items-center justify-between py-4">
         <div className="text-sm text-muted-foreground mb-2 lg:mb-0">
           {table.getFilteredSelectedRowModel().rows.length} of{' '}

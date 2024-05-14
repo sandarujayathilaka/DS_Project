@@ -28,12 +28,12 @@ export default function Header(props) {
   return (
     <div>
     <div className="bg-blue-500">
-      {/* Horizontal Header (for larger screens) */}
+      
       <div className="hidden lg:flex justify-between items-center p-4">
-        {/* Logo or Brand */}
+        
         <div className="text-white text-lg font-bold">EduFlex</div>
 
-        {/* Navigation Links */}
+       
         <div className="flex space-x-4">
           <Link to="/dashboard">
             <Button className=" text-black bg-white hover:text-white hover:bg-blue-600">Dashboard</Button>
@@ -48,8 +48,8 @@ export default function Header(props) {
             <Button className="text-black bg-white hover:text-white hover:bg-blue-600">Courses</Button>
           </Link>
           <div className="text-black bg-white hover:text-white hover:bg-blue-600 rounded-lg">
-            <Button className="text-black bg-white hover:text-white hover:bg-blue-600" onClick={toggleProfileMenu}>
-              Username
+            <Button className="text-black bg-white hover:text-white hover:bg-blue-600 w-24" onClick={toggleProfileMenu}>
+             {user.name}
             </Button>
             {showProfileMenu && (
               <div className="text-black bg-white rounded-lg">
@@ -69,14 +69,13 @@ export default function Header(props) {
         </div>
       </div>
 
-      {/* Vertical Sidebar with Toggle Button (for smaller screens) */}
       <div className="lg:hidden">
-        {/* Hamburger Icon */}
+      
         <div className="flex justify-between items-center p-4">
-          {/* Logo or Brand */}
+          
           <div className="text-white text-lg font-bold">EduFlex</div>
 
-          {/* Hamburger Icon Button */}
+         
           <Button onClick={toggleSidebar} className="text-blue-500 bg-white hover:bg-blue-600 hover:text-white focus:outline-none">
             <svg
               className="h-6 w-6"
@@ -94,7 +93,6 @@ export default function Header(props) {
           </Button>
         </div>
 
-        {/* Sidebar Navigation (conditionally rendered) */}
         {sidebarOpen && (
           <div className="bg-blue-700">
             <Link to="/dashboard">
@@ -111,7 +109,7 @@ export default function Header(props) {
             </Link>
             <div className="text-white ">
               <Button className="text-black w-[96px] ml-1 mb-1 bg-white hover:text-white hover:bg-blue-600  p-2 block" onClick={toggleProfileMenu}>
-                Username
+                {user.name}
               </Button>
              
             </div>

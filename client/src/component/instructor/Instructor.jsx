@@ -35,6 +35,7 @@ import axios from 'axios';
 import { Link } from "react-router-dom";
 import Header from "../Header";
 import ReactLoading from 'react-loading';
+import toast from "react-hot-toast";
 const columns = [
   {
     id: "select",
@@ -141,15 +142,15 @@ export default function Student() {
       try {
         
         const instructorsResponse = await axios.get(
-          "http://udemy.dev/api/adminstatistic/instructors"
+          "https://udemy.dev/api/adminstatistic/instructors"
         );
         const instructors = instructorsResponse.data.formattedData;
 
-console.log(instructors)
         setData(instructors);
         setIsLoading(false);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        toast.error(error);
+        
       }
     };
 
@@ -184,7 +185,7 @@ console.log(instructors)
           </div>
         ) : (
     <div className="ml-2 mr-2">
-      {/* Filter Input and Columns Dropdown */}
+     
       <div className="flex flex-col lg:flex-row items-center py-4">
         <Input
           placeholder="Filter emails..."
@@ -220,7 +221,7 @@ console.log(instructors)
         </DropdownMenu>
       </div>
 
-      {/* Table Container with Horizontal Scroll */}
+     
       <div className="rounded-md border overflow-x-auto">
         <Table>
           <TableHeader>
@@ -270,7 +271,7 @@ console.log(instructors)
         </Table>
       </div>
 
-      {/* Footer with Row Count and Navigation Buttons */}
+     
       <div className="flex items-center justify-end space-x-2 py-4">
         <div className="text-sm text-muted-foreground">
           {table.getFilteredSelectedRowModel().rows.length} of{" "}

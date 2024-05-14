@@ -5,7 +5,7 @@ const { requireAuth } = require("../middleware/require-auth");
 
 const { updateStatus, getAllUserCourse } = require("../controllers/coursecontroller");
 
-router.put("/:id",  updateStatus);
+router.put("/:id", updateStatus);
 router.get("/",  getAllUserCourse);
 
 module.exports = router;

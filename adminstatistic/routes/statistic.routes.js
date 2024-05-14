@@ -6,5 +6,5 @@ const { getData, getUsers, getInstructors } = require("../controllers/statisticc
 
 router.get("/",  getData);
 router.get("/users",  getUsers);
-router.get("/instructors",  getInstructors);
+router.get("/instructors",   getInstructors);
 module.exports = router;

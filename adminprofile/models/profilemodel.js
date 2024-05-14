@@ -18,7 +18,7 @@ const userSchema = mongoose.Schema(
     },
     role: {
       type: String,
-      enum: ["student", "publisher", "admin"],
+      enum: ["student", "instructor", "admin"],
       default: "student",
     },
   },
@@ -47,5 +47,7 @@ userSchema.pre("save", async function (done) {
 
   done();
 });
+
+
 
 module.exports = mongoose.model("User", userSchema);

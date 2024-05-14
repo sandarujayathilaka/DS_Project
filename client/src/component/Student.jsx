@@ -34,6 +34,8 @@ import {
 import axios from 'axios';
 import { Link } from "react-router-dom";
 import Header from './Header';
+import toast from "react-hot-toast";
+
 const columns = [
   {
     id: "select",
@@ -144,7 +146,8 @@ export default function Student() {
         setData(res.data.formattedData);
         setIsLoading(false);
       } catch (error) {
-        console.error('Error fetching student data:', error);
+        toast.error(error);
+        
        
       }
     };

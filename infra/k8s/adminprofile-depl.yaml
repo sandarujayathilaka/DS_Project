@@ -17,7 +17,7 @@ spec:
           image: denodenojan/adminprofile
           env:
             - name: MONGO_URI
-              value: mongodb+srv://admin:admin123@blog.4nn6q4y.mongodb.net/
+              value: mongodb+srv://user:user123@project.6kognk6.mongodb.net/micro
             - name: JWT_KEY
               valueFrom:
                 secretKeyRef:

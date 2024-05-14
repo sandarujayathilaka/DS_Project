@@ -3,23 +3,17 @@
 import * as React from "react"
 import {
   Card,
-  CardContent,
-  CardDescription,
   CardFooter,
-  CardHeader,
-  CardTitle,
+ 
 } from "@/components/ui/card"
-import { Progress } from "@/components/ui/progress"
 import { format } from "date-fns"
 import { Calendar as CalendarIcon } from "lucide-react"
-import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
-import { Calendar } from "@/components/ui/calendar"
 import Header from "./Header"
 import axios from 'axios';
 import  { useState, useEffect } from 'react';
-import showPasswordIcon from '../assets/show.png';
 import { Link } from "react-router-dom";
+import toast from "react-hot-toast";
 import ReactLoading from 'react-loading';
 export default function AdminDashboard() {
   const [date, setDate] = React.useState(new Date());
@@ -30,17 +24,18 @@ export default function AdminDashboard() {
     courseImages: []
   });
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
- // const history = useHistory();
+
  const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     const fetchDatas = async () => {
       try {
         const response = await axios.get("https://udemy.dev/api/adminstatistic");
-        console.log(response.data);
+       
         setData(response.data);
         setIsLoading(false)
       } catch (error) {
-        console.error('Error fetching admin statistics:', error);
+        toast.error(error);
+     
       }
     };
 
@@ -55,9 +50,7 @@ export default function AdminDashboard() {
     return () => clearInterval(timer);
   }, [data.courseImages]);
 
-  const handleCourseClick = courseId => {
-    history.push(`/courses/${courseId}`);
-  };
+ 
 
   return (
     <Header>
@@ -68,13 +61,13 @@ export default function AdminDashboard() {
           </div>
         ) : (
     <div className="mt-5 ml-2 mr-2 flex flex-col items-center">
-      {/* Date selection */}
+     
       <Button variant={"outline"} className="w-[280px] mb-2 justify-start text-left font-normal">
         <CalendarIcon className="mr-2 h-4 w-4" />
         {date ? format(date, "PPP") : <span>Pick a date</span>}
       </Button>
 
-      {/* Course image card */}
+     
       {data.courseImages && data.courseImages.length > 0 && (
         <Card className="shadow-blue-500 w-3/4  mb-4 flex flex-col justify-center items-center ">
           <img
@@ -93,7 +86,7 @@ export default function AdminDashboard() {
         </Card>
       )}
 
-      {/* Statistics */}
+    
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-4 w-full mb-5">
         <Card className="shadow-blue-500 flex flex-col justify-center items-center">
           <h1 className="mt-5 mb-3 text-lg sm:text-xl">Total Instructor</h1>

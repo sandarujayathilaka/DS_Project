@@ -4,11 +4,9 @@ const { default: axios } = require("axios");
 
 const getData = async (req, res) => {
   try {
-    // Fetch users data
     const usersResponse = await axios.get(`http://users-srv:4000/api/users`);
     const users = usersResponse.data;
 
-    // Count instructors and students
     let instructorCount = 0;
     let studentCount = 0;
     users.forEach(user => {
@@ -19,37 +17,35 @@ const getData = async (req, res) => {
       }
     });
 
-    // Fetch courses data
     const coursesResponse = await axios.get(`http://courses-srv:4000/api/courses`);
     const courses = coursesResponse.data.courses;
 
-    // Filter courses by status and sort by createdAt
-    const filteredCourses = courses
-      .filter(course => course.status !== 'unpublished') // Filter out courses with status "unpublished"
-      .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)); // Sort courses by createdAt descending
 
-    // Prepare course images data
+      const filteredCourses = courses
+      .filter(course => course.status !== 'unpublished' && course.status !== 'draft') 
+      .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)); 
+   
+
     const courseImages = filteredCourses.map(course => ({
-      imageUrl: course.image.url,
+      imageUrl: course.image && course.image.url ? course.image.url : undefined, 
       title: course.title,
       id: course.id,
     }));
 
-    // Construct response data
     const responseData = {
       instructorCount,
       studentCount,
-      courseCount: filteredCourses.length, // Use filtered courses count
+      courseCount: filteredCourses.length,
       courseImages,
     };
 
-    // Send the response with filtered and processed data
     res.status(200).json(responseData);
   } catch (error) {
-    console.error('Error fetching data:', error);
+    
     res.status(500).json({ error: 'Failed to fetch data' });
   }
 };
+
 
 
 
@@ -63,7 +59,7 @@ const getUsers = async (req, res) => {
     const students = users.filter(user => user.role === 'student');
       const res2 = await axios.get('http://learner-srv:4000/api/learner/student');
      
-        console.log("res2",res2.data)
+       
    
       const userIdToCoursesMap = {};
       res2.data.forEach(user => {
@@ -93,7 +89,7 @@ const getUsers = async (req, res) => {
     res.status(200).send({formattedData});
   } catch (error) {
 
-    console.error('Error fetching data:', error);
+   
     res.status(500).json({ error: 'Failed to fetch data' });
   }
 };
@@ -113,10 +109,13 @@ const getInstructors = async (req, res) => {
     );
     const courses = coursesResponse.data.courses;
 
-    
+    const filteredCourses = courses
+    .filter(course => course.status !== 'unpublished' && course.status !== 'draft') 
+    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)); 
+ 
     const instructorCoursesMap = {};
 
-    courses.forEach(course => {
+    filteredCourses.forEach(course => {
       if (!instructorCoursesMap[course.instructorId]) {
         instructorCoursesMap[course.instructorId] = [];
       }

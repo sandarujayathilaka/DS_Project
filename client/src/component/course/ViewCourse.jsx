@@ -3,7 +3,6 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import ReactPlayer from "react-player";
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/components/ui/use-toast";
 import Header from "../Header";
 import toast from "react-hot-toast";
 import ReactLoading from 'react-loading';
@@ -12,87 +11,115 @@ export default function ViewCourse() {
   const [checkedChapters, setCheckedChapters] = useState({});
   const [chapterComments, setChapterComments] = useState({});
   const { id } = useParams();
-  // const { toast } = useToast();
+  const [approvedChapterCount, setApprovedChapterCount] = useState(0);
+  const [totalChapterCount, setTotalChapterCount] = useState(0);
+  const [selectedChapterCount, setSelectedChapterCount] = useState(0);
+
+  
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     const fetchCourse = async () => {
       try {
-        const response = await axios.get(`http://udemy.dev/api/courses/${id}`);
+        const response = await axios.get(`https://udemy.dev/api/courses/${id}`);
         const { chapters } = response.data;
 
-        // Filter out chapters with status !== 'draft'
+       
         const filteredChapters = chapters.filter(
-          (chapter) => chapter.status !== "draft"
+          (chapter) => chapter.status !== "unpublished" && chapter.status !== "draft"
         );
+        
 
-        // Set course data with filtered chapters
+   
         setCourseData({ ...response.data, chapters: filteredChapters });
 
-        // Initialize checkedChapters and chapterComments based on filtered chapters
+
         const initialCheckedChapters = {};
         const initialChapterComments = {};
         filteredChapters.forEach((chapter) => {
-          initialCheckedChapters[chapter._id] = false; // Initialize all as unchecked
-          initialChapterComments[chapter._id] = ""; // Initialize comments as empty strings
+          initialCheckedChapters[chapter._id] = false; 
+          initialChapterComments[chapter._id] = ""; 
         });
         setCheckedChapters(initialCheckedChapters);
         setChapterComments(initialChapterComments);
+
         setIsLoading(false);
+
       } catch (error) {
-        console.error("Error occurred while fetching course:", error);
+        toast.error(error);
+      
       }
     };
 
     fetchCourse();
   }, [id]);
 
+  useEffect(() => {
+    if (courseData && courseData.chapters) {
+      const approvedCount = courseData.chapters.filter((chapter) => chapter.status === "approved").length;
+      setApprovedChapterCount(approvedCount);
+      setTotalChapterCount(courseData.chapters.length);
+    }
+  }, [courseData]);
+
+
+
   const handleCheckboxChange = (chapterId) => {
+
     setCheckedChapters((prevState) => ({
       ...prevState,
-      [chapterId]: !prevState[chapterId], // Toggle checkbox value
+      [chapterId]: !prevState[chapterId], 
     }));
+    const isChecked = !checkedChapters[chapterId];
+
+  
+    setSelectedChapterCount((prevCount) =>
+      isChecked ? prevCount + 1 : prevCount - 1
+    );
   };
 
-  const isEveryChapterChecked = Object.values(checkedChapters).every(
-    (isChecked) => isChecked
-  );
-  const isAnyChapterChecked = Object.values(checkedChapters).some(
-    (isChecked) => isChecked
-  );
+
+  const remaining = totalChapterCount - approvedChapterCount;
+  const allChaptersChecked = selectedChapterCount === remaining;
 
   const handleClick = async (name) => {
     const status = name;
     const feedbackData = courseData.chapters.map((chapter) => ({
       chapterId: chapter._id,
-      comment: chapterComments[chapter._id] || "", // Use empty string if comment is undefined
-      isChecked: checkedChapters[chapter._id] || false, // Default to false if isChecked is undefined
+      comment: chapterComments[chapter._id] || "", 
+      isChecked: checkedChapters[chapter._id] || false, 
     }));
     try {
+      
       const response = await axios.put(
         `https://udemy.dev/api/admincourse/${id}`,
         { feedback: feedbackData, status }
       );
       if(response){
-      toast.success("Feedback submitted successfully.");
-      // toast({
-      //   description: "Feedback submitted successfully.",
-      // });
+        if(status === "feedback"){
+          toast.success("Feedback submitted successfully.");
+        }else if(status === "approve"){
+          toast.success("Course approved successfully.");
+        }
+      
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000);
+     
     }
     } catch (error) {
-      console.error("Failed to submit feedback:", error);
+     
       toast.error(error.response?.data?.error?.message || error.message);
-      // toast({
-      //   description: "Failed to submit feedback. Please try again.",
-      //   status: "error",
-      // });
+      
     }
   };
 
-  if (!courseData) {
-    return <div>Loading...</div>;
-  }
+ 
+  const isAnyChapterChecked = Object.values(checkedChapters).some((isChecked) => isChecked);
 
-  return (
+ 
+
+
+return (
     <Header>
       {isLoading ? (
           <div className="flex flex-col items-center justify-center min-h-screen bg-blue-100" >
@@ -122,8 +149,21 @@ export default function ViewCourse() {
           <p className="mb-2 text-left">
             <strong>Price:</strong> ${courseData.price}
           </p>
-          <p className="mb-2 text-left">
-            <strong>Status:</strong> {courseData.status}
+          <p className="mb-2 text-left mr-2">
+            <strong>Status:</strong>
+            <span
+              className={
+                courseData.status === "published"
+                  ? "bg-blue-200 text-blue-700 ml-1 px-2 py-1 rounded"
+                  : courseData.status === "rejected"
+                  ? "bg-red-200 text-red-700 ml-1 px-2 py-1 rounded"
+                  : courseData.status === "approved"
+                  ? "bg-green-200 text-green-700 ml-1 px-2 py-1 rounded"
+                  : ""
+              }
+            >
+              {courseData.status}
+            </span>
           </p>
         </div>
 
@@ -145,7 +185,21 @@ export default function ViewCourse() {
                   <strong>Access Type:</strong> {chapter.access}
                 </p>
                 <p className="mb-2">
-                  <strong>Status:</strong> {chapter.status}
+                  <strong>Status:</strong>
+                  <span
+              className={
+                chapter.status === "published"
+                  ? "bg-blue-200 text-blue-700 ml-1 px-2 py-1 rounded"
+                  : chapter.status === "rejected"
+                  ? "bg-red-200 text-red-700 ml-1 px-2 py-1 rounded"
+                  : chapter.status === "approved"
+                  ? "bg-green-200 text-green-700 ml-1 px-2 py-1 rounded"
+                  : ""
+              }
+            >
+             {chapter.status}
+            </span>
+                   
                 </p>
                 <div className="mt-2">
                 <ReactPlayer
@@ -163,9 +217,9 @@ export default function ViewCourse() {
                   }}
                 />
               </div>
-                {chapter.status === "approved" || chapter.status === "published" ? (
+                {chapter.status === "approved" ? (
                   <p className="text-green-600 font-semibold">
-                    Chapter {chapter.status}
+                    
                   </p>
                 ) : (
                   <div className="mt-2 flex items-center space-x-2">
@@ -201,16 +255,22 @@ export default function ViewCourse() {
             ))}
           </div>
         </div>
-
+        {courseData.status === "approved" ? (
+                  <p className="text-green-600 font-semibold mb-2">
+                   
+                  </p>
+                ) : (
         <div className="flex justify-between w-3/4 mt-4 mb-2">
-          <Button
-            onClick={() => handleClick("approve")}
-            disabled={!isAnyChapterChecked}
-          >
-            Approve
-          </Button>
-          <Button onClick={() => handleClick("feedback")}>Send Feedback</Button>
+     <Button onClick={() => handleClick("approve")} disabled={selectedChapterCount !== remaining}>
+        Approve
+      </Button>
+      <Button onClick={() => handleClick("feedback")} disabled={isAnyChapterChecked && (selectedChapterCount === remaining)}>
+        Send Feedback
+      </Button>
         </div>
+
+        )}
+       
       </div>
         )}
     </Header>
