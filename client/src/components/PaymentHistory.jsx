@@ -60,60 +60,77 @@ export default function PaymentHistory() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {orders.map((order) => (
-            <TableRow key={order.invoice}>
-              <TableCell className="font-medium">{order.orderNumber}</TableCell>
-              {order.courses.map((course) => (
-                <TableCell key={course.courseId}>{course.title}</TableCell>
-              ))}
-              <TableCell>
-                <span
-                  className={`inline-block px-2 py-1 rounded ${
-                    order.paymentStatus === "paid"
-                      ? "bg-green-500 text-white"
-                      : "bg-red-500 text-white"
-                  }`}
-                >
-                  {order.paymentStatus}
-                </span>
-              </TableCell>
-              <TableCell>{order.paymentMethod}</TableCell>
-              <TableCell>
-                {new Date(order.createdAt).toLocaleString("en-US", {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                  hour: "numeric",
-                  minute: "numeric",
-                  second: "numeric",
-                })}
-              </TableCell>
-              <TableCell>${order.totalPrice}</TableCell>
-              <TableCell className="text-right p-2">
-                <Button
-                  className="bg-orange-500 h-7 hover:bg-green-500"
-                  onClick={() =>
-                    handleClick(
-                      order.orderNumber,
-                      new Date(order.createdAt).toLocaleString("en-US", {
+          {orders.map((order) =>
+            order.courses.map((course, index) => (
+              <TableRow key={`${order.invoice}-${index}`}>
+                {index === 0 && (
+                  <>
+                    <TableCell
+                      rowSpan={order.courses.length}
+                      className="font-medium"
+                    >
+                      {order.orderNumber}
+                    </TableCell>
+                    <TableCell>{course.title}</TableCell>
+                    <TableCell rowSpan={order.courses.length}>
+                      <span
+                        className={`inline-block px-2 py-1 rounded ${
+                          order.paymentStatus === "paid"
+                            ? "bg-green-500 text-white"
+                            : "bg-red-500 text-white"
+                        }`}
+                      >
+                        {order.paymentStatus}
+                      </span>
+                    </TableCell>
+                    <TableCell rowSpan={order.courses.length}>
+                      {order.paymentMethod}
+                    </TableCell>
+                    <TableCell rowSpan={order.courses.length}>
+                      {new Date(order.createdAt).toLocaleString("en-US", {
                         year: "numeric",
                         month: "long",
                         day: "numeric",
                         hour: "numeric",
                         minute: "numeric",
                         second: "numeric",
-                      }),
-                      order.totalPrice,
-                      order.paymentMethod,
-                      order.paymentStatus
-                    )
-                  }
-                >
-                  Email
-                </Button>
-              </TableCell>
-            </TableRow>
-          ))}
+                      })}
+                    </TableCell>
+                    <TableCell rowSpan={order.courses.length}>
+                      ${order.totalPrice}
+                    </TableCell>
+                    <TableCell
+                      rowSpan={order.courses.length}
+                      className="text-right p-2"
+                    >
+                      <Button
+                        className="bg-orange-500 h-7 hover:bg-green-500"
+                        onClick={() =>
+                          handleClick(
+                            order.orderNumber,
+                            new Date(order.createdAt).toLocaleString("en-US", {
+                              year: "numeric",
+                              month: "long",
+                              day: "numeric",
+                              hour: "numeric",
+                              minute: "numeric",
+                              second: "numeric",
+                            }),
+                            order.totalPrice,
+                            order.paymentMethod,
+                            order.paymentStatus
+                          )
+                        }
+                      >
+                        Email
+                      </Button>
+                    </TableCell>
+                  </>
+                )}
+                {index !== 0 && <TableCell>{course.title}</TableCell>}
+              </TableRow>
+            ))
+          )}
         </TableBody>
       </Table>
     </div>
