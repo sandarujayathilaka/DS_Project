@@ -55,9 +55,9 @@ export default function AdminDashboard() {
   return (
     <Header>
       {isLoading ? (
-          <div className="flex flex-col items-center justify-center min-h-screen bg-blue-100" >
+          <div className="flex flex-col items-center justify-center min-h-screen bg-green-100" >
            
-            <ReactLoading type="spinningBubbles" color="#0000FF" height={100} width={50} />
+            <ReactLoading type="spinningBubbles" color="#184B4B" height={100} width={50} />
           </div>
         ) : (
     <div className="mt-5 ml-2 mr-2 flex flex-col items-center">
@@ -69,7 +69,7 @@ export default function AdminDashboard() {
 
      
       {data.courseImages && data.courseImages.length > 0 && (
-        <Card className="shadow-blue-500 w-3/4  mb-4 flex flex-col justify-center items-center ">
+        <Card className="shadow-green-500 w-3/4  mb-4 flex flex-col justify-center items-center ">
           <img
             src={data.courseImages[currentImageIndex]?.imageUrl}
             alt={data.courseImages[currentImageIndex]?.title}
@@ -77,8 +77,8 @@ export default function AdminDashboard() {
           />
           <CardFooter>
             <p className="mr-2">{data.courseImages[currentImageIndex]?.title}</p>
-          <Link to={`/view/${data.courseImages[currentImageIndex]?.id}`}>
-            <Button >
+          <Link to={`/admin/view/${data.courseImages[currentImageIndex]?.id}`}>
+            <Button className="bg-green-500 hover:bg-green-700">
               View Course
             </Button>
             </Link>
@@ -88,35 +88,35 @@ export default function AdminDashboard() {
 
     
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-4 w-full mb-5">
-        <Card className="shadow-blue-500 flex flex-col justify-center items-center">
+        <Card className="shadow-green-500 flex flex-col justify-center items-center">
           <h1 className="mt-5 mb-3 text-lg sm:text-xl">Total Instructor</h1>
           <p className="mb-5 text-xl sm:text-2xl">{data.instructorCount}</p>
           <CardFooter>
-          <Link to={`/instructors`}>
-            <Button >
+          <Link to={`/admin/instructors`}>
+          <Button className="bg-green-500 hover:bg-green-700">
               View Instructors
             </Button>
             </Link>
           </CardFooter>
         </Card>
-        <Card className="shadow-blue-500 flex flex-col justify-center items-center">
+        <Card className="shadow-green-500 flex flex-col justify-center items-center">
           <h1 className="mt-5 mb-3 text-lg sm:text-xl">Total Courses</h1>
           <p className="mb-5 text-xl sm:text-2xl">{data.courseCount}</p>
           <CardFooter>
-          <Link to={`/courses`}>
-            <Button >
+          <Link to={`/admin/courses`}>
+          <Button className="bg-green-500 hover:bg-green-700">
               View Courses
             </Button>
             </Link>
           </CardFooter>
        
         </Card>
-        <Card className="shadow-blue-500 flex flex-col justify-center items-center">
+        <Card className="shadow-green-500 flex flex-col justify-center items-center">
           <h1 className="mt-5 mb-3 text-lg sm:text-xl">Total Student</h1>
           <p className="mb-5 text-xl sm:text-2xl">{data.studentCount}</p>
           <CardFooter>
-          <Link to={`/students`}>
-            <Button >
+          <Link to={`/admin/students`}>
+          <Button className="bg-green-500 hover:bg-green-700">
               View Students
             </Button>
             </Link>

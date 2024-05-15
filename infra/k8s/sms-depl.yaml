@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sms-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sms
+  template:
+    metadata:
+      labels:
+        app: sms
+    spec:
+      containers:
+        - name: sms
+          image: denodenojan/sms
+          env:
+            - name: MONGO_URI
+              value: mongodb+srv://user:user123@project.6kognk6.mongodb.net/micro
+            - name: JWT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret
+                  key: JWT_KEY
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sms-srv
+spec:
+  selector:
+    app: sms
+  ports:
+    - name: sms
+      protocol: TCP
+      port: 4000
+      targetPort: 4000

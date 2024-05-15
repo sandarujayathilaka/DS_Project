@@ -6,12 +6,12 @@ const authToken = process.env.AUTH_TOKEN;
 const client = require('twilio')(accountSid, authToken);
 
 
-const sendSMS = async(body) => {
+const sendSMS = async() => {
     console.log("sms")
     let msgOptions = {
         from: process.env.PHONE_NUMBER,
         to :process.env.SEND_NUMBER,
-        body,
+        body:"You are enrolled.",
     };
     try{
         const message = await client.messages.create(msgOptions);
@@ -23,6 +23,7 @@ const sendSMS = async(body) => {
 };
 
 
-sendSMS("You are enrolled.");
 
 
+
+module.exports = { sendSMS };

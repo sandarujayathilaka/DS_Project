@@ -27,7 +27,7 @@ export default function Header(props) {
 
   return (
     <div>
-    <div className="bg-blue-500">
+    <div className="bg-green-700">
       
       <div className="hidden lg:flex justify-between items-center p-4">
         
@@ -35,31 +35,31 @@ export default function Header(props) {
 
        
         <div className="flex space-x-4">
-          <Link to="/dashboard">
-            <Button className=" text-black bg-white hover:text-white hover:bg-blue-600">Dashboard</Button>
+          <Link to="/admin/dashboard">
+            <Button className=" text-black bg-white hover:text-white hover:bg-green-700">Dashboard</Button>
           </Link>
-          <Link to="/students">
-            <Button className="text-black bg-white hover:text-white hover:bg-blue-600">Student</Button>
+          <Link to="/admin/students">
+            <Button className="text-black bg-white hover:text-white hover:bg-green-700">Student</Button>
           </Link>
-          <Link to="/instructors">
-            <Button className="text-black bg-white hover:text-white hover:bg-blue-600">Instructor</Button>
+          <Link to="/admin/instructors">
+            <Button className="text-black bg-white hover:text-white hover:bg-green-700">Instructor</Button>
           </Link>
-          <Link to="/courses">
-            <Button className="text-black bg-white hover:text-white hover:bg-blue-600">Courses</Button>
+          <Link to="/admin/courses">
+            <Button className="text-black bg-white hover:text-white hover:bg-green-700">Courses</Button>
           </Link>
-          <div className="text-black bg-white hover:text-white hover:bg-blue-600 rounded-lg">
-            <Button className="text-black bg-white hover:text-white hover:bg-blue-600 w-24" onClick={toggleProfileMenu}>
+          <div className="text-black bg-white hover:text-white hover:bg-green-700 rounded-lg">
+            <Button className="text-black bg-white hover:text-white hover:bg-green-700 w-24" onClick={toggleProfileMenu}>
              {user.name}
             </Button>
             {showProfileMenu && (
               <div className="text-black bg-white rounded-lg">
-                <Link to="/profile">
-                  <Button className="w-[96px] text-black bg-white hover:text-white hover:bg-blue-600 block" onClick={toggleProfileMenu}>
+                <Link to="/admin/profile">
+                  <Button className="w-[96px] text-black bg-white hover:text-white hover:bg-green-700 block" onClick={toggleProfileMenu}>
                     My Profile
                   </Button>
                 </Link>
                 <Link to="/login">
-                  <Button className="w-[96px] text-black bg-white hover:text-white hover:bg-blue-600 block" onClick={toggleProfileMenu}>
+                  <Button className="w-[96px] text-black bg-white hover:text-white hover:bg-green-700 block" onClick={toggleProfileMenu}>
                     Logout
                   </Button>
                 </Link>
@@ -76,7 +76,7 @@ export default function Header(props) {
           <div className="text-white text-lg font-bold">EduFlex</div>
 
          
-          <Button onClick={toggleSidebar} className="text-blue-500 bg-white hover:bg-blue-600 hover:text-white focus:outline-none">
+          <Button onClick={toggleSidebar} className="text-green-500 bg-white hover:bg-green-700 hover:text-white focus:outline-none">
             <svg
               className="h-6 w-6"
               fill="none"
@@ -94,34 +94,34 @@ export default function Header(props) {
         </div>
 
         {sidebarOpen && (
-          <div className="bg-blue-700">
-            <Link to="/dashboard">
-              <Button className="text-black w-[96px] ml-1 mb-1 bg-white hover:text-white hover:bg-blue-600 p-3 block" onClick={toggleSidebar}>Dashboard</Button>
+          <div className="bg-green-600">
+            <Link to="/admin/dashboard">
+              <Button className="text-black w-[96px] ml-1 mb-1 bg-white hover:text-white hover:bg-green-700 p-3 block" onClick={toggleSidebar}>Dashboard</Button>
             </Link>
-            <Link to="/students">
-              <Button className="text-black w-[96px] ml-1 mb-1 bg-white hover:text-white hover:bg-blue-600  p-3 block" onClick={toggleSidebar}>Student</Button>
+            <Link to="/admin/students">
+              <Button className="text-black w-[96px] ml-1 mb-1 bg-white hover:text-white hover:bg-green-700  p-3 block" onClick={toggleSidebar}>Student</Button>
             </Link>
-            <Link to="/instructors">
-              <Button className="text-black w-[96px] ml-1 mb-1 bg-white hover:text-white hover:bg-blue-600  p-3 block" onClick={toggleSidebar}>Instructor</Button>
+            <Link to="/admin/instructors">
+              <Button className="text-black w-[96px] ml-1 mb-1 bg-white hover:text-white hover:bg-green-700  p-3 block" onClick={toggleSidebar}>Instructor</Button>
             </Link>
-            <Link to="/courses">
-              <Button className="text-black w-[96px] ml-1 mb-1 bg-white hover:text-white hover:bg-blue-600  p-3 block" onClick={toggleSidebar}>Courses</Button>
+            <Link to="/admin/courses">
+              <Button className="text-black w-[96px] ml-1 mb-1 bg-white hover:text-white hover:bg-green-700  p-3 block" onClick={toggleSidebar}>Courses</Button>
             </Link>
             <div className="text-white ">
-              <Button className="text-black w-[96px] ml-1 mb-1 bg-white hover:text-white hover:bg-blue-600  p-2 block" onClick={toggleProfileMenu}>
+              <Button className="text-black w-[96px] ml-1 mb-1 bg-white hover:text-white hover:bg-green-700  p-2 block" onClick={toggleProfileMenu}>
                 {user.name}
               </Button>
              
             </div>
             {showProfileMenu && (
                 <div className="">
-                  <Link to="/profile">
-                    <Button className="text-black w-[96px] ml-3 mb-1 bg-white hover:text-white hover:bg-blue-600  block" onClick={toggleSidebar}>
+                  <Link to="/admin/profile">
+                    <Button className="text-black w-[96px] ml-3 mb-1 bg-white hover:text-white hover:bg-green-700  block" onClick={toggleSidebar}>
                       My Profile
                     </Button>
                   </Link>
                   <Link to="/login">
-                    <Button className="text-black w-[96px] ml-3 mb-1 bg-white hover:text-white hover:bg-blue-600  block" onClick={handleLogout}>
+                    <Button className="text-black w-[96px] ml-3 mb-1 bg-white hover:text-white hover:bg-green-700  block" onClick={handleLogout}>
                       Logout
                     </Button>
                   </Link>

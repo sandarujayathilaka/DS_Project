@@ -185,10 +185,10 @@ const columns = [
     enableHiding: false,
     cell: ({ row }) => {
       const options = row.original;
-console.log("options",options.id)
+console.log("options",options)
       return (
-        <Link to={`/view/${options.id}`}>
-       <Button>View</Button> 
+        <Link to={`/admin/view/${options.id}`}>
+       <Button className="bg-green-700 hover:bg-green-800">View</Button> 
     </Link>
       );
     },
@@ -245,9 +245,9 @@ export default function Course() {
   return (
     <Header>
        {isLoading ? (
-          <div className="flex flex-col items-center justify-center min-h-screen bg-blue-100" >
+          <div className="flex flex-col items-center justify-center min-h-screen bg-green-100" >
            
-            <ReactLoading type="spinningBubbles" color="#0000FF" height={100} width={50} />
+            <ReactLoading type="spinningBubbles" color="#184B4B" height={100} width={50} />
           </div>
         ) : (
     <div className="ml-2 mr-2">

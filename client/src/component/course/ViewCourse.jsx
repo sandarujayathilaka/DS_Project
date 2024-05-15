@@ -122,12 +122,12 @@ export default function ViewCourse() {
 return (
     <Header>
       {isLoading ? (
-          <div className="flex flex-col items-center justify-center min-h-screen bg-blue-100" >
+          <div className="flex flex-col items-center justify-center min-h-screen bg-green-100" >
            
-            <ReactLoading type="spinningBubbles" color="#0000FF" height={100} width={50} />
+            <ReactLoading type="spinningBubbles" color="#184B4B" height={100} width={50} />
           </div>
         ) : (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-blue-200">
+      <div className="flex flex-col items-center justify-center min-h-screen bg-green-200">
         <div className="bg-white p-8 rounded shadow-md w-3/4 mt-2 mb-2 text-center">
           <h1 className="mb-4 text-xl font-bold">View Course</h1>
           <div className="flex items-center justify-center">
@@ -173,7 +173,7 @@ return (
             {courseData.chapters.map((chapter) => (
               <div
                 key={chapter._id}
-                className="border rounded-lg p-4 bg-blue-100 flex flex-col justify-center"
+                className="border rounded-lg p-4 bg-white flex flex-col justify-center"
               >
                 <h3 className="mb-2">
                   <strong>Title:</strong> {chapter.title}
@@ -261,10 +261,10 @@ return (
                   </p>
                 ) : (
         <div className="flex justify-between w-3/4 mt-4 mb-2">
-     <Button onClick={() => handleClick("approve")} disabled={selectedChapterCount !== remaining}>
+     <Button className="bg-green-500 hover:bg-green-700" onClick={() => handleClick("approve")} disabled={selectedChapterCount !== remaining}>
         Approve
       </Button>
-      <Button onClick={() => handleClick("feedback")} disabled={isAnyChapterChecked && (selectedChapterCount === remaining)}>
+      <Button className="bg-green-500 hover:bg-green-700" onClick={() => handleClick("feedback")} disabled={isAnyChapterChecked && (selectedChapterCount === remaining)}>
         Send Feedback
       </Button>
         </div>

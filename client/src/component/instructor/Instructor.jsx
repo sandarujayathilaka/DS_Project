@@ -179,9 +179,9 @@ export default function Student() {
   return (
     <Header>
        {isLoading ? (
-          <div className="flex flex-col items-center justify-center min-h-screen bg-blue-100" >
+          <div className="flex flex-col items-center justify-center min-h-screen bg-green-100" >
            
-            <ReactLoading type="spinningBubbles" color="#0000FF" height={100} width={50} />
+            <ReactLoading type="spinningBubbles" color="#184B4B" height={100} width={50} />
           </div>
         ) : (
     <div className="ml-2 mr-2">

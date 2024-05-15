@@ -35,12 +35,12 @@ function App() {
 
 
        
-          <Route path="/dashboard" element={<AdminDashboard />} />
-          <Route path="/students" element={<Students />} />
-          <Route path="/instructors" element={<Instructor />} />
-          <Route path="/courses" element={<Course />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/view/:id" element={<ViewCourse />} />
+          <Route path="/admin/dashboard" element={<AdminDashboard />} />
+          <Route path="/admin/students" element={<Students />} />
+          <Route path="/admin/instructors" element={<Instructor />} />
+          <Route path="/admin/courses" element={<Course />} />
+          <Route path="/admin/profile" element={<Profile />} />
+          <Route path="/admin/view/:id" element={<ViewCourse />} />
          
 
 

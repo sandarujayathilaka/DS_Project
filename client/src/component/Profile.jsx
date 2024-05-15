@@ -195,7 +195,7 @@ const Profile = () => {
   return (
     <Header>
     <div className='flex justify-center items-center h-full mt-20 mb-20 bg-white'>
-      <div className="w-96 bg-blue-100 p-4 rounded-lg">
+      <div className="w-96 bg-green-200 p-4 rounded-lg">
         <div className="mb-4 text-center font-bold uppercase">{user.role}</div>
 
         <div className="mb-4 h-[40px] flex justify-between items-center bg-white rounded-lg">
@@ -242,7 +242,7 @@ const Profile = () => {
               />
               <button
                 type="button"
-                className="absolute top-1/2 right-2 transform -translate-y-1/2"
+                className="absolute top-1/2 right-2 transform -translate-y-1/2 "
                 onClick={() => togglePasswordVisibility('currentPassword')}
               >
                 <img src={showCurrentPassword ? showPasswordIcon : hidePasswordIcon} className="w-5 h-5" alt="Toggle Password" />
@@ -289,7 +289,7 @@ const Profile = () => {
               </button>
             </div>
           </div>
-          <button className="block mb-2 w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" type="submit">Change Password</button>
+          <button className="block mb-2 w-full bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" type="submit">Change Password</button>
           
         </form>
       </div>

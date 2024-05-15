@@ -66,7 +66,13 @@ spec:
                 name: admincourse-srv
                 port:
                   number: 4000       
-
+          - path: /api/sms/?(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: sms-srv
+                port:
+                  number: 4000
               
 
 
