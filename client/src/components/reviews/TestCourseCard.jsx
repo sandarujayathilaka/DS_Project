@@ -5,7 +5,7 @@ const TestCourseCard = ({ course }) => {
   // Dummy data for the course card
   const dummyCourse = {
     courseId: 'test1',
-    title: 'Introduction to ML',
+    title: 'Python for Data Science and Machine Learning Bootcamp',
     description: 'This course provides an introduction to JavaScript programming language.',
     image: 'https://via.placeholder.com/300', // Placeholder image URL
   };

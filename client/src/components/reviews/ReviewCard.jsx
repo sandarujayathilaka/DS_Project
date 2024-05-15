@@ -1,12 +1,23 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 const ReviewCard = ({ review }) => {
-  const { userName, rating, comment, createdAt } = review;
+  const { userName, rating, comment, date } = review;
 
   // Calculate the number of full stars
   const fullStars = Math.floor(rating);
   // Calculate if there's a half star
   const hasHalfStar = rating % 1 !== 0;
+
+  // Function to format the date
+  const formatDate = (isoString) => {
+    const date = new Date(isoString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+
+  const formattedDate = formatDate(date);
 
   return (
     <div className="bg-white max-w-xl rounded-2xl px-10 py-8 shadow-lg hover:shadow-2xl transition duration-500">
@@ -65,7 +76,7 @@ const ReviewCard = ({ review }) => {
               alt={userName}
             />
           </div>
-          <div className="text-sm font-semibold">{userName} • <span className="font-normal">{createdAt}</span></div>
+          <div className="text-sm font-semibold">{userName} • <span className="font-normal">{formattedDate}</span></div>
         </div>
       </div>
     </div>
