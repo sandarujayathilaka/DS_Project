@@ -20,6 +20,7 @@ import Insights from "./pages/course/Insights";
 import VideoDashboard from "./pages/course/VideoDashboard";
 import Note from "./components/Note";
 import InstructorProfile from "./pages/course/InstructorProfile";
+import CourseTab from "./pages/CourseTab";
 
 
 function App() {
@@ -39,6 +40,9 @@ function App() {
         <Route path="/testCourseCard" element={<TestCourseCard />} />
         <Route path="/reviewspage/:title" element={<CourseReviews />} />
         <Route path="/addreview" element={<PostReview />} />
+        <Route path="/ctab" element={<CourseTab />} />
+
+
 
 
         {/* Instructor routes */}
