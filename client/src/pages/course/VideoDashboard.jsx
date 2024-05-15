@@ -3,6 +3,7 @@ import PageLoader from "@/components/loaders/PageLoader";
 import { Banner } from "@/components/ui/banner";
 import { Button } from "@/components/ui/button";
 import CourseLayout from "@/layouts/CourseLayout";
+import useUserStore from "@/stores/auth";
 import axios from "axios";
 import { CheckCircleIcon, Lock } from "lucide-react";
 import React, { useEffect, useState } from "react";
@@ -16,7 +17,14 @@ const VideoDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [selectedChapter, setSelectedChapter] = useState();
 
-  const isLocked = selectedChapter?.access !== "free";
+  const enrolledCourses = useUserStore((state) => state.enrolledCourses);
+
+  console.log(enrolledCourses);
+  console.log(selectedChapter);
+
+  const isLocked =
+    selectedChapter?.access !== "free" &&
+    !enrolledCourses?.some((course) => course?.courseId === courseId);
 
   useEffect(() => {
     fetchChapterData();
@@ -39,6 +47,25 @@ const VideoDashboard = () => {
         console.error(error);
         toast.error(error.response?.data?.error?.message || error.message);
         setLoading(false);
+      });
+  };
+
+  const markChapterCompleted = () => {
+    console.log(selectedChapter?._id);
+    console.log(courseId);
+    api
+      .put("/learner/setstatus", {
+        courseId,
+        chapterId: selectedChapter?._id,
+        status: "completed",
+      })
+      .then((response) => {
+        console.log(response.data);
+        toast.success("Chapter marked as completed");
+      })
+      .catch((error) => {
+        console.error(error);
+        toast.error(error.response?.data?.error?.message || error.message);
       });
   };
 
@@ -92,7 +119,7 @@ const VideoDashboard = () => {
               {data.price && ` $${data?.price}`}
             </Button>
           ) : (
-            <Button className="bg-main">
+            <Button className="bg-main" onClick={markChapterCompleted}>
               <CheckCircleIcon className="h-6 w-6 mr-2" />
               Mark as completed
             </Button>

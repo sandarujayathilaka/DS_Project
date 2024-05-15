@@ -2,8 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import api from "@/api/build-client";
 import Footer from "./Footer";
-import NavBar from "../components/Navbar";
-
+import NavBar from "./Navbar";
 
 export default function Cart() {
   const [cartItems, setCartItems] = useState([]);
@@ -26,12 +25,12 @@ export default function Cart() {
   };
 
   const handleRemoveItem = (itemId) => {
-    console.log(itemId)
+    console.log(itemId);
     api
       .delete(`/cart/deleteitem/${itemId}`)
       .then((response) => {
         console.log("Item removed successfully");
-        fetchCartItems(); 
+        fetchCartItems();
       })
       .catch((error) => {
         console.error("Error removing item:", error);
@@ -58,7 +57,7 @@ export default function Cart() {
 
   return (
     <>
-   <NavBar/>
+      <NavBar />
       <div className="container mx-auto mt-10">
         <div className="sm:flex shadow-md my-10">
           <div className="w-full sm:w-3/4 bg-white px-10 py-10">
@@ -124,7 +123,7 @@ export default function Cart() {
           </div>
         </div>
       </div>
-      <Footer/>
+      <Footer />
     </>
   );
 }

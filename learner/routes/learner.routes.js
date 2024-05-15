@@ -14,13 +14,12 @@ const {
   getAllEnrolledUsers,
 } = require("../controllers/LearnerCtrl");
 
-
 const learnerRoutes = express.Router();
 
 learnerRoutes.post("/boughtcourse", boughtCourse);
 learnerRoutes.post("/enroll", enrollToCourse);
 learnerRoutes.post("/unenroll", unenrollFromCourse);
-learnerRoutes.post("/getenroll",getAllEnrolledCourses);
+learnerRoutes.post("/getenroll", getAllEnrolledCourses);
 learnerRoutes.post("/getpending", getPendingEnrolledCourses);
 learnerRoutes.post("/getusercourses", getAllUserCourse);
 learnerRoutes.post("/progress", calProgress);
@@ -30,4 +29,3 @@ learnerRoutes.get("/note", getNote);
 learnerRoutes.get("/student", getAllEnrolledUsers);
 
 module.exports = learnerRoutes;
-
