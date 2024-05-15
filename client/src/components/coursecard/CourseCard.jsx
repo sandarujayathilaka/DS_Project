@@ -18,7 +18,7 @@ const CourseCard = ({ course }) => {
               </h2>
           </div>
 
-          <button className="mt-6 py-2 px-4 bg-red-400 text-gray-800 font-bold rounded-lg shadow-md hover:shadow-lg transition duration-300">
+          <button className="mt-6 py-2 px-4 bg-green-300 text-gray-800 font-bold rounded-lg shadow-md hover:shadow-lg transition duration-300">
             Add to Cart
           </button>
         </div>
