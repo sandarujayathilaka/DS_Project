@@ -84,7 +84,7 @@ const unenrollFromCourse = async (req, res) => {
 //get all courses of specific user
 const getAllUserCourse = async (req, res) => {
   const userId = req.currentUser.id; 
-console.log(userId)
+console.log("UserId",userId)
   try {
  
     const learner = await Learner.findOne({ userId });
@@ -103,7 +103,7 @@ console.log(userId)
 
 //get all enrolled courses of specific user
 const getAllEnrolledCourses = async (req, res) => {
-  const { userId } = req.body; 
+  const userId = req.currentUser.id; 
 
   try {
 
@@ -125,7 +125,7 @@ const getAllEnrolledCourses = async (req, res) => {
 
 //get all pending enrolled courses of specific user
 const getPendingEnrolledCourses = async (req, res) => {
-  const { userId } = req.body;
+  const userId = req.currentUser.id; 
 
   try {
  
@@ -182,7 +182,8 @@ const calProgress = async (req, res) => {
 //change chapter status of specific user
 const changeChapterStatus = async (req, res) => {
   const { courseId, chapterId, status } = req.body;
-  const userId = req.currentUser.id;
+  console.log("status",status,chapterId,courseId)
+  const userId = "664112ef50d784c54633e1a7";
 
   try {
 
@@ -194,6 +195,7 @@ const changeChapterStatus = async (req, res) => {
     const enrolledCourse = learner.enrolledCourses.find(
       (course) => course.courseId === courseId
     );
+    console.log(enrolledCourse)
     if (!enrolledCourse) {
       return res.status(404).json({ error: "Course not found for this user" });
     }
@@ -255,7 +257,8 @@ const updateNote = async (req, res) => {
 //get note of specific user 
 const getNote = async (req, res) => {
   const { courseId } = req.body;
-  const userId ="6641ad5c803b6f7e87e9aac5";
+  const userId = req.currentUser.id;
+  console.log("note",userId)
   
   try {
 

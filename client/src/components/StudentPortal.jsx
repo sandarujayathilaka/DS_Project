@@ -12,9 +12,7 @@ import useUserStore from "@/stores/auth";
 const fetchCourses = async (setCourses,user) => {
   console.log(user.id)
   try {
-    const response = await api.post("/learner/getusercourses", {
-      userId:user.id,
-    });
+    const response = await api.get("/learner/getusercourses");
 
      console.log(response.data);
 

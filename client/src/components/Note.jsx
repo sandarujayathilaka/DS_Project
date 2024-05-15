@@ -17,7 +17,7 @@ export default function Note() {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await api.post("/learner/getusercourses");
+        const response = await api.get("/learner/getusercourses");
         setCourses(response.data);
         console.log(response.data);
       } catch (error) {
