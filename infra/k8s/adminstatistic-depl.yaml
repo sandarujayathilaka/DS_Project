@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: adminstatistic-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: adminstatistic
+  template:
+    metadata:
+      labels:
+        app: adminstatistic
+    spec:
+      containers:
+        - name: adminstatistic
+          image: denodenojan/adminstatistic
+          env:
+            - name: MONGO_URI
+              value: mongodb+srv://user:user123@project.6kognk6.mongodb.net/micro
+            - name: JWT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret
+                  key: JWT_KEY
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: adminstatistic-srv
+spec:
+  selector:
+    app: adminstatistic
+  ports:
+    - name: adminstatistic
+      protocol: TCP
+      port: 4000
+      targetPort: 4000

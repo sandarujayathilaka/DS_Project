@@ -45,6 +45,27 @@ spec:
                 name: cart-srv
                 port:
                   number: 4000
+          - path: /api/adminprofile/?(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: adminprofile-srv
+                port:
+                  number: 4000       
+          - path: /api/adminstatistic/?(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: adminstatistic-srv
+                port:
+                  number: 4000
+          - path: /api/admincourse/?(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: admincourse-srv
+                port:
+                  number: 4000       
           - path: /api/email/?(.*)
             pathType: Prefix
             backend:
