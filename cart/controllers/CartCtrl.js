@@ -2,7 +2,7 @@ const Cart = require("../models/Cart");
 
 
 const addCartItems = async (req, res) => {
-  const { course } = req.body; // Extract the course object from the request body
+  const { course } = req.body;
   console.log(course);
   const userId = req.currentUser.id;
   const courseId = course.courseId;
