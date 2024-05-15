@@ -57,7 +57,7 @@ const Chapters = ({ initialValue, courseId, refresh }) => {
 
     setLoading(true);
     api
-      .patch("/api/courses/" + courseId, {
+      .patch("/courses/" + courseId, {
         chapters: newItems,
       })
       .then((response) => {

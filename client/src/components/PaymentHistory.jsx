@@ -8,9 +8,13 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import api from "@/api/build-client";
+import { Button } from "./ui/button";
+import useUserStore from "@/stores/auth";
+import toast from "react-hot-toast";
 
 export default function PaymentHistory() {
   const [orders, setOrders] = useState([]);
+  const user = useUserStore((state) => state.user);
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -25,6 +29,22 @@ export default function PaymentHistory() {
     fetchOrders();
   }, []);
 
+  const handleClick = async (invoice, date, price, method, status) => {
+    try {
+      const response = await api.post("/email/sentone", {
+        userEmail: user.email,
+        invoice,
+        date,
+        price,
+        method,
+        status,
+      });
+      toast.success("Email sent successfully");
+    } catch (error) {
+      console.error("Error sending email:", error);
+    }
+  };
+
   return (
     <div>
       <Table>
@@ -35,7 +55,8 @@ export default function PaymentHistory() {
             <TableHead>Status</TableHead>
             <TableHead>Method</TableHead>
             <TableHead>Date</TableHead>
-            <TableHead className="text-right">Amount</TableHead>
+            <TableHead>Amount</TableHead>
+            <TableHead className="text-right">Get Mail</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -67,7 +88,30 @@ export default function PaymentHistory() {
                   second: "numeric",
                 })}
               </TableCell>
-              <TableCell className="text-right">${order.totalPrice}</TableCell>
+              <TableCell>${order.totalPrice}</TableCell>
+              <TableCell className="text-right p-2">
+                <Button
+                  className="bg-orange-500 h-7 hover:bg-green-500"
+                  onClick={() =>
+                    handleClick(
+                      order.orderNumber,
+                      new Date(order.createdAt).toLocaleString("en-US", {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                        hour: "numeric",
+                        minute: "numeric",
+                        second: "numeric",
+                      }),
+                      order.totalPrice,
+                      order.paymentMethod,
+                      order.paymentStatus
+                    )
+                  }
+                >
+                  Email
+                </Button>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

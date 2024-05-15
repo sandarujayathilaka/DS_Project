@@ -3,12 +3,9 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import InstructorLayout from "./layouts/InstructorLayout";
-import AddCourse from "./pages/course/AddCourse";
-import Course from "./pages/course/Course";
 import Cart from "./components/Cart";
 import Student from "./components/StudentPortal";
 import Home from "./pages/Home";
-import Login from "./pages/Login";
 import ReviewCard from "./components/reviews/ReviewCard";
 import TestCourseCard from "./components/reviews/TestCourseCard";
 import CourseReviews from "./pages/review/CourseReviews";
@@ -22,6 +19,7 @@ import { Toaster } from "react-hot-toast";
 import Insights from "./pages/course/Insights";
 import VideoDashboard from "./pages/course/VideoDashboard";
 import Note from "./components/Note";
+import InstructorProfile from "./pages/course/InstructorProfile";
 
 
 function App() {
@@ -34,8 +32,7 @@ function App() {
         <Route path="/cart" element={<Cart />} />
         <Route path="/student" element={<Student />} />
         <Route path="/home" element={<Home />} />
-        <Route path="/" element={<Courses />} />
-        <Route path="/note" element={<Note/>} />
+        <Route path="/note" element={<Note />} />
         <Route path="/login" element={<Auth />} />
         <Route path="/signup" element={<Auth />} />
         <Route path="/reviewcard" element={<ReviewCard />} />
@@ -53,6 +50,7 @@ function App() {
           element={<UpdateChapter />}
         />
         <Route path="/instructor/insights" element={<Insights />} />
+        <Route path="/instructor/profile" element={<InstructorProfile />} />
 
         <Route path="/videos/:courseId" element={<VideoDashboard />} />
       </Routes>

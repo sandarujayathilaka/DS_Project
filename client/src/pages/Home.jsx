@@ -14,12 +14,15 @@ import cs from "../assets/f4.jpeg";
 import footer from "../components/Footer";
 import Footer from "../components/Footer";
 import api from "@/api/build-client";
+import toast from "react-hot-toast";
 
 export default function Home() {
   // Define an array of images
   const images = [Image1, Image2, Image3];
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [courseData, setCourseData] = useState(null);
+
+
 
   useEffect(() => {
     const fetchCourseData = async () => {
@@ -45,6 +48,28 @@ export default function Home() {
     const interval = setInterval(nextImage, 3000);
     return () => clearInterval(interval);
   }, []);
+
+  const addToCart = async (courseId, title,price,chapters,image) => {
+    try {
+      const response = await api.post("/cart/addcart", {
+        course: [
+          {
+            courseId,
+            title,
+            enrollStatus: "pending",
+            qty: "1",
+            price: price,
+            chapters: chapters,
+            note: "",
+            image
+          },
+        ],
+      });
+      toast.success("Course added to cart")
+    } catch (error) {
+      console.error( error);
+    }
+  };
 
   return (
     <div>
@@ -146,9 +171,9 @@ export default function Home() {
       <section className="py-6 sm:py-12 bg-slate-50 text-gray-800">
         <div className="container p-6 mx-auto space-y-8">
           <div className="space-y-2 text-center">
-            <h2 className="text-3xl font-bold">Feilds We Covered</h2>
+            <h2 className="text-3xl font-bold">Our Courses</h2>
             <p className="font-serif text-sm text-gray-600">
-              Qualisque erroribus usu at, duo te agam soluta mucius.
+              Get Good Education and Be a Professional
             </p>
           </div>
           <div className="grid grid-cols-1 gap-x-4 gap-y-8 md:grid-cols-2 lg:grid-cols-4">
@@ -165,9 +190,7 @@ export default function Home() {
                   <img
                     alt=""
                     className="object-cover w-full h-52 md:h-64 bg-gray-300"
-                    src={
-                      "https://cc-prod.scene7.com/is/image/CCProdAuthor/how-to-make-a-thumbnail-for-youtube_P4b_720x400?$pjpeg$&jpegSize=200&wid=720"
-                    }
+                    src={course.image.url}
                   />
                 </a>
                 <div className="flex flex-col flex-1 p-6">
@@ -176,8 +199,8 @@ export default function Home() {
                     href="#"
                     aria-label="Te nulla oportere reprimique his dolorum"
                   >
-                    <span className="text-xs tracking-wider uppercase hover:underline text-cyan-600">
-                      {course?.category}
+                    <span className="text-lg font-bold tracking-wider uppercase hover:underline text-cyan-600">
+                      ${course?.price}
                     </span>
                   </a>
                   <h3 className="flex-1 py-2 text-lg font-semibold leading-snug">
@@ -191,7 +214,18 @@ export default function Home() {
                         day: "numeric",
                       })}
                     </span>
-                    <button className="px-4 py-2 rounded-full bg-cyan-600 text-white hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2">
+                    <button
+                      onClick={() =>
+                        addToCart(
+                          course?.id,
+                          course?.title,
+                          course?.price,
+                          course?.chapters,
+                          course?.image?.url
+                        )
+                      }
+                      className="px-4 py-2 rounded-full bg-cyan-600 text-white hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2"
+                    >
                       Add to Cart
                     </button>
                   </div>

@@ -4,6 +4,7 @@ import { Button } from "./ui/button";
 import useUserStore from "@/stores/auth";
 import Logo from "./Logo";
 import { ShoppingCart } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export default function Header() {
   const navLinks = [
@@ -11,19 +12,23 @@ export default function Header() {
     { to: "/about", label: "About" },
     { to: "/courses", label: "Courses" },
     { to: "/tutors", label: "Tutors" },
-    { to: "/my-learning", label: "My Learning" },
     { to: "/teach-with-us", label: "Teach with us" },
   ];
 
   const user = useUserStore((state) => state.user);
+  const token = useUserStore((state) => state.token);
   const setUser = useUserStore((state) => state.setUser);
+  const setToken = useUserStore((state) => state.setToken);
 
   const navigate = useNavigate();
 
   const handleLogout = () => {
     setUser(null);
+    setToken(null);
     navigate("/");
   };
+
+  const uppercaseFirstLetter = user?.name[0].toUpperCase();
 
   return (
     <header className="header sticky top-0  shadow-md flex items-center justify-between px-8 py-4">
@@ -48,21 +53,39 @@ export default function Header() {
             </NavLink>
           </li>
         ))}
+        {user && (
+          <li>
+            <NavLink
+              to="/student"
+              className="p-4 mx-1 pb-3 font-inter font-semibold text-[#444444] border-b-2 border-main border-opacity-0 hover:border-opacity-100 hover:text-main duration-200"
+            >
+              My Learning
+            </NavLink>
+          </li>
+        )}
       </ul>
 
       <div className="w-3/12 flex justify-end items-center">
-        <Link to="/">
+        <Link to="/cart">
           <ShoppingCart className="mr-6" style={{ transform: "scaleX(-1)" }} />
         </Link>
 
-        {user !== null ? (
-          <Button
-            variant="green"
-            className="font-semibold ml-4"
-            onClick={handleLogout}
-          >
-            Log out
-          </Button>
+        {user !== null && token !== null ? (
+          <>
+            <Avatar>
+              <AvatarImage src="https://github.com/shadcn.jpg" alt="@shadcn" />
+              <AvatarFallback className="bg-slate-300">
+                {uppercaseFirstLetter}
+              </AvatarFallback>
+            </Avatar>
+            <Button
+              variant="green"
+              className="font-semibold ml-4"
+              onClick={handleLogout}
+            >
+              Log out
+            </Button>
+          </>
         ) : (
           <>
             <Link to="/login">

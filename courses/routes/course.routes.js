@@ -13,23 +13,32 @@ const {
   updateChapter,
   deleteChapter,
   deleteAsset,
+  getCurrentUserCourses,
 } = require("../controllers/course.controller");
-const { currentUser } = require("../middleware/current-user");
 
 // asset
 router.delete("/asset", deleteAsset);
 
 // course
-router.post("/", currentUser, createCourse);
-router.patch("/:id", updateCourse);
+router.post("/", requireAuth(["instructor"]), createCourse);
+router.get("/my-courses", requireAuth(["instructor"]), getCurrentUserCourses);
+router.patch("/:id", requireAuth(["instructor"]), updateCourse);
 router.get("/", getAllCourses);
 router.get("/:id", getCourseById);
-router.delete("/:id", deleteCourse);
+router.delete("/:id", requireAuth(["instructor"]), deleteCourse);
 
 // chapter
-router.post("/:id/chapters", createChapter);
+router.post("/:id/chapters", requireAuth(["instructor"]), createChapter);
 router.get("/:id/chapters/:chapterId", getChapterById);
-router.patch("/:id/chapters/:chapterId", updateChapter);
-router.delete("/:id/chapters/:chapterId", deleteChapter);
+router.patch(
+  "/:id/chapters/:chapterId",
+  requireAuth(["instructor"]),
+  updateChapter
+);
+router.delete(
+  "/:id/chapters/:chapterId",
+  requireAuth(["instructor"]),
+  deleteChapter
+);
 
 module.exports = router;

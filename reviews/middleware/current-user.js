@@ -1,16 +1,22 @@
 const jwt = require("jsonwebtoken");
 
 const currentUser = (req, res, next) => {
-  if (!req.session?.jwt) {
-    return next();
-  }
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith("Bearer")
+  ) {
+    try {
+      // Get token from header
+      const token = req.headers.authorization.split(" ")[1];
 
-  try {
-    const payload = jwt.verify(req.session.jwt, process.env.JWT_KEY);
+      // Verify token
+      const decoded = jwt.verify(token, process.env.JWT_KEY);
 
-    req.currentUser = payload;
-  } catch (err) {
-    console.log(err);
+      // Set req.currentUser so that it can be accessed in any route that is protected
+      req.currentUser = decoded;
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   next();

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import api from "@/api/build-client";
 
 const PostReview = () => {
   const [formData, setFormData] = useState({
@@ -19,11 +20,12 @@ const PostReview = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Rating validation
-    if (formData.rating === '' || parseFloat(formData.rating) <= 0 || parseFloat(formData.rating) > 5) {
+    const rating = parseFloat(formData.rating);
+    if (isNaN(rating) || rating <= 0 || rating > 5) {
       toast.error('Please enter a rating between 0 and 5');
       return;
     }
@@ -36,16 +38,16 @@ const PostReview = () => {
       return;
     }
 
-    // Submit the form data to the API endpoint
-    fetch('http://udemy.dev/api/reviews/add', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(formData)
-    })
-    .then(response => {
-      if (response.ok) {
+    try {
+      console.log('Submitting review:', formData);
+
+      const response = await api.post('/reviews/add', formData, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (response.status === 201) {
         toast.success('Review submitted successfully');
         // Optionally, reset the form fields
         setFormData({
@@ -56,13 +58,23 @@ const PostReview = () => {
           comment: ''
         });
       } else {
+        const errorData = await response.json();
+        console.error('Error response data:', errorData);
         toast.error('Failed to submit review');
       }
-    })
-    .catch(error => {
+    } catch (error) {
       console.error('Error:', error);
-      toast.error('An error occurred while submitting the review');
-    });
+      if (error.response) {
+        console.error('Response data:', error.response.data);
+        toast.error(`Error: ${error.response.data.message || 'Failed to submit review'}`);
+      } else if (error.request) {
+        console.error('Request data:', error.request);
+        toast.error('No response from the server. Please try again later.');
+      } else {
+        console.error('Error message:', error.message);
+        toast.error('An error occurred. Please try again.');
+      }
+    }
   };
 
   return (
