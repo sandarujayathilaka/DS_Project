@@ -29,7 +29,8 @@ const courseSchema = mongoose.Schema(
         status: {
           type: String,
           default: "draft",
-          enum: ["draft", "published", "unpublished","approved","rejected"],
+          enum: ["draft", "published", "unpublished", "approved", "rejected"],
+
         },
         video: {},
       },

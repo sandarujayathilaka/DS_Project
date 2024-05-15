@@ -73,6 +73,15 @@ spec:
                 name: sms-srv
                 port:
                   number: 4000
+          - path: /api/email/?(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: email-srv
+                port:
+                  number: 4000
+       
+
               
 
 

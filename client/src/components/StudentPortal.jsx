@@ -6,12 +6,17 @@ import PaymentHistory from "./PaymentHistory"; // Import the PaymentHistory comp
 import Note from "./Note";
 import Footer from "./Footer";
 import api from "@/api/build-client";
+import useUserStore from "@/stores/auth";
 
-const fetchCourses = async (setCourses) => {
+
+const fetchCourses = async (setCourses,user) => {
+  console.log(user.id)
   try {
     const response = await api.post("/learner/getusercourses", {
-      userId: "663dbf52047945ec5914b733",
+      userId:user.id,
     });
+
+     console.log(response.data);
 
     const coursesWithProgress = await Promise.all(
       response.data.map(async (course) => {
@@ -31,36 +36,39 @@ const fetchCourses = async (setCourses) => {
 export default function Student(props) {
   const [selectedTab, setSelectedTab] = useState("Enrolled Courses");
   const [courses, setCourses] = useState([]);
+  const user = useUserStore((state) => state.user);
 
   useEffect(() => {
-    fetchCourses(setCourses);
+    fetchCourses(setCourses,user);
   }, []);
 
   const handleTabClick = (tab) => {
     setSelectedTab(tab);
   };
 
-  const handleEnrollClick = async (courseId) => {
-    try {
-      const response = await api.post("/learner/enroll", {
-        courseId,
-        userId: "663dbf52047945ec5914b733",
-      });
-      console.log("Enrollment successful:", response.data);
-      fetchCourses(setCourses);
-    } catch (error) {
-      console.error("Error enrolling in course:", error);
-    }
-  };
+const handleEnrollClick = async (courseId) => {
+  try {
+    const response = await api.post("/learner/enroll", {
+      courseId,
+      userId: user.id,
+    });
+    console.log("Enrollment successful:", response.data);
+    window.location.href = `/videos/${courseId}`;
+  } catch (error) {
+    console.error("Error enrolling in course:", error);
+  }
+};
+
 
   const handleUnenrollClick = async (courseId) => {
     try {
       const response = await api.post("/learner/unenroll", {
         courseId,
-        userId: "663dbf52047945ec5914b733",
+        userId: user.id,
       });
       console.log("Unenrollment successful:", response.data);
-      fetchCourses(setCourses);
+      fetchCourses(setCourses,user);
+     
     } catch (error) {
       console.error("Error unenrolling from course:", error);
     }
@@ -86,22 +94,14 @@ export default function Student(props) {
               className="bg-white rounded-md overflow-hidden shadow-lg"
             >
               <img
-                src={
-                  "https://img.freepik.com/free-psd/e-learning-template-design_23-2151081798.jpg?size=626&ext=jpg&ga=GA1.1.1224184972.1714953600&semt=ais"
-                }
+                src={course.image}
                 alt={course.title}
                 className="w-full h-40 object-cover mb-4"
               />
               <div className="p-4">
                 <h2 className="text-lg font-semibold text-gray-900 mb-2">
                   {course.title}
-                </h2>
-                <p className="text-sm text-gray-700 mb-1">
-                  Author: {course.author}
-                </p>
-                <p className="text-sm text-gray-700 mb-4">
-                  Price: ${course.price}
-                </p>{" "}
+                </h2>    
                 <Progress value={course.progress} />
                 <p>{course.progress}% Completed</p>
                 <br />
@@ -134,9 +134,9 @@ export default function Student(props) {
         <div className="container mx-auto px-4 py-8">
           <div className="flex justify-between items-center mb-6">
             <h1 className="text-3xl font-bold text-gray-900">{selectedTab}</h1>
-            <div className="flex space-x-4">
+            <div className="flex space-x-7">
               <button
-                className={`text-sm font-medium ${
+                className={`text-lg font-medium ${
                   selectedTab === "Enrolled Courses"
                     ? "text-blue-600"
                     : "text-gray-500"
@@ -146,7 +146,7 @@ export default function Student(props) {
                 Enrolled
               </button>
               <button
-                className={`text-sm font-medium ${
+                className={`text-lg font-medium ${
                   selectedTab === "Pending Enrollment"
                     ? "text-blue-600"
                     : "text-gray-500"
@@ -156,7 +156,7 @@ export default function Student(props) {
                 To Start
               </button>
               <button
-                className={`text-sm font-medium ${
+                className={`text-lg font-medium ${
                   selectedTab === "Payment History"
                     ? "text-blue-600"
                     : "text-gray-500"
@@ -166,7 +166,7 @@ export default function Student(props) {
                 Payment History
               </button>
               <button
-                className={`text-sm font-medium ${
+                className={`text-lg font-medium ${
                   selectedTab === "Course Notes"
                     ? "text-blue-600"
                     : "text-gray-500"
