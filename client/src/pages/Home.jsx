@@ -25,8 +25,6 @@ export default function Home() {
   const user = useUserStore((state) => state.user);
   const token = useUserStore((state) => state.token);
 
-
-
   useEffect(() => {
     const fetchCourseData = async () => {
       try {
@@ -52,24 +50,23 @@ export default function Home() {
     return () => clearInterval(interval);
   }, []);
 
-  const addToCart = async (courseId, title,price,chapters,image) => {
+  const addToCart = async (courseId, title, price, chapters, image) => {
     try {
       const response = await api.post("/cart/addcart", {
-        course:{
-            courseId,
-            title,
-            enrollStatus: "pending",
-            qty: "1",
-            price: price,
-            chapters: chapters,
-            note: "",
-            image
-          },
-        
+        course: {
+          courseId,
+          title,
+          enrollStatus: "pending",
+          qty: "1",
+          price: price,
+          chapters: chapters,
+          note: "",
+          image,
+        },
       });
-      toast.success("Course added to cart")
+      toast.success("Course added to cart");
     } catch (error) {
-      toast.error("Course Already in the cart")
+      toast.error("Course Already in the cart");
     }
   };
 

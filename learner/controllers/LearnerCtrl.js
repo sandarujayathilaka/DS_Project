@@ -4,8 +4,8 @@ const { default: axios } = require("axios");
 
 //add new record to lerner when bought course
 const boughtCourse = async (req, res) => {
-  console.log("boutCourse")
-  const { userId, courses,chapters } = req.body;
+  console.log("boutCourse");
+  const { userId, courses, chapters } = req.body;
 
   try {
     let learner = await Learner.findOne({ userId });
@@ -32,7 +32,7 @@ const boughtCourse = async (req, res) => {
 
     res.status(201).json(learner);
   } catch (error) {
-    console.log(error)
+    console.log(error);
     res.status(500).json({ error: error.message });
   }
 };
@@ -64,7 +64,6 @@ const unenrollFromCourse = async (req, res) => {
   const { userId, courseId } = req.body;
 
   try {
-
     const result = await Learner.updateOne(
       { userId, "enrolledCourses.courseId": courseId },
       { $set: { "enrolledCourses.$.enrollStatus": "pending" } }
@@ -86,7 +85,6 @@ const getAllUserCourse = async (req, res) => {
   const userId = req.currentUser.id; 
 console.log("UserId",userId)
   try {
- 
     const learner = await Learner.findOne({ userId });
 
     if (!learner) {
@@ -95,7 +93,6 @@ console.log("UserId",userId)
 
     return res.status(200).json(learner.enrolledCourses);
   } catch (error) {
-
     console.error("Error fetching user courses:", error);
     return res.status(500).json({ error: "Internal Server Error" });
   }
@@ -106,7 +103,6 @@ const getAllEnrolledCourses = async (req, res) => {
   const userId = req.currentUser.id; 
 
   try {
-
     const learner = await Learner.findOne({ userId });
 
     if (!learner) {
@@ -128,7 +124,6 @@ const getPendingEnrolledCourses = async (req, res) => {
   const userId = req.currentUser.id; 
 
   try {
- 
     const learner = await Learner.findOne({ userId });
 
     if (!learner) {
@@ -151,7 +146,6 @@ const calProgress = async (req, res) => {
   userId = req.currentUser.id;
 
   try {
-
     const learner = await Learner.findOne({ userId });
 
     if (!learner) {
@@ -185,8 +179,9 @@ const changeChapterStatus = async (req, res) => {
   console.log("status",status,chapterId,courseId)
   const userId = "664112ef50d784c54633e1a7";
 
-  try {
+  console.log(courseId, chapterId, status, userId);
 
+  try {
     const learner = await Learner.findOne({ userId });
     if (!learner) {
       return res.status(404).json({ error: "User not found" });
@@ -203,6 +198,7 @@ const changeChapterStatus = async (req, res) => {
     const chapterToUpdate = enrolledCourse.chapters.find(
       (chapter) => chapter.chapterId === chapterId
     );
+    console.log("chapterToUpdate", chapterToUpdate);
     if (!chapterToUpdate) {
       return res
         .status(404)
@@ -212,7 +208,6 @@ const changeChapterStatus = async (req, res) => {
     chapterToUpdate.status = status;
 
     learner.markModified("enrolledCourses");
-
 
     await learner.save();
 
@@ -229,7 +224,6 @@ const updateNote = async (req, res) => {
   const userId = req.currentUser.id;
 
   try {
-
     const learner = await Learner.findOne({ userId });
     if (!learner) {
       return res.status(404).json({ error: "User not found" });
@@ -248,25 +242,22 @@ const updateNote = async (req, res) => {
     await learner.save();
 
     res.status(200).json({ message: "Note updated successfully" });
-  }
-  catch (error) {
+  } catch (error) {
     res.status(500).json({ error: error.message });
   }
-}
+};
 
-//get note of specific user 
+//get note of specific user
 const getNote = async (req, res) => {
   const { courseId } = req.body;
   const userId = req.currentUser.id;
   console.log("note",userId)
   
   try {
-
     const learner = await Learner.findOne({ userId });
     if (!learner) {
       return res.status(404).json({ error: "User not found" });
     }
-
 
     const enrolledCourse = learner.enrolledCourses.find(
       (course) => course.courseId === courseId
@@ -277,9 +268,8 @@ const getNote = async (req, res) => {
     }
 
     res.status(200).json({ note: enrolledCourse.note });
-  }
-  catch (error) {
-    res.status(500).json({ error: error.message});
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 }
 
@@ -287,14 +277,9 @@ const getNote = async (req, res) => {
 
 
 const getAllEnrolledUsers = async (req, res) => {
-
   const users = await Learner.find();
   res.send(users);
 };
-
-
-
-
 
 module.exports = {
   boughtCourse,
@@ -307,5 +292,5 @@ module.exports = {
   changeChapterStatus,
   updateNote,
   getNote,
-  getAllEnrolledUsers
+  getAllEnrolledUsers,
 };

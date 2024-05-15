@@ -21,6 +21,7 @@ module.exports = {
         inter: ["Inter", "sans-serif"],
         ubunutu: ["Ubuntu", "sans-serif"],
         kanit: ["Kanit", "sans-serif"],
+        istokWeb: ["Istok Web", "sans-serif"],
       },
       colors: {
         main: "#0E8585",

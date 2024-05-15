@@ -14,7 +14,6 @@ const {
   getAllEnrolledUsers,
 } = require("../controllers/LearnerCtrl");
 
-
 const learnerRoutes = express.Router();
 
 learnerRoutes.post("/boughtcourse", boughtCourse);
@@ -30,4 +29,3 @@ learnerRoutes.get("/note", getNote);
 learnerRoutes.get("/student", getAllEnrolledUsers);
 
 module.exports = learnerRoutes;
-
