@@ -52,8 +52,7 @@ export default function Home() {
   const addToCart = async (courseId, title,price,chapters,image) => {
     try {
       const response = await api.post("/cart/addcart", {
-        course: [
-          {
+        course:{
             courseId,
             title,
             enrollStatus: "pending",
@@ -63,11 +62,11 @@ export default function Home() {
             note: "",
             image
           },
-        ],
+        
       });
       toast.success("Course added to cart")
     } catch (error) {
-      console.error( error);
+      toast.error("Course Already in the cart")
     }
   };
 
@@ -179,7 +178,7 @@ export default function Home() {
           <div className="grid grid-cols-1 gap-x-4 gap-y-8 md:grid-cols-2 lg:grid-cols-4">
             {courseData?.map((course) => (
               <article
-                key={course?.id}
+                key={course?._id}
                 className="rounded-lg shadow-md overflow-hidden bg-white"
               >
                 <a
@@ -190,7 +189,7 @@ export default function Home() {
                   <img
                     alt=""
                     className="object-cover w-full h-52 md:h-64 bg-gray-300"
-                    src={course.image.url}
+                    src={course?.image?.url}
                   />
                 </a>
                 <div className="flex flex-col flex-1 p-6">
@@ -217,7 +216,7 @@ export default function Home() {
                     <button
                       onClick={() =>
                         addToCart(
-                          course?.id,
+                          course?._id,
                           course?.title,
                           course?.price,
                           course?.chapters,

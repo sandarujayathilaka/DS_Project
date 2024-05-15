@@ -1,6 +1,6 @@
 const { get } = require("mongoose");
 const Learner = require("../models/Learner");
-
+const { default: axios } = require("axios");
 
 //add new record to lerner when bought course
 const boughtCourse = async (req, res) => {
@@ -23,14 +23,12 @@ const boughtCourse = async (req, res) => {
         );
         if (existingCourseIndex === -1) {
           learner.enrolledCourses.push(course);
-        } else {
-          // If course already enrolled update its details
-          learner.enrolledCourses[existingCourseIndex].thumbnail = course.thumbnail;
-          learner.enrolledCourses[existingCourseIndex].title = course.title;
         }
       });
       await learner.save();
     }
+
+    await axios.delete(`http://cart-srv:4000/api/cart/deletecart/${userId}`);
 
     res.status(201).json(learner);
   } catch (error) {
@@ -85,7 +83,6 @@ const unenrollFromCourse = async (req, res) => {
 
 //get all courses of specific user
 const getAllUserCourse = async (req, res) => {
-  console.log("called");
   const userId = req.currentUser.id; 
 console.log(userId)
   try {
