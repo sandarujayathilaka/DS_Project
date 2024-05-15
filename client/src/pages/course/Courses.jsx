@@ -65,7 +65,7 @@ const Courses = () => {
       header: "Title",
       cell: ({ row }) => (
         <Link to={`/videos/${row.original.id}`}>
-          <div className="capitalize">{row.getValue("title")}</div>
+          <div className="">{row.getValue("title")}</div>
         </Link>
       ),
     },
@@ -166,7 +166,7 @@ const Courses = () => {
   const fetchData = () => {
     setLoading(true);
     api
-      .get("/courses")
+      .get("/courses/my-courses")
       .then((response) => {
         // console.log(response.data);
         setData(response.data.courses);
@@ -215,7 +215,9 @@ const Courses = () => {
   return (
     <InstructorLayout>
       <div className="w-full p-4">
-        <h1 className="font-ubunutu text-4xl font-bold mb-8">My Courses</h1>
+        <h1 className="font-ubunutu text-4xl font-bold mb-8 text-gray-800">
+          My Courses
+        </h1>
         <div className="flex justify-end">
           <AddCourseDialog
             trigger={

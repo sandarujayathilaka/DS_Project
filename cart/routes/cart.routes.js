@@ -7,7 +7,7 @@ const { addCartItems, deleteCartItemOneByOne, getCartItems, deleteAllCartItems }
 const cartRoutes = express.Router();
 
 cartRoutes.post("/addcart", addCartItems);
-cartRoutes.delete("/deletecart", deleteAllCartItems);
+cartRoutes.delete("/deletecart/:userId", deleteAllCartItems);
 cartRoutes.delete("/deleteitem/:courseId", deleteCartItemOneByOne);
 cartRoutes.get("/getcartitem",getCartItems);
 

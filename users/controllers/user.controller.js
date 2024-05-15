@@ -66,7 +66,23 @@ const currentUserDetails = async (req, res) => {
 };
 const getAllUsers = async (req, res) => {
 
+
   const users = await User.find();
   res.send(users);
 };
-module.exports = { signUp, signIn, currentUserDetails,getAllUsers };
+
+
+const getUserDetails = async (req, res) => {
+  const userDetails = await User.findOne({ _id: req.params.id }).select(
+    "-password"
+  );
+
+  if (!userDetails) {
+    throw new Error("User not found");
+  }
+
+  res.status(200).send(userDetails);
+};
+
+module.exports = { signUp, signIn, currentUserDetails, getUserDetails,getAllUsers };
+

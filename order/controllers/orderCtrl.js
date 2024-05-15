@@ -8,17 +8,16 @@ dotenv.config();
 const stripe = new Stripe(process.env.STRIPE_KEY);
 
 const createOrder = async (req, res) => {
-  // Get the order items, shipping address, total price
+
   const { courses} = req.body;
 
-  // Check if order is not empty
+
   if (courses && courses.length <= 0) {
     throw new Error("Cart is Empty");
   }
 
-  // Place order - save in DB
   const order = await Order.create({
-    userId:"663dbf52047945ec5914b733",
+    userId:req.currentUser.id,
     courses,
     totalPrice:"0",
   });
@@ -52,8 +51,10 @@ const createOrder = async (req, res) => {
   res.send({ url: session.url });
 };
 
+
+// Get all orders of a specific user
 const getSpecificUserAllOrders = async (req, res) => {
-  const userId = "663dbf52047945ec5914b733";
+  const userId = req.currentUser.id;
 
   try {
     const orders = await Order.find({
@@ -66,11 +67,6 @@ const getSpecificUserAllOrders = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
-
-
-
-
-
 
 
 module.exports = {
