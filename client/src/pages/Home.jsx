@@ -28,7 +28,7 @@ export default function Home() {
   useEffect(() => {
     const fetchCourseData = async () => {
       try {
-        const response = await api.get("/courses");
+        const response = await api.get("/courses?status=published");
         console.log(response.data.courses);
         setCourseData(response.data.courses);
       } catch (error) {

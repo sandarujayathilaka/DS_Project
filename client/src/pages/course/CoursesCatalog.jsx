@@ -16,6 +16,7 @@ import {
 import { categories } from "@/constants/categories";
 import { Search } from "lucide-react";
 import PageLoader from "@/components/loaders/PageLoader";
+import toast from "react-hot-toast";
 
 const CoursesCatalog = () => {
   const [courses, setCourses] = useState([]);
@@ -34,6 +35,26 @@ const CoursesCatalog = () => {
     } catch (error) {
       console.error(error);
       setLoading(false);
+    }
+  };
+
+  const addToCart = async (courseId, title, price, chapters, image) => {
+    try {
+      const response = await api.post("/cart/addcart", {
+        course: {
+          courseId,
+          title,
+          enrollStatus: "pending",
+          qty: "1",
+          price: price,
+          chapters: chapters,
+          note: "",
+          image,
+        },
+      });
+      toast.success("Course added to cart");
+    } catch (error) {
+      toast.error("Course Already in the cart");
     }
   };
 
@@ -80,7 +101,7 @@ const CoursesCatalog = () => {
         </div>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 grid-cols-1">
           {courses.map((course) => (
-            <CourseCard course={course} key={course._id} />
+            <CourseCard course={course} key={course._id} addToCart={addToCart} />
           ))}
         </div>
       </div>

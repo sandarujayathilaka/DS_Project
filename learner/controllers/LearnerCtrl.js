@@ -177,7 +177,7 @@ const calProgress = async (req, res) => {
 const changeChapterStatus = async (req, res) => {
   const { courseId, chapterId, status } = req.body;
   console.log("status",status,chapterId,courseId)
-  const userId = "664112ef50d784c54633e1a7";
+  const userId = req.currentUser.id;
 
   console.log(courseId, chapterId, status, userId);
 
@@ -195,8 +195,10 @@ const changeChapterStatus = async (req, res) => {
       return res.status(404).json({ error: "Course not found for this user" });
     }
 
+    console.log(enrolledCourse.chapters)
+
     const chapterToUpdate = enrolledCourse.chapters.find(
-      (chapter) => chapter.chapterId === chapterId
+      (chapter) => chapter._id === chapterId
     );
     console.log("chapterToUpdate", chapterToUpdate);
     if (!chapterToUpdate) {
