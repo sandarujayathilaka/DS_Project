@@ -18,6 +18,7 @@ import TextLoader from "@/components/loaders/TextLoader";
 import useUserStore from "@/stores/auth";
 import { useNavigate } from "react-router-dom";
 import api from "@/api/build-client";
+import { getEnrolledCourses } from "@/api/user";
 
 const LoginSchema = Yup.object({
   email: Yup.string()
@@ -50,8 +51,9 @@ const Login = () => {
           console.log(response.data);
           setUser(response.data?.user);
           setToken(response.data?.token);
+          getEnrolledCourses();
           if (response.data?.user?.role === "admin") {
-            navigate("/admin/dashboard");
+            navigate("/dashboard");
           } else if (response.data?.user?.role === "instructor") {
             navigate("/instructor/courses");
           } else {

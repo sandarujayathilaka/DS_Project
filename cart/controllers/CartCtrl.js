@@ -2,16 +2,23 @@ const Cart = require("../models/Cart");
 
 
 const addCartItems = async (req, res) => {
-  const { course} = req.body;
-  console.log(course)
+  const { course } = req.body;
+  console.log(course);
   const userId = req.currentUser.id;
+  const courseId = course.courseId;
+
   try {
     let cart = await Cart.findOne({ userId });
 
     if (cart) {
-      cart.course.push(...course);
+      const courseExists = cart.course.some((c) => c.courseId === courseId);
+      console.log(courseExists);
+      if (courseExists) {
+        return res.status(400).json({ message: "Course already in the cart" });
+      }
+      cart.course.push(course);
     } else {
-      cart = new Cart({ userId, course });
+      cart = new Cart({ userId, course: [course] });
     }
 
     await cart.save();
@@ -20,6 +27,7 @@ const addCartItems = async (req, res) => {
     return res.status(500).json({ error: error.message });
   }
 };
+
 
 
 const getCartItems = async (req, res) => {
@@ -36,7 +44,9 @@ const getCartItems = async (req, res) => {
 };
 
 const deleteAllCartItems = async (req, res) => {
-  const { userId } = req.body; 
+  const { userId } = req.params; 
+  console.log("Deleted all carts")
+  console.log("Deleted Id :",userId)
   try {
     const cart = await Cart.findOne({ userId });
     if (!cart) {

@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: admincourse-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: admincourse
+  template:
+    metadata:
+      labels:
+        app: admincourse
+    spec:
+      containers:
+        - name: admincourse
+          image: denodenojan/admincourse
+          env:
+            - name: MONGO_URI
+              value: mongodb+srv://user:user123@project.6kognk6.mongodb.net/micro
+            - name: CLOUD_NAME
+              value: djtoyeee2
+            - name: CLOUD_KEY
+              value: "576275933435118"
+            - name: CLOUD_KEY_SECRET
+              value: QbX7S_wSRKKck5ZfINJMgKI1ydk
+            - name: JWT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret
+                  key: JWT_KEY
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: admincourse-srv
+spec:
+  selector:
+    app: admincourse
+  ports:
+    - name: admincourse
+      protocol: TCP
+      port: 4000
+      targetPort: 4000

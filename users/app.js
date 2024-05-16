@@ -19,9 +19,7 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use(currentUser);
 
-app.get("/api/users", (req, res) => {
-  res.send("Hello World");
-});
+
 
 app.use("/api/users", userRoutes);
 

@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: adminprofile-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: adminprofile
+  template:
+    metadata:
+      labels:
+        app: adminprofile
+    spec:
+      containers:
+        - name: adminprofile
+          image: denodenojan/adminprofile
+          env:
+            - name: MONGO_URI
+              value: mongodb+srv://user:user123@project.6kognk6.mongodb.net/micro
+            - name: JWT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret
+                  key: JWT_KEY
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: adminprofile-srv
+spec:
+  selector:
+    app: adminprofile
+  ports:
+    - name: adminprofile
+      protocol: TCP
+      port: 4000
+      targetPort: 4000

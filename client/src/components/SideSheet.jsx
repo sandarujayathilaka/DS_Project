@@ -26,6 +26,7 @@ export default function SideSheet(props) {
         note: editedNote,
       });
       toast.success("Note updated successfully");
+      window.location.reload();
     } catch (error) {
       console.error("Error:", error);
     }

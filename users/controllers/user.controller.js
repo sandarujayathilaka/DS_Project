@@ -64,6 +64,13 @@ const currentUserDetails = async (req, res) => {
 
   res.status(200).send(userDetails);
 };
+const getAllUsers = async (req, res) => {
+
+
+  const users = await User.find();
+  res.send(users);
+};
+
 
 const getUserDetails = async (req, res) => {
   const userDetails = await User.findOne({ _id: req.params.id }).select(
@@ -77,4 +84,5 @@ const getUserDetails = async (req, res) => {
   res.status(200).send(userDetails);
 };
 
-module.exports = { signUp, signIn, currentUserDetails, getUserDetails };
+module.exports = { signUp, signIn, currentUserDetails, getUserDetails,getAllUsers };
+

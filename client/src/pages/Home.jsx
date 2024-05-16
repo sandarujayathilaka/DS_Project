@@ -15,19 +15,20 @@ import footer from "../components/Footer";
 import Footer from "../components/Footer";
 import api from "@/api/build-client";
 import toast from "react-hot-toast";
+import useUserStore from "@/stores/auth";
 
 export default function Home() {
   // Define an array of images
   const images = [Image1, Image2, Image3];
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [courseData, setCourseData] = useState(null);
-
-
+  const user = useUserStore((state) => state.user);
+  const token = useUserStore((state) => state.token);
 
   useEffect(() => {
     const fetchCourseData = async () => {
       try {
-        const response = await api.get("/courses");
+        const response = await api.get("/courses?status=published");
         console.log(response.data.courses);
         setCourseData(response.data.courses);
       } catch (error) {
@@ -49,25 +50,23 @@ export default function Home() {
     return () => clearInterval(interval);
   }, []);
 
-  const addToCart = async (courseId, title,price,chapters,image) => {
+  const addToCart = async (courseId, title, price, chapters, image) => {
     try {
       const response = await api.post("/cart/addcart", {
-        course: [
-          {
-            courseId,
-            title,
-            enrollStatus: "pending",
-            qty: "1",
-            price: price,
-            chapters: chapters,
-            note: "",
-            image
-          },
-        ],
+        course: {
+          courseId,
+          title,
+          enrollStatus: "pending",
+          qty: "1",
+          price: price,
+          chapters: chapters,
+          note: "",
+          image,
+        },
       });
-      toast.success("Course added to cart")
+      toast.success("Course added to cart");
     } catch (error) {
-      console.error( error);
+      toast.error("Course Already in the cart");
     }
   };
 
@@ -177,61 +176,109 @@ export default function Home() {
             </p>
           </div>
           <div className="grid grid-cols-1 gap-x-4 gap-y-8 md:grid-cols-2 lg:grid-cols-4">
-            {courseData?.map((course) => (
-              <article
-                key={course?.id}
-                className="rounded-lg shadow-md overflow-hidden bg-white"
-              >
-                <a
-                  rel="noopener noreferrer"
-                  href="#"
-                  aria-label="Te nulla oportere reprimique his dolorum"
-                >
-                  <img
-                    alt=""
-                    className="object-cover w-full h-52 md:h-64 bg-gray-300"
-                    src={course.image.url}
-                  />
-                </a>
-                <div className="flex flex-col flex-1 p-6">
-                  <a
-                    rel="noopener noreferrer"
-                    href="#"
-                    aria-label="Te nulla oportere reprimique his dolorum"
+            {user !== null && token !== null
+              ? courseData?.slice(0, 4).map((course) => (
+                  <article
+                    key={course?._id}
+                    className="rounded-lg shadow-md overflow-hidden bg-white"
                   >
-                    <span className="text-lg font-bold tracking-wider uppercase hover:underline text-cyan-600">
-                      ${course?.price}
-                    </span>
-                  </a>
-                  <h3 className="flex-1 py-2 text-lg font-semibold leading-snug">
-                    {course?.title}
-                  </h3>
-                  <div className="flex flex-wrap justify-between items-center pt-3 space-x-2 text-gray-600">
-                    <span>
-                      {new Date(course?.createdAt).toLocaleDateString("en-US", {
-                        year: "numeric",
-                        month: "long",
-                        day: "numeric",
-                      })}
-                    </span>
-                    <button
-                      onClick={() =>
-                        addToCart(
-                          course?.id,
-                          course?.title,
-                          course?.price,
-                          course?.chapters,
-                          course?.image?.url
-                        )
-                      }
-                      className="px-4 py-2 rounded-full bg-cyan-600 text-white hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2"
+                    <a
+                      rel="noopener noreferrer"
+                      href="#"
+                      aria-label="Te nulla oportere reprimique his dolorum"
                     >
-                      Add to Cart
-                    </button>
-                  </div>
-                </div>
-              </article>
-            ))}
+                      <img
+                        alt=""
+                        className="object-cover w-full h-52 md:h-64 bg-gray-300"
+                        src={course?.image?.url}
+                      />
+                    </a>
+                    <div className="flex flex-col flex-1 p-6">
+                      <a
+                        rel="noopener noreferrer"
+                        href="#"
+                        aria-label="Te nulla oportere reprimique his dolorum"
+                      >
+                        <span className="text-lg font-bold tracking-wider uppercase hover:underline text-cyan-600">
+                          ${course?.price}
+                        </span>
+                      </a>
+                      <h3 className="flex-1 py-2 text-lg font-semibold leading-snug">
+                        {course?.title}
+                      </h3>
+                      <div className="flex flex-wrap justify-between items-center pt-3 space-x-2 text-gray-600">
+                        <span>
+                          {new Date(course?.createdAt).toLocaleDateString(
+                            "en-US",
+                            {
+                              year: "numeric",
+                              month: "long",
+                              day: "numeric",
+                            }
+                          )}
+                        </span>
+                        <button
+                          onClick={() =>
+                            addToCart(
+                              course?._id,
+                              course?.title,
+                              course?.price,
+                              course?.chapters,
+                              course?.image?.url
+                            )
+                          }
+                          className="px-4 py-2 rounded-full bg-cyan-600 text-white hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2"
+                        >
+                          Add to Cart
+                        </button>
+                      </div>
+                    </div>
+                  </article>
+                ))
+              : courseData?.slice(0, 4).map((course) => (
+                  <article
+                    key={course?._id}
+                    className="rounded-lg shadow-md overflow-hidden bg-white"
+                  >
+                    <a
+                      rel="noopener noreferrer"
+                      href="#"
+                      aria-label="Te nulla oportere reprimique his dolorum"
+                    >
+                      <img
+                        alt=""
+                        className="object-cover w-full h-52 md:h-64 bg-gray-300"
+                        src={course?.image?.url}
+                      />
+                    </a>
+                    <div className="flex flex-col flex-1 p-6">
+                      <a
+                        rel="noopener noreferrer"
+                        href="#"
+                        aria-label="Te nulla oportere reprimique his dolorum"
+                      >
+                        <span className="text-lg font-bold tracking-wider uppercase hover:underline text-cyan-600">
+                          ${course?.price}
+                        </span>
+                      </a>
+                      <h3 className="flex-1 py-2 text-lg font-semibold leading-snug">
+                        {course?.title}
+                      </h3>
+                      <div className="flex flex-wrap justify-between items-center pt-3 space-x-2 text-gray-600">
+                        <span>
+                          {new Date(course?.createdAt).toLocaleDateString(
+                            "en-US",
+                            {
+                              year: "numeric",
+                              month: "long",
+                              day: "numeric",
+                            }
+                          )}
+                        </span>
+                      </div>
+                    </div>
+                  </article>
+                ))}
           </div>
         </div>
       </section>

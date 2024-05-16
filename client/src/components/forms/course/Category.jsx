@@ -15,23 +15,11 @@ import {
 import toast from "react-hot-toast";
 import TextLoader from "@/components/loaders/TextLoader";
 import api from "@/api/build-client";
+import { categories } from "@/constants/categories";
 
 const CategorySchema = Yup.object({
   category: Yup.string().required("Category is required"),
 });
-
-const categories = [
-  { value: "programming", label: "Programming" },
-  { value: "web development", label: "Web Development" },
-  { value: "mobile development", label: "Mobile Development" },
-  { value: "data science", label: "Data Science" },
-  { value: "machine learning", label: "Machine Learning" },
-  { value: "artificial intelligence", label: "Artificial Intelligence" },
-  { value: "networking", label: "Networking" },
-  { value: "cybersecurity", label: "Cybersecurity" },
-  { value: "game development", label: "Game Development" },
-  { value: "cloud computing", label: "Cloud Computing" },
-];
 
 const Category = ({ initialValue, courseId, refresh }) => {
   const [isEditing, setIsEditing] = useState(false);

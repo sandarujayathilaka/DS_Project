@@ -6,8 +6,10 @@ const useUserStore = create()(
     (set) => ({
       user: null,
       token: null,
+      enrolledCourses: null,
       setUser: (user) => set(() => ({ user })),
       setToken: (token) => set(() => ({ token })),
+      setEnrolledCourses: (enrolledCourses) => set(() => ({ enrolledCourses })),
     }),
     {
       name: "user-storage",

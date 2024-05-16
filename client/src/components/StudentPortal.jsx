@@ -8,15 +8,12 @@ import Footer from "./Footer";
 import api from "@/api/build-client";
 import useUserStore from "@/stores/auth";
 
-
-const fetchCourses = async (setCourses,user) => {
-  console.log(user.id)
+const fetchCourses = async (setCourses, user) => {
+  console.log(user.id);
   try {
-    const response = await api.post("/learner/getusercourses", {
-      userId:user.id,
-    });
+    const response = await api.get("/learner/getusercourses");
 
-     console.log(response.data);
+    console.log(response.data);
 
     const coursesWithProgress = await Promise.all(
       response.data.map(async (course) => {
@@ -39,26 +36,25 @@ export default function Student(props) {
   const user = useUserStore((state) => state.user);
 
   useEffect(() => {
-    fetchCourses(setCourses,user);
+    fetchCourses(setCourses, user);
   }, []);
 
   const handleTabClick = (tab) => {
     setSelectedTab(tab);
   };
 
-const handleEnrollClick = async (courseId) => {
-  try {
-    const response = await api.post("/learner/enroll", {
-      courseId,
-      userId: user.id,
-    });
-    console.log("Enrollment successful:", response.data);
-    window.location.href = `/videos/${courseId}`;
-  } catch (error) {
-    console.error("Error enrolling in course:", error);
-  }
-};
-
+  const handleEnrollClick = async (courseId) => {
+    try {
+      const response = await api.post("/learner/enroll", {
+        courseId,
+        userId: user.id,
+      });
+      console.log("Enrollment successful:", response.data);
+      window.location.href = `/videos/${courseId}`;
+    } catch (error) {
+      console.error("Error enrolling in course:", error);
+    }
+  };
 
   const handleUnenrollClick = async (courseId) => {
     try {
@@ -67,8 +63,7 @@ const handleEnrollClick = async (courseId) => {
         userId: user.id,
       });
       console.log("Unenrollment successful:", response.data);
-      fetchCourses(setCourses,user);
-     
+      fetchCourses(setCourses, user);
     } catch (error) {
       console.error("Error unenrolling from course:", error);
     }
@@ -101,7 +96,7 @@ const handleEnrollClick = async (courseId) => {
               <div className="p-4">
                 <h2 className="text-lg font-semibold text-gray-900 mb-2">
                   {course.title}
-                </h2>    
+                </h2>
                 <Progress value={course.progress} />
                 <p>{course.progress}% Completed</p>
                 <br />

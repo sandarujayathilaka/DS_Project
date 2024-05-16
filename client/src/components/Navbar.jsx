@@ -6,7 +6,7 @@ import Logo from "./Logo";
 import { ShoppingCart } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-export default function Header() {
+export default function Navbar() {
   const navLinks = [
     { to: "/", label: "Home" },
     { to: "/about", label: "About" },
@@ -31,7 +31,7 @@ export default function Header() {
   const uppercaseFirstLetter = user?.name[0].toUpperCase();
 
   return (
-    <header className="header sticky top-0  shadow-md flex items-center justify-between px-8 py-4">
+    <header className="top-0  shadow-md flex items-center justify-between px-8 py-4">
       <h1 className="w-3/12">
         <Link to="/">
           <Logo />

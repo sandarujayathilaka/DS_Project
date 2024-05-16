@@ -19,6 +19,7 @@ const courseSchema = mongoose.Schema(
     chapters: [
       {
         title: String,
+        comment: String,
         description: String,
         access: {
           type: String,
@@ -29,6 +30,7 @@ const courseSchema = mongoose.Schema(
           type: String,
           default: "draft",
           enum: ["draft", "published", "unpublished", "approved", "rejected"],
+
         },
         video: {},
       },
