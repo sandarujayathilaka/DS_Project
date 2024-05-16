@@ -296,3 +296,4 @@ module.exports = {
   getNote,
   getAllEnrolledUsers,
 };
+

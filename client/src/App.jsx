@@ -1,7 +1,16 @@
+import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import InstructorLayout from "./layouts/InstructorLayout";
 import Cart from "./components/Cart";
 import Student from "./components/StudentPortal";
 import Home from "./pages/Home";
+import ReviewCard from "./components/reviews/ReviewCard";
+import TestCourseCard from "./components/reviews/TestCourseCard";
+import CourseReviews from "./pages/review/CourseReviews";
+import Register from "./pages/Register";
+import PostReview from "./pages/review/PostReview";
 import Auth from "./pages/Auth";
 import Courses from "./pages/course/Courses";
 import UpdateCourse from "./pages/course/UpdateCourse";
@@ -22,10 +31,12 @@ import InstructorProfile from "./pages/course/InstructorProfile";
 import Course from "./pages/course/Course";
 import CoursesCatalog from "./pages/course/CoursesCatalog";
 
+
 function App() {
   return (
     <BrowserRouter>
-      <Toaster position="bottom-right" />
+      <ToastContainer />
+      
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/cart" element={<Cart />} />
@@ -34,6 +45,13 @@ function App() {
         <Route path="/note" element={<Note />} />
         <Route path="/login" element={<Auth />} />
         <Route path="/signup" element={<Auth />} />
+        <Route path="/reviewcard" element={<ReviewCard />} />
+        <Route path="/testCourseCard" element={<TestCourseCard />} />
+        <Route path="/reviewspage/:title" element={<CourseReviews />} />
+        <Route path="/addreview" element={<PostReview />} />
+
+
+
 
         <Route path="/dashboard" element={<AdminDashboard />} />
         <Route path="/students" element={<Students />} />
@@ -56,6 +74,7 @@ function App() {
         <Route path="/course/:id" element={<Course />} />
         <Route path="/courses" element={<CoursesCatalog />} />
       </Routes>
+
     </BrowserRouter>
   );
 }
